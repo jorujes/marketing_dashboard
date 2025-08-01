@@ -741,7 +741,8 @@
             const profitableCampaigns = data.filter(row => row.netProfit > 0).length;
             const lossCampaigns = data.filter(row => row.netProfit < 0).length;
             const neutralCampaigns = data.filter(row => row.netProfit === 0).length;
-            const avgTicket = totalLeads > 0 ? totalRevenue / totalLeads : 0;
+            // Ticket médio calculado sobre leads convertidos (muito provável)
+            const avgTicket = totalConverted > 0 ? totalRevenue / totalConverted : 0;
             
             // Calculate additional insights
             const campaignsWithRevenue = data.filter(row => row.revenue > 0).length;
