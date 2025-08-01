@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Dashboard - Versão Completa</title>
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .metric-card.financial {
+            border-left: 4px solid #28a745;
+        }
+        
+        .metric-card.performance {
+            border-left: 4px solid #17a2b8;
+        }
+        
+        .metric-card.volume {
+            border-left: 4px solid #6610f2;
+        }
+        
+        .metric-card.health {
+            border-left: 4px solid #fd7e14;
+        }
+        
+        .metric-icon {
+            font-size: 2.5rem;
+            opacity: 0.1;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+        }
+        
+        .metric-value {
+            font-size: 1.875rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+            line-height: 1.2;
+        }
+        
+        .metric-label {
+            color: #495057;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-detail {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+        
+        .metric-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        
+        .metric-progress {
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .metric-progress-bar {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .metric-group {
+            margin-bottom: 2rem;
+        }
+        
+        .metric-group-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .metric-group-title i {
+            font-size: 1.25rem;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+        
+        canvas {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        /* Ensure tooltips can overflow containers */
+        .chart-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+        
+
+    </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary mb-4">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">
+                <i class="fas fa-chart-line me-2"></i>Marketing Dashboard
+            </span>
+        </div>
+    </nav>
+    
+    <div class="container-fluid">
+        <!-- File Upload -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Carregar Dados</h5>
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="csvFile" accept=".csv">
+                            <button class="btn btn-primary" onclick="loadFile()">
+                                <i class="fas fa-upload me-2"></i>Carregar
+                            </button>
+                        </div>
+                        <small class="text-muted mt-2 d-block">
+                            Selecione o arquivo "desempenho_campanhas.csv" ou outro arquivo CSV com a mesma estrutura.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- KPIs Section -->
+        <div id="kpiSection" style="display:none;">
+            <!-- Financial Metrics -->
+            <div class="metric-group">
+                <h5 class="metric-group-title">
+                    <i class="fas fa-dollar-sign text-success"></i> Métricas Financeiras
+                </h5>
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="metric-card financial">
+                            <i class="fas fa-chart-line metric-icon text-success"></i>
+                            <div class="metric-label">Faturamento Total</div>
+                            <div class="metric-value text-success" id="totalRevenue">-</div>
+                            <div class="metric-detail" id="revenueDetail">-</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="metric-card financial">
+                            <i class="fas fa-money-bill-wave metric-icon text-danger"></i>
+                            <div class="metric-label">Investimento Total</div>
+                            <div class="metric-value text-danger" id="totalInvestment">-</div>
+                            <div class="metric-detail" id="investmentDetail">-</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="metric-card financial">
+                            <i class="fas fa-percentage metric-icon"></i>
+                            <div class="metric-label">Margem Total</div>
+                            <div class="metric-value" id="totalMargin">-</div>
+                            <div class="metric-detail" id="marginDetail">-</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="metric-card financial">
+                            <i class="fas fa-piggy-bank metric-icon"></i>
+                            <div class="metric-label">Lucro Líquido</div>
+                            <div class="metric-value" id="netProfit">-</div>
+                            <div class="metric-badge" id="profitBadge">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="metric-group">
+                <h5 class="metric-group-title">
+                    <i class="fas fa-tachometer-alt text-info"></i> Indicadores de Performance
+                </h5>
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="metric-card performance">
+                            <i class="fas fa-chart-line metric-icon text-info"></i>
+                            <div class="metric-label">ROI Médio</div>
+                            <div class="metric-value text-info" id="avgROI">-</div>
+                            <div class="metric-progress">
+                                <div class="metric-progress-bar bg-info" id="roiProgress"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="metric-card performance">
+                            <i class="fas fa-percentage metric-icon text-warning"></i>
+                            <div class="metric-label">Taxa de Conversão</div>
+                            <div class="metric-value text-warning" id="conversionRate">-</div>
+                            <div class="metric-detail" id="conversionDetail">-</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="metric-card performance">
+                            <i class="fas fa-receipt metric-icon"></i>
+                            <div class="metric-label">Ticket Médio</div>
+                            <div class="metric-value" id="avgTicket">-</div>
+                            <div class="metric-detail">Por lead capturado</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="metric-card performance">
+                            <i class="fas fa-coins metric-icon text-primary"></i>
+                            <div class="metric-label">Custo por Lead</div>
+                            <div class="metric-value text-primary" id="avgCPL">-</div>
+                            <div class="metric-badge" id="cplBadge">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Volume & Health Metrics -->
+            <div class="metric-group">
+                <h5 class="metric-group-title">
+                    <i class="fas fa-chart-bar text-purple"></i> Volume e Saúde das Campanhas
+                </h5>
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="metric-card volume">
+                            <i class="fas fa-users metric-icon text-primary"></i>
+                            <div class="metric-label">Total de Leads</div>
+                            <div class="metric-value text-primary" id="totalLeads">-</div>
+                            <div class="metric-detail" id="leadsDetail">-</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="metric-card volume">
+                            <i class="fas fa-bullhorn metric-icon text-secondary"></i>
+                            <div class="metric-label">Campanhas Ativas</div>
+                            <div class="metric-value text-secondary" id="activeCampaigns">-</div>
+                            <div class="metric-detail" id="campaignsDetail">-</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="metric-card health">
+                            <i class="fas fa-check-circle metric-icon text-success"></i>
+                            <div class="metric-label">Campanhas Lucrativas</div>
+                            <div class="metric-value text-success" id="profitableCampaigns">-</div>
+                            <div class="metric-badge bg-success text-white" id="profitablePercent">-</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="metric-card health">
+                            <i class="fas fa-times-circle metric-icon text-danger"></i>
+                            <div class="metric-label">Campanhas Deficitárias</div>
+                            <div class="metric-value text-danger" id="lossCampaigns">-</div>
+                            <div class="metric-badge bg-danger text-white" id="lossPercent">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-tabs mb-4" id="mainTabs" style="display:none;">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#dashboardTab">
+                    <i class="fas fa-chart-line me-2"></i>Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#tableTab">
+                    <i class="fas fa-table me-2"></i>Tabela Completa
+                </a>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="tabContent" style="display:none;">
+            <!-- Dashboard Tab -->
+            <div class="tab-pane fade show active" id="dashboardTab">
+                <div class="row" id="chartsRow">
+                    <div class="col-lg-6">
+                        <div class="chart-container">
+                            <h5>💰 Top 10 Campanhas por Faturamento</h5>
+                            <div class="chart-wrapper">
+                                <canvas id="chart1"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="chart-container">
+                            <h5>🔥 Distribuição de Leads por Temperatura</h5>
+                            <div class="chart-wrapper">
+                                <canvas id="chart2"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="chart-container">
+                            <h5>📈 Top 10 Campanhas por ROI</h5>
+                            <div class="chart-wrapper">
+                                <canvas id="chart3"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="chart-container">
+                            <h5>💸 Análise de Margem</h5>
+                            <div class="chart-wrapper">
+                                <canvas id="chart4"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-8">
+                        <div class="chart-container">
+                            <h5>📊 Performance Comparativa: Investimento vs Faturamento</h5>
+                            <div class="chart-wrapper">
+                                <canvas id="chart5"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="chart-container">
+                            <h5>🎯 Distribuição de Probabilidade de Conversão</h5>
+                            <div class="chart-wrapper">
+                                <canvas id="chart6"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="chart-container">
+                            <h5>💵 Custo por Lead (Top 10 Mais Caros)</h5>
+                            <div class="chart-wrapper">
+                                <canvas id="chart7"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="chart-container">
+                            <h5>🏆 Eficiência: Leads Gerados por Campanha</h5>
+                            <div class="chart-wrapper">
+                                <canvas id="chart8"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Tab -->
+            <div class="tab-pane fade" id="tableTab">
+                <div class="chart-container">
+                    <h5>📋 Dados Completos das Campanhas</h5>
+                    <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                        <table class="table table-sm table-hover table-striped">
+                            <thead class="sticky-top bg-white">
+                                <tr>
+                                    <th>Campanha</th>
+                                    <th>Investimento</th>
+                                    <th>Faturamento</th>
+                                    <th>Margem</th>
+                                    <th>Lucro Líq.</th>
+                                    <th>ROI %</th>
+                                    <th>Leads</th>
+                                    <th>CPL</th>
+                                    <th>🥶</th>
+                                    <th>😐</th>
+                                    <th>🥵</th>
+                                    <th>Conv. %</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dataTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    
+    <script>
+        let data = [];
+        let charts = {};
+        
+        // Simple Chart.js defaults
+        Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        
+        // Utility functions
+        function formatMoney(val) {
+            return 'R$ ' + val.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&.');
+        }
+        
+        function parseNumber(str) {
+            if (!str || str === '0,00') return 0;
+            return parseFloat(str.replace(/\./g, '').replace(',', '.'));
+        }
+        
+        // Load file
+        function loadFile() {
+            const file = document.getElementById('csvFile').files[0];
+            if (!file) {
+                alert('Selecione um arquivo!');
+                return;
+            }
+            
+            Papa.parse(file, {
+                header: true,
+                complete: function(results) {
+                    processData(results.data);
+                }
+            });
+            
+            // Chart 5: Comparison Investment vs Revenue
+            const comparisonData = data
+                .filter(row => row.revenue > 0 || row.investment > 0)
+                .sort((a, b) => b.revenue - a.revenue)
+                .slice(0, 15);
+            
+            if (charts.chart5) charts.chart5.destroy();
+            charts.chart5 = new Chart(document.getElementById('chart5'), {
+                type: 'bar',
+                data: {
+                    labels: comparisonData.map(r => r.name.substring(0, 20) + '...'),
+                    datasets: [{
+                        label: 'Faturamento',
+                        data: comparisonData.map(r => r.revenue),
+                        backgroundColor: '#28a745'
+                    }, {
+                        label: 'Investimento',
+                        data: comparisonData.map(r => r.investment),
+                        backgroundColor: '#dc3545'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return formatMoney(value);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    return comparisonData[tooltipItems[0].dataIndex].name;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Chart 6: Conversion Probability
+            const totalLowProb = data.reduce((sum, row) => sum + row.lowProb, 0);
+            const totalMedProb = data.reduce((sum, row) => sum + row.medProb, 0);
+            const totalHighProb = data.reduce((sum, row) => sum + row.highProb, 0);
+            
+            if (charts.chart6) charts.chart6.destroy();
+            charts.chart6 = new Chart(document.getElementById('chart6'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pouco Provável', 'Possível', 'Muito Provável'],
+                    datasets: [{
+                        data: [totalLowProb, totalMedProb, totalHighProb],
+                        backgroundColor: ['#dc3545', '#ffc107', '#28a745']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // Chart 7: Cost per Lead
+            const topCPL = data
+                .filter(row => row.costPerLead > 0)
+                .sort((a, b) => b.costPerLead - a.costPerLead)
+                .slice(0, 10);
+            
+            if (charts.chart7) charts.chart7.destroy();
+            charts.chart7 = new Chart(document.getElementById('chart7'), {
+                type: 'bar',
+                data: {
+                    labels: topCPL.map(r => r.name.substring(0, 25) + '...'),
+                    datasets: [{
+                        label: 'Custo por Lead',
+                        data: topCPL.map(r => r.costPerLead),
+                        backgroundColor: '#ff6384'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            ticks: {
+                                callback: function(value) {
+                                    return formatMoney(value);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    return topCPL[tooltipItems[0].dataIndex].name;
+                                },
+                                label: function(context) {
+                                    const item = topCPL[context.dataIndex];
+                                    return [
+                                        'CPL: ' + formatMoney(context.raw),
+                                        'Total Leads: ' + item.leads,
+                                        'Investimento: ' + formatMoney(item.investment)
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Chart 8: Leads by Campaign
+            const topLeads = data
+                .filter(row => row.leads > 0)
+                .sort((a, b) => b.leads - a.leads)
+                .slice(0, 10);
+            
+            if (charts.chart8) charts.chart8.destroy();
+            charts.chart8 = new Chart(document.getElementById('chart8'), {
+                type: 'bar',
+                data: {
+                    labels: topLeads.map(r => r.name.substring(0, 25) + '...'),
+                    datasets: [{
+                        label: 'Leads Frios 🥶',
+                        data: topLeads.map(r => r.coldLeads),
+                        backgroundColor: '#3498db'
+                    }, {
+                        label: 'Leads Mornos 😐',
+                        data: topLeads.map(r => r.warmLeads),
+                        backgroundColor: '#f39c12'
+                    }, {
+                        label: 'Leads Quentes 🥵',
+                        data: topLeads.map(r => r.hotLeads),
+                        backgroundColor: '#e74c3c'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true },
+                        y: { stacked: true }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    return topLeads[tooltipItems[0].dataIndex].name;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+        }
+        
+        // Populate table
+        function populateTable() {
+            const tbody = document.getElementById('dataTableBody');
+            tbody.innerHTML = '';
+            
+            data
+                .sort((a, b) => b.revenue - a.revenue)
+                .forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td title="${row.name}" style="cursor: help;">
+                            ${row.name.substring(0, 40)}...
+                        </td>
+                        <td>${formatMoney(row.investment)}</td>
+                        <td>${formatMoney(row.revenue)}</td>
+                        <td class="${row.margin >= 0 ? 'text-success' : 'text-danger'}">
+                            ${formatMoney(row.margin)}
+                        </td>
+                        <td class="${row.netProfit >= 0 ? 'text-success' : 'text-danger'}">
+                            ${formatMoney(row.netProfit)}
+                        </td>
+                        <td class="${row.roi >= 0 ? 'text-success' : 'text-danger'}">
+                            ${row.roi.toFixed(1)}%
+                        </td>
+                        <td>${row.leads}</td>
+                        <td>${formatMoney(row.costPerLead)}</td>
+                        <td>${row.coldLeads}</td>
+                        <td>${row.warmLeads}</td>
+                        <td>${row.hotLeads}</td>
+                        <td>${row.conversionRate.toFixed(1)}%</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+        }
+        
+        // Process data
+        function processData(rawData) {
+            data = rawData
+                .filter(row => row.Campanhas && row.Campanhas.trim() !== '')
+                .map(row => ({
+                    name: row.Campanhas,
+                    investment: parseNumber(row.Investimento),
+                    revenue: parseNumber(row.Faturamento),
+                    margin: parseNumber(row.Margem),
+                    leads: parseInt(row['No. de Leads']) || 0,
+                    costPerLead: parseNumber(row['Custo por lead']),
+                    coldLeads: parseInt(row['Leads 🥶']) || 0,
+                    warmLeads: parseInt(row['Leads 😐']) || 0,
+                    hotLeads: parseInt(row['Leads 🥵']) || 0,
+                    coldPercent: parseFloat((row['% Leads 🥶'] || '0').replace('%', '')) || 0,
+                    warmPercent: parseFloat((row['% Leads 😐'] || '0').replace('%', '')) || 0,
+                    hotPercent: parseFloat((row['% Leads 🥵'] || '0').replace('%', '')) || 0,
+                    lowProb: parseInt(row['Pouco Provável']) || 0,
+                    medProb: parseInt(row['Possível']) || 0,
+                    highProb: parseInt(row['Muito Provável']) || 0,
+                    netProfit: 0,
+                    roi: 0,
+                    conversionRate: 0
+                }));
+            
+            // Calculate additional metrics
+            data.forEach(row => {
+                row.netProfit = row.revenue - row.investment;
+                if (row.investment > 0) {
+                    row.roi = ((row.revenue - row.investment) / row.investment) * 100;
+                } else if (row.revenue > 0) {
+                    row.roi = 100;
+                }
+                if (row.leads > 0) {
+                    row.conversionRate = (row.highProb / row.leads) * 100;
+                }
+            });
+            
+            updateKPIs();
+            createCharts();
+            populateTable();
+            
+            // Show UI
+            document.getElementById('kpiSection').style.display = 'block';
+            document.getElementById('mainTabs').style.display = 'block';
+            document.getElementById('tabContent').style.display = 'block';
+        }
+        
+        // Update KPIs
+        function updateKPIs() {
+            // Calculate metrics
+            const totalRevenue = data.reduce((sum, row) => sum + row.revenue, 0);
+            const totalInvestment = data.reduce((sum, row) => sum + row.investment, 0);
+            const totalMargin = data.reduce((sum, row) => sum + row.margin, 0);
+            const totalNetProfit = totalRevenue - totalInvestment;
+            const totalLeads = data.reduce((sum, row) => sum + row.leads, 0);
+            const avgROI = totalInvestment > 0 ? ((totalRevenue - totalInvestment) / totalInvestment * 100) : 0;
+            const avgCPL = totalLeads > 0 ? totalInvestment / totalLeads : 0;
+            const totalConverted = data.reduce((sum, row) => sum + row.highProb, 0);
+            const conversionRate = totalLeads > 0 ? (totalConverted / totalLeads * 100) : 0;
+            const activeCampaigns = data.length;
+            const profitableCampaigns = data.filter(row => row.netProfit > 0).length;
+            const lossCampaigns = data.filter(row => row.netProfit < 0).length;
+            const neutralCampaigns = data.filter(row => row.netProfit === 0).length;
+            const avgTicket = totalLeads > 0 ? totalRevenue / totalLeads : 0;
+            
+            // Calculate additional insights
+            const campaignsWithRevenue = data.filter(row => row.revenue > 0).length;
+            const campaignsWithInvestment = data.filter(row => row.investment > 0).length;
+            const profitablePercent = (profitableCampaigns / activeCampaigns * 100).toFixed(0);
+            const lossPercent = (lossCampaigns / activeCampaigns * 100).toFixed(0);
+            const marginPercent = totalRevenue > 0 ? (totalMargin / totalRevenue * 100).toFixed(1) : 0;
+            const totalColdLeads = data.reduce((sum, row) => sum + row.coldLeads, 0);
+            const totalWarmLeads = data.reduce((sum, row) => sum + row.warmLeads, 0);
+            const totalHotLeads = data.reduce((sum, row) => sum + row.hotLeads, 0);
+            
+            // Update Financial Metrics
+            document.getElementById('totalRevenue').textContent = formatMoney(totalRevenue);
+            document.getElementById('revenueDetail').textContent = `${campaignsWithRevenue} campanhas gerando receita`;
+            
+            document.getElementById('totalInvestment').textContent = formatMoney(totalInvestment);
+            document.getElementById('investmentDetail').textContent = `${campaignsWithInvestment} campanhas com investimento`;
+            
+            document.getElementById('totalMargin').textContent = formatMoney(totalMargin);
+            document.getElementById('totalMargin').className = 'metric-value ' + (totalMargin >= 0 ? 'text-success' : 'text-danger');
+            document.getElementById('marginDetail').textContent = `${marginPercent}% da receita`;
+            
+            document.getElementById('netProfit').textContent = formatMoney(totalNetProfit);
+            document.getElementById('netProfit').className = 'metric-value ' + (totalNetProfit >= 0 ? 'text-success' : 'text-danger');
+            document.getElementById('profitBadge').textContent = totalNetProfit >= 0 ? '✓ Lucrativo' : '✗ Prejuízo';
+            document.getElementById('profitBadge').className = 'metric-badge ' + (totalNetProfit >= 0 ? 'bg-success text-white' : 'bg-danger text-white');
+            
+            // Update Performance Metrics
+            document.getElementById('avgROI').textContent = avgROI.toFixed(1) + '%';
+            const roiProgressBar = document.getElementById('roiProgress');
+            roiProgressBar.style.width = Math.min(avgROI / 2, 100) + '%';
+            
+            document.getElementById('conversionRate').textContent = conversionRate.toFixed(1) + '%';
+            document.getElementById('conversionDetail').textContent = `${totalConverted} de ${totalLeads} leads`;
+            
+            document.getElementById('avgTicket').textContent = formatMoney(avgTicket);
+            
+            document.getElementById('avgCPL').textContent = formatMoney(avgCPL);
+            document.getElementById('cplBadge').textContent = avgCPL < 100 ? 'Eficiente' : avgCPL < 200 ? 'Moderado' : 'Alto';
+            document.getElementById('cplBadge').className = 'metric-badge ' + 
+                (avgCPL < 100 ? 'bg-success text-white' : avgCPL < 200 ? 'bg-warning text-dark' : 'bg-danger text-white');
+            
+            // Update Volume & Health Metrics
+            document.getElementById('totalLeads').textContent = totalLeads.toLocaleString('pt-BR');
+            document.getElementById('leadsDetail').textContent = `🥶 ${totalColdLeads} | 😐 ${totalWarmLeads} | 🥵 ${totalHotLeads}`;
+            
+            document.getElementById('activeCampaigns').textContent = activeCampaigns;
+            document.getElementById('campaignsDetail').textContent = neutralCampaigns > 0 ? 
+                `${neutralCampaigns} sem movimentação` : 'Todas com movimentação';
+            
+            document.getElementById('profitableCampaigns').textContent = profitableCampaigns;
+            document.getElementById('profitablePercent').textContent = profitablePercent + '% do total';
+            
+            document.getElementById('lossCampaigns').textContent = lossCampaigns;
+            document.getElementById('lossPercent').textContent = lossPercent + '% do total';
+        }
+        
+        // Create charts
+        function createCharts() {
+            // Chart 1: Top 10 Revenue
+            const top10Revenue = data
+                .filter(row => row.revenue > 0)
+                .sort((a, b) => b.revenue - a.revenue)
+                .slice(0, 10);
+            
+            if (charts.chart1) charts.chart1.destroy();
+            charts.chart1 = new Chart(document.getElementById('chart1'), {
+                type: 'bar',
+                data: {
+                    labels: top10Revenue.map(r => r.name.substring(0, 30) + '...'),
+                    datasets: [{
+                        label: 'Faturamento',
+                        data: top10Revenue.map(r => r.revenue),
+                        backgroundColor: '#28a745'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return formatMoney(value);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 13 },
+                            padding: 15,
+                            displayColors: false,
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const index = tooltipItems[0].dataIndex;
+                                    return top10Revenue[index].name;
+                                },
+                                label: function(context) {
+                                    const campaign = top10Revenue[context.dataIndex];
+                                    return [
+                                        'Faturamento: ' + formatMoney(campaign.revenue),
+                                        'Investimento: ' + formatMoney(campaign.investment),
+                                        'ROI: ' + campaign.roi.toFixed(1) + '%',
+                                        'Leads: ' + campaign.leads
+                                    ];
+                                }
+                            }
+                        }
+                    }
+
+                }
+            });
+            
+            // Chart 2: Lead Temperature
+            const totalCold = data.reduce((sum, row) => sum + row.coldLeads, 0);
+            const totalWarm = data.reduce((sum, row) => sum + row.warmLeads, 0);
+            const totalHot = data.reduce((sum, row) => sum + row.hotLeads, 0);
+            
+            if (charts.chart2) charts.chart2.destroy();
+            charts.chart2 = new Chart(document.getElementById('chart2'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Leads Frios 🥶', 'Leads Mornos 😐', 'Leads Quentes 🥵'],
+                    datasets: [{
+                        data: [totalCold, totalWarm, totalHot],
+                        backgroundColor: ['#3498db', '#f39c12', '#e74c3c']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+            
+            // Chart 3: Top 10 ROI
+            const top10ROI = data
+                .filter(row => row.investment > 0)
+                .sort((a, b) => b.roi - a.roi)
+                .slice(0, 10);
+            
+            if (charts.chart3) charts.chart3.destroy();
+            charts.chart3 = new Chart(document.getElementById('chart3'), {
+                type: 'bar',
+                data: {
+                    labels: top10ROI.map(r => r.name.substring(0, 30) + '...'),
+                    datasets: [{
+                        label: 'ROI %',
+                        data: top10ROI.map(r => r.roi),
+                        backgroundColor: '#17a2b8'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toFixed(0) + '%';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 13 },
+                            padding: 15,
+                            displayColors: false,
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const index = tooltipItems[0].dataIndex;
+                                    return top10ROI[index].name;
+                                },
+                                label: function(context) {
+                                    const item = top10ROI[context.dataIndex];
+                                    return [
+                                        'ROI: ' + item.roi.toFixed(1) + '%',
+                                        'Investimento: ' + formatMoney(item.investment),
+                                        'Faturamento: ' + formatMoney(item.revenue)
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Chart 4: Margin Analysis
+            const marginData = data
+                .sort((a, b) => b.margin - a.margin)
+                .slice(0, 15);
+            
+            if (charts.chart4) charts.chart4.destroy();
+            charts.chart4 = new Chart(document.getElementById('chart4'), {
+                type: 'bar',
+                data: {
+                    labels: marginData.map(r => r.name.substring(0, 20) + '...'),
+                    datasets: [{
+                        label: 'Margem',
+                        data: marginData.map(r => r.margin),
+                        backgroundColor: marginData.map(r => r.margin >= 0 ? '#28a745' : '#dc3545')
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return formatMoney(value);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 13 },
+                            padding: 15,
+                            displayColors: false,
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const index = tooltipItems[0].dataIndex;
+                                    return marginData[index].name;
+                                },
+                                label: function(context) {
+                                    const item = marginData[context.dataIndex];
+                                    return [
+                                        'Margem: ' + formatMoney(item.margin),
+                                        'Faturamento: ' + formatMoney(item.revenue),
+                                        'Investimento: ' + formatMoney(item.investment),
+                                        'ROI: ' + item.roi.toFixed(1) + '%'
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Chart 5: Comparison Investment vs Revenue
+            const comparisonData = data
+                .filter(row => row.revenue > 0 || row.investment > 0)
+                .sort((a, b) => b.revenue - a.revenue)
+                .slice(0, 15);
+            
+            if (charts.chart5) charts.chart5.destroy();
+            charts.chart5 = new Chart(document.getElementById('chart5'), {
+                type: 'bar',
+                data: {
+                    labels: comparisonData.map(r => r.name.substring(0, 20) + '...'),
+                    datasets: [{
+                        label: 'Faturamento',
+                        data: comparisonData.map(r => r.revenue),
+                        backgroundColor: '#28a745'
+                    }, {
+                        label: 'Investimento',
+                        data: comparisonData.map(r => r.investment),
+                        backgroundColor: '#dc3545'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return formatMoney(value);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 13 },
+                            padding: 15,
+                            displayColors: true,
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const index = tooltipItems[0].dataIndex;
+                                    return comparisonData[index].name;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Chart 6: Conversion Probability
+            const totalLowProb = data.reduce((sum, row) => sum + row.lowProb, 0);
+            const totalMedProb = data.reduce((sum, row) => sum + row.medProb, 0);
+            const totalHighProb = data.reduce((sum, row) => sum + row.highProb, 0);
+            
+            if (charts.chart6) charts.chart6.destroy();
+            charts.chart6 = new Chart(document.getElementById('chart6'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pouco Provável', 'Possível', 'Muito Provável'],
+                    datasets: [{
+                        data: [totalLowProb, totalMedProb, totalHighProb],
+                        backgroundColor: ['#dc3545', '#ffc107', '#28a745']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.raw / total) * 100).toFixed(1);
+                                    return context.label + ': ' + context.raw + ' (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Chart 7: Cost per Lead
+            const topCPL = data
+                .filter(row => row.costPerLead > 0)
+                .sort((a, b) => b.costPerLead - a.costPerLead)
+                .slice(0, 10);
+            
+            if (charts.chart7) charts.chart7.destroy();
+            charts.chart7 = new Chart(document.getElementById('chart7'), {
+                type: 'bar',
+                data: {
+                    labels: topCPL.map(r => r.name.substring(0, 25) + '...'),
+                    datasets: [{
+                        label: 'Custo por Lead',
+                        data: topCPL.map(r => r.costPerLead),
+                        backgroundColor: '#ff6384'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            ticks: {
+                                callback: function(value) {
+                                    return formatMoney(value);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 13 },
+                            padding: 15,
+                            displayColors: false,
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const index = tooltipItems[0].dataIndex;
+                                    return topCPL[index].name;
+                                },
+                                label: function(context) {
+                                    const item = topCPL[context.dataIndex];
+                                    return [
+                                        'CPL: ' + formatMoney(item.costPerLead),
+                                        'Total Leads: ' + item.leads,
+                                        'Investimento: ' + formatMoney(item.investment)
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Chart 8: Leads by Campaign
+            const topLeads = data
+                .filter(row => row.leads > 0)
+                .sort((a, b) => b.leads - a.leads)
+                .slice(0, 10);
+            
+            if (charts.chart8) charts.chart8.destroy();
+            charts.chart8 = new Chart(document.getElementById('chart8'), {
+                type: 'bar',
+                data: {
+                    labels: topLeads.map(r => r.name.substring(0, 25) + '...'),
+                    datasets: [{
+                        label: 'Leads Frios 🥶',
+                        data: topLeads.map(r => r.coldLeads),
+                        backgroundColor: '#3498db'
+                    }, {
+                        label: 'Leads Mornos 😐',
+                        data: topLeads.map(r => r.warmLeads),
+                        backgroundColor: '#f39c12'
+                    }, {
+                        label: 'Leads Quentes 🥵',
+                        data: topLeads.map(r => r.hotLeads),
+                        backgroundColor: '#e74c3c'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true },
+                        y: { stacked: true }
+                    },
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 13 },
+                            padding: 15,
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const index = tooltipItems[0].dataIndex;
+                                    return topLeads[index].name;
+                                },
+                                footer: function(tooltipItems) {
+                                    const index = tooltipItems[0].dataIndex;
+                                    const campaign = topLeads[index];
+                                    return [
+                                        'Total: ' + campaign.leads + ' leads',
+                                        'Taxa conversão: ' + campaign.conversionRate.toFixed(1) + '%'
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Pre-loaded CSV data
+        const preloadedCSV = `Campanhas,Investimento,Faturamento,Margem,No. de Leads,Custo por lead,Leads 🥶,Leads 😐,Leads 🥵,% Leads 🥶,% Leads 😐,% Leads 🥵,Pouco Provável,Possível,Muito Provável,% Pouco Provável,% Possível,% Muito Provável
+(33333333333) Desconhecido,"0,00","121.105,80","121.105,80",381,"0,00",108,101,172,28%,27%,45%,20,36,24,25%,45%,30%
+"(22677628551)(Jorge) Campanha Imigração isolado  - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","33.991,29","55.020,00","21.028,71",277,"122,71",42,82,153,15%,30%,55%,24,43,24,26%,47%,26%
+Chat box,"0,00","13.400,00","13.400,00",161,"0,00",31,73,57,19%,45%,35%,8,10,4,36%,45%,18%
+(22691691512) Advogado para Imigração - Inglês,"12.085,04","7.302,49","-4.782,55",140,"86,32",34,57,49,24%,41%,35%,10,8,6,42%,33%,25%
+Imigração,"0,00","21.350,00","21.350,00",103,"0,00",8,33,62,8%,32%,60%,8,13,8,28%,45%,28%
+"(22677628554)(Jorge) Campanha Imobiliário - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","5.011,92","10.700,00","5.688,08",73,"68,66",11,21,41,15%,29%,56%,5,6,7,28%,33%,39%
+"(22677628548)(Jorge)  CPA - Advogado Despejo - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","5.731,19","3.600,00","-2.131,19",66,"86,84",20,20,26,30%,30%,39%,12,6,3,57%,29%,14%
+"(22677628680)(Jorge) CPA - Advogado Leilão - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","8.355,31","4.500,00","-3.855,31",61,"136,97",9,23,28,15%,38%,46%,3,7,3,23%,54%,23%
+"(22677628557)(Jorge)  CPC - Advogado Inventário - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","5.847,14","2.800,00","-3.047,14",49,"119,33",9,16,24,18%,33%,49%,6,3,2,55%,27%,18%
+"(921620721971) CPC - Advogado Inventário - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","4.488,10","1.000,00","-3.488,10",37,"121,30",9,17,11,24%,46%,30%,4,2,2,50%,25%,25%
+"(22150233328) Campanha Imigração isolado  - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","4.909,02","12.400,00","7.490,98",26,"188,81",5,6,15,19%,23%,58%,2,10,1,15%,77%,8%
+"(21640660051) CPA - Advogado erro médico - Frase - Sexo Desconhecido - Idade Desconhecida - 30% - São Paulo, SP","3.155,92","2.000,00","-1.155,92",24,"131,50",8,1,15,33%,4%,63%,4,5,1,40%,50%,10%
+"(21671719354) CPA - Advogado erro médico - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","1.146,43","300,00","-846,43",23,"49,84",3,6,14,13%,26%,61%,2,6,0,25%,75%,0%
+"(21620721059) CPA - Advogado Despejo - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","2.126,16","4.900,00","2.773,84",22,"96,64",4,8,10,18%,36%,45%,0,2,0,0%,100%,0%
+(21668053385)   Campanha Imigração - Teste,"4.643,09","2.700,00","-1.943,09",21,"221,10",11,3,7,52%,14%,33%,3,2,0,60%,40%,0%
+Imobiliario ,"0,00","0,00","0,00",19,"0,00",1,7,11,5%,37%,58%,2,2,2,33%,33%,33%
+"(22150233331) Campanha Imigração isolado  - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - SP, Estado","806,90","2.666,70","1.859,80",18,"44,83",3,4,10,17%,22%,56%,0,1,3,0%,25%,75%
+"(21671719198) CPA - Advogado erro médico - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","890,10","1.500,00","609,90",16,"55,63",1,2,13,6%,13%,81%,4,1,2,57%,14%,29%
+(22706807703) Advogado para Imigração - Inglês (Europa),"4.951,88","7.441,00","2.489,12",15,"330,13",2,3,10,13%,20%,67%,0,3,2,0%,60%,40%
+(22569365668) CPA - Advogado Erro Médico - Exata - Feminino - Idade Desconhecida - SP e RJ,"1.574,64","2.500,00","925,36",15,"104,98",2,4,9,13%,27%,60%,3,1,1,60%,20%,20%
+(22711049421) CPC - advogado criminal - Frase - Sexo Desconhecido - Idade Desconhecida - Geral - RJ,"2.042,03","0,00","-2.042,03",14,"145,86",2,5,7,14%,36%,50%,1,3,0,25%,75%,0%
+(22620940201) Advogado Empresarial,"2.731,18","5.200,00","2.468,82",13,"210,09",3,2,8,23%,15%,62%,1,1,1,33%,33%,33%
+"(21661494183) CPA - Advogado Leilão - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","1.488,98","3.500,00","2.011,02",13,"114,54",4,2,7,31%,15%,54%,1,1,1,33%,33%,33%
+"(22150233313) Campanha Família - inventario - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - SP, Estado","407,25","0,00","-407,25",13,"31,33",1,5,7,8%,38%,54%,1,1,0,50%,50%,0%
+"(21620721989) CPC - Advogado Inventário - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - Rio de Janeiro, RJ","796,67","0,00","-796,67",12,"66,39",4,3,5,33%,25%,42%,3,1,0,75%,25%,0%
+"(21620721551) CPA - Advogado Despejo - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","907,23","1.700,00","792,77",12,"75,60",1,7,4,8%,58%,33%,0,2,1,0%,67%,33%
+(21891545514) CPA - advogado criminal - Frase - Sexo Desconhecido - Idade Desconhecida - Geral - RJ,"1.103,48","0,00","-1.103,48",11,"100,32",2,4,5,18%,36%,45%,1,1,1,33%,33%,33%
+"(21620722691 CPC - Advogado Usucapião - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","1.768,33","0,00","-1.768,33",11,"160,76",1,6,4,9%,55%,36%,1,1,1,33%,33%,33%
+(22537348073) CPC - advogado tributarista - Exata - Sexo Desconhecido - Idade Desconhecida - Geral - RJ e SP,"3.224,61","13.200,00","9.975,39",10,"322,46",3,2,5,30%,20%,50%,0,2,0,0%,100%,0%
+(22659876371) Advogado Tributarista,"1.399,35","7.800,00","6.400,65",9,"155,48",2,2,5,22%,22%,56%,0,3,1,0%,75%,25%
+"(21640660237) CPA - Advogado Recuperação Judicial - Frase - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP","2.362,49","0,00","-2.362,49",9,"262,50",2,4,3,22%,44%,33%,0,3,0,0%,100%,0%
+Inventário ,"0,00","0,00","0,00",9,"0,00",0,4,5,0%,44%,56%,2,4,0,33%,67%,0%
+Bloqueio de Conta,"0,00","0,00","0,00",8,"0,00",1,3,4,13%,38%,50%,2,0,0,100%,0%,0%
+Erro Médico,"0,00","0,00","0,00",8,"0,00",1,1,6,13%,13%,75%,2,1,0,67%,33%,0%
+"(22150233298) Campanha Imobiliário - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","693,14","6.300,00","5.606,86",7,"99,02",0,3,4,0%,43%,57%,0,0,1,0%,0%,100%
+"(21668053580)   CPA - Advogado Inventário - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","493,40","0,00","-493,40",7,"70,49",3,1,3,43%,14%,43%,0,0,1,0%,0%,100%
+"(22150233301) Campanha Imobiliário - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - SP, Estado","532,81","0,00","-532,81",7,"76,12",0,1,5,0%,14%,71%,0,0,2,0%,0%,100%
+Despejo,"0,00","750,00","750,00",7,"0,00",0,3,4,0%,43%,57%,2,1,0,67%,33%,0%
+(21894375061) CPA - holding e planejamento sucessório - Frase - Sexo Desconhecido - Idade Desconhecida -  10% - SP,"6.368,27","0,00","-6.368,27",6,"1.061,38",2,1,3,33%,17%,50%,0,1,0,0%,100%,0%
+(21830564767) Campanha Direito - Leilão de Imóveis - Para o ocupante - CPC - RJ ( 50% - Obj. Leads ),"353,34","657,00","303,66",6,"58,89",1,2,3,17%,33%,50%,1,1,1,33%,33%,33%
+(21850569838) CPC - Leilão de Imóveis - Exata - Sexo Desconhecido - Idade Desconhecida - 10% - SP - Guarulhos - S1,"810,44","0,00","-810,44",5,"162,09",1,0,4,20%,0%,80%,1,1,2,25%,25%,50%
+"(22139379321)   Campanha Imigração - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","234,16","0,00","-234,16",5,"46,83",0,2,3,0%,40%,60%,1,2,0,33%,67%,0%
+"(21640660201) CPA - Advogado erro médico - Exata - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP","388,26","250,00","-138,26",5,"77,65",0,2,3,0%,40%,60%,1,1,0,50%,50%,0%
+(22706807700) Advogado para Imigração - Inglês (EUA e +),"2.739,60","0,00","-2.739,60",4,"684,90",0,4,0,0%,100%,0%,0,1,0,0%,100%,0%
+"(21668051450)   CPC - Falência - Exata - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - São Paulo, SP, Cidade Inteira","311,55","0,00","-311,55",4,"77,89",0,1,3,0%,25%,75%,1,0,0,100%,0%,0%
+(22668349806) Advogado Aduaneiro - SP e RJ - Frase,"376,61","0,00","-376,61",3,"125,54",0,1,2,0%,33%,67%,1,0,0,100%,0%,0%
+"(21613193937) CPA - Advogado para imissão na posse - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - Rio de Janeiro, RJ","384,97","0,00","-384,97",3,"128,32",1,1,1,33%,33%,33%,1,0,0,100%,0%,0%
+(22668349809) Advogado Aduaneiro  - SP e RJ - Exata,"497,40","2.500,00","2.002,60",3,"165,80",0,2,1,0%,67%,33%,0,1,0,0%,100%,0%
+"(22150233316) Campanha Empresarial - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","231,01","0,00","-231,01",3,"77,00",1,1,1,33%,33%,33%,0,1,0,0%,100%,0%
+(77777777777) Instagram,"0,00","0,00","0,00",3,"0,00",0,2,1,0%,67%,33%,0,0,0,0%,0%,0%
+(22691824757) Advogado para Imigração - Espanhol,"664,47","0,00","-664,47",2,"332,24",0,2,0,0%,100%,0%,0,0,0,0%,0%,0%
+"(21668053676) CPC - Advogado Leilão - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","111,99","0,00","-111,99",2,"56,00",0,2,0,0%,100%,0%,0,0,0,0%,0%,0%
+(21798749170) CPC - advogado criminal - Exata - Sexo Desconhecido - Idade Desconhecida - Geral - RJ e SP,"493,25","0,00","-493,25",2,"246,63",0,1,1,0%,50%,50%,0,0,0,0%,0%,0%
+"(21636786920) CPC - Advogado erro médico - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","1.024,37","0,00","-1.024,37",2,"512,19",1,0,1,50%,0%,50%,0,0,0,0%,0%,0%
+Usucapião,"0,00","0,00","0,00",2,"0,00",1,0,1,50%,0%,50%,0,0,0,0%,0%,0%
+Leilão ,"0,00","0,00","0,00",2,"0,00",0,0,2,0%,0%,100%,1,0,1,50%,0%,50%
+"(21668053334)   CPC - Advogado de Imigração - Correspondência Desconhecida - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - Rio de Janeiro, RJ, Cidade Inteira","316,21","500,00","183,79",1,"316,21",0,1,0,0%,100%,0%,0,0,0,0%,0%,0%
+"(21636787097) CPC - Advogado Recuperação Judicial - Frase - Sexo Desconhecido - Idade Desconhecida - 10% - Rio de Janeiro, RJ","511,17","0,00","-511,17",1,"511,17",0,0,1,0%,0%,100%,0,0,0,0%,0%,0%
+"(21668051756)   CPA - Advogado Bloqueio de Conta - Frase - Sexo Desconhecido - Idade Desconhecida - 10% - Rio de Janeiro, RJ, Cidade Inteira","516,10","0,00","-516,10",1,"516,10",0,0,1,0%,0%,100%,0,0,0,0%,0%,0%
+"(21661492305)   CPC - Inventário - Frase - Sexo Desconhecido - Idade Desconhecida - Renda Desconhecida - São Paulo, SP, Cidade Inteira","20,58","0,00","-20,58",1,"20,58",0,0,1,0%,0%,100%,0,0,0,0%,0%,0%
+"(21661492773)   CPA - despejo - Sexo Desconhecido - Idade Desconhecida - 20% - Rio de Janeiro, RJ, Cidade Inteira","170,45","0,00","-170,45",1,"170,45",0,0,1,0%,0%,100%,0,1,0,0%,100%,0%
+"(21668053325)   CPA - Advogado Erro Médico - Exata - Sexo Desconhecido - Idade Desconhecida - 10% - Rio de Janeiro, RJ, Cidade Inteira","48,76","0,00","-48,76",1,"48,76",0,0,1,0%,0%,100%,1,0,0,100%,0%,0%
+(21832152456) CPC - Criminal - estelionato - EXATA - Sexo Desconhecido - Idade Desconhecida - Geral - RJ - CRIMINAL,"49,77","0,00","-49,77",1,"49,77",0,1,0,0%,100%,0%,0,0,0,0%,0%,0%
+"(21668053595)  CPC - Advogado Inventário - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","329,37","0,00","-329,37",1,"329,37",1,0,0,100%,0%,0%,0,0,0,0%,0%,0%
+"(21668053643)   CPC - Advogado Inventário - Exata - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP","764,68","0,00","-764,68",1,"764,68",0,0,1,0%,0%,100%,1,0,0,100%,0%,0%
+(22827231802) Erro Médico - Cirurgias Plásticas,"300,80","0,00","-300,80",1,"300,80",0,0,1,0%,0%,100%,0,0,0,0%,0%,0%
+(21798749173) CPA - advogado criminal - Frase - Sexo Desconhecido - Idade Desconhecida - Geral - SP,"544,76","0,00","-544,76",1,"544,76",1,0,0,100%,0%,0%,0,0,0,0%,0%,0%
+"(21668051240)   CPA - Advogados Imobiliário - Ampla - Sexo Desconhecido - Idade Desconhecida - Renda Desconhecida - São Paulo, SP, Cidade Inteira","5,22","0,00","-5,22",1,"5,22",0,0,1,0%,0%,100%,0,0,0,0%,0%,0%
+(21913234525) CPC - Termos gerais - ADV Urgente - EXATA- Sexo Desconhecido - Idade Desconhecida - Geral - SP,"0,00","0,00","0,00",1,"0,00",0,1,0,0%,100%,0%,0,0,0,0%,0%,0%
+"(21661492704)   CPA - Inventário - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP, Cidade Inteira","0,00","0,00","0,00",1,"0,00",0,0,1,0%,0%,100%,0,0,0,0%,0%,0%
+(21830564638) Campanha Direito - Leilão de Imóveis - Para o ocupante - CPC - SP ( 50% - Obj. Leads ),"272,30","2.000,00","1.727,70",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(22150233319) Campanha Empresarial - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - SP, Estado","94,66","0,00","-94,66",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(21636787115) CPC - Advogado Recuperação Judicial - Frase - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP","94,96","0,00","-94,96",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(21620722535) CPC - Advogado Despejo - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","391,57","0,00","-391,57",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(22739664875) Campanha Imigração isolado  - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","650,50","0,00","-650,50",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(21661494219) CPA - Advogado Despejo - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","215,45","0,00","-215,45",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+(22586043778)  CPC - Advogado Recuperação Judicial - Credores - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - RJ e SP,"989,89","0,00","-989,89",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(22197030432) Campanha Advogado geral - Aeroporto - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - Guarulhos, SP","10,68","0,00","-10,68",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(21661492257)   CPC - Advogado Usucapião - Frase - Sexo Desconhecido - Idade Desconhecida - 30% - São Paulo, SP, Cidade Inteira","40,69","0,00","-40,69",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(21668051216)   CPC - Advogado Meio Ambiente - Exata - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - São Paulo, SP, Cidade Inteira","15,04","0,00","-15,04",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(21620721062) CPA - Advogado Despejo - Frase - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP","67,10","0,00","-67,10",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+(21830564779) Base CPC - advogado leilão de imóveis - (FRASE) - (10%) - SP,"1,01","0,00","-1,01",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(21668051891)   CPA - Advogado Bloqueio de Conta - Exata - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP, Cidade Inteira","17,28","0,00","-17,28",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(21668051039)   CPC - Bloqueio de Conta - Exata - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP, Cidade Inteira","15,82","0,00","-15,82",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+(22792395741) Advogado para Imigração - Inglês,"5,30","0,00","-5,30",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(21620722043) CPC - Advogado Despejo - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","150,68","0,00","-150,68",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+CPA - Advogado Recuperação Judicial - Frase - Sexo Desconhecido - Idade Desconhecida - Geral - SP - Cliques,"293,67","0,00","-293,67",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(22177795347) Campanha Usucapião - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","40,50","0,00","-40,50",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+(22820745294) Imigração - Nômade Digital (inglês),"124,07","0,00","-124,07",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+(22830344532) Imigração - Investidores (inglês),"353,59","0,00","-353,59",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+(22222222222) SEO,"0,00","19.522,50","19.522,50",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+"(21640660048) CPA - Advogado erro médico - Frase - Sexo Desconhecido - Idade Desconhecida - 20% - São Paulo, SP","0,00","2.000,00","2.000,00",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
+(Sem Campanha),"0,00","8.050,00","8.050,00",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%`;
+
+        // Auto-load with pre-loaded data
+        window.addEventListener('DOMContentLoaded', async () => {
+            // First try to load from CSV file
+            try {
+                const response = await fetch('../desempenho_campanhas.csv');
+                if (response.ok) {
+                    const text = await response.text();
+                    console.log('CSV loaded successfully from file');
+                    Papa.parse(text, {
+                        header: true,
+                        complete: function(results) {
+                            processData(results.data);
+                        }
+                    });
+                    return; // Exit if file load successful
+                }
+            } catch (e) {
+                console.log('Could not load external CSV file (CORS restriction). Using pre-loaded data instead.');
+            }
+            
+            // Use pre-loaded data as fallback
+            Papa.parse(preloadedCSV, {
+                header: true,
+                complete: function(results) {
+                    processData(results.data);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
