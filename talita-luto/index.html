@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Curadoria de Terapeutas | Luto e Trauma</title>
+  <style>
+    :root {
+      --bg: #f5f1e8;
+      --paper: #fffdf8;
+      --ink: #1f2a2e;
+      --muted: #5f6b6f;
+      --accent: #0f766e;
+      --accent-2: #b45309;
+      --line: #e7dfd1;
+      --chip: #eef6f5;
+      --chip-2: #fff4e5;
+      --shadow: 0 10px 28px rgba(31, 42, 46, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(1100px 500px at 100% 0%, #f9e8c8 0%, transparent 70%),
+        radial-gradient(900px 500px at 0% 100%, #d9efe9 0%, transparent 65%),
+        var(--bg);
+      color: var(--ink);
+    }
+
+    .wrap {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #fffdf8, #f4f8f8);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .title {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.15;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 920px;
+    }
+
+    .meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .pill strong { color: var(--ink); }
+
+    .search-row {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 10px;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-size: 14px;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 104px 1fr;
+      gap: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .photo {
+      width: 104px;
+      height: 104px;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      background: #f0f0f0;
+    }
+
+    .name {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .role {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .badge {
+      font-size: 12px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      background: var(--chip);
+      color: #164e4a;
+    }
+
+    .badge.alt {
+      background: var(--chip-2);
+      color: #7c2d12;
+    }
+
+    .body {
+      padding: 14px 16px 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .sec h4 {
+      margin: 0 0 6px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--muted);
+    }
+
+    .summary {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 16px;
+      display: grid;
+      gap: 4px;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .a {
+      text-decoration: none;
+      font-size: 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--accent);
+      padding: 6px 10px;
+    }
+
+    .a:hover { border-color: var(--accent); }
+
+    .foot {
+      border-top: 1px dashed var(--line);
+      padding-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 960px) {
+      .grid { grid-template-columns: 1fr; }
+      .search-row { grid-template-columns: 1fr; }
+      .title { font-size: 27px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1 class="title">Curadoria de Terapeutas para Luto e Trauma</h1>
+      <p class="subtitle">
+        Lista com 15 opções online, priorizando profissionais com evidência de atuação em luto, trauma e TEPT.
+        Cada ficha traz formação, abordagens, foco clínico, sinais de reputação, links de contato e evidências de origem.
+      </p>
+      <div class="meta">
+        <div class="pill"><strong>15</strong> perfis selecionados</div>
+        <div class="pill"><strong>Online</strong> como preferência principal</div>
+        <div class="pill"><strong>Fontes</strong> Doctoralia, Vittude, Central Terapia, sites pessoais</div>
+      </div>
+      <div class="search-row">
+        <input id="search" placeholder="Buscar por nome, abordagem, cidade, foco clínico..." />
+        <select id="tier">
+          <option value="all">Todos os níveis (A e B)</option>
+          <option value="A">Somente Tier A</option>
+          <option value="B">Somente Tier B</option>
+        </select>
+      </div>
+      <p class="note">
+        Observação: esta curadoria não substitui entrevista inicial. Vale validar disponibilidade, valor, aderência pessoal e plano terapêutico na primeira conversa.
+      </p>
+    </section>
+
+    <section class="grid" id="cards"></section>
+  </div>
+
+  <script>
+    const therapists = [
+      {
+        name: "João Palma Filho",
+        tier: "A",
+        role: "Psicólogo e Psicanalista",
+        crp: "CRP 06/146528",
+        city: "São Paulo, SP",
+        online: true,
+        photo: "https://pixel-p1.s3.sa-east-1.amazonaws.com/doctor/avatar/5c867e9b/5c867e9b-2f4d-4bf6-ba41-04b90e742182_small_square.jpg",
+        rating: "53 opiniões",
+        summary: "Atendimento com psicanálise e EMDR para trauma e luto, com histórico acadêmico robusto (mestrado/doutorado) e alta tração pública em plataforma clínica.",
+        focus: ["Traumas psicológicos", "Atendimento para luto", "Transtornos de ansiedade", "Psicanálise com adultos"],
+        approaches: ["Psicoterapia EMDR", "Psicanálise"],
+        formations: ["Doutorado em Psicologia Clínica (PUC-SP)", "Mestrado em Psicologia", "Formação em EMDR", "Formação em Terapia Narrativa (PUC-SP)"],
+        contacts: {
+          platform: "https://www.doctoralia.com.br/joao-palma-filho/psicologo-psicanalista/sao-paulo",
+          website: "http://www.joaopalmafilho.com.br",
+          instagram: "https://www.instagram.com/joaopalmafilho/",
+          linkedin: "",
+          whatsapp: ""
+        },
+        contentLinks: ["https://www.youtube.com/watch?v=TckJb_Fb8Kk", "https://www.youtube.com/watch?v=QavNPom2Gic"],
+        evidence: ["Doctoralia", "Instagram", "Site pessoal"]
+      },
+      {
+        name: "Késia Sodre da Motta Gomes",
+        tier: "A",
+        role: "Psicóloga Clínica",
+        crp: "CRP DF 01/22429",
+        city: "Brasília, DF",
+        online: true,
+        photo: "https://s3-sa-east-1.amazonaws.com/doctoralia.com.br/doctor/c9c47a/c9c47a5972bea27ef2d34b70f91b1f48_220_square.jpg",
+        rating: "16 opiniões",
+        summary: "Atendimento online com EMDR e ACP, destacando TEPT, fobias e luto. Perfil com boa descrição técnica sobre trauma e uso de abordagem reconhecida pela OMS para TEPT.",
+        focus: ["TEPT", "Trauma", "Luto", "Fobias", "Ansiedade"],
+        approaches: ["Psicoterapia EMDR", "Abordagem Centrada na Pessoa"],
+        formations: ["Psicologia (Estácio)", "Especialização Humanista (Unyleya)", "Formação EMDR reconhecida pela Associação Brasileira de EMDR"],
+        contacts: {
+          platform: "https://www.doctoralia.com.br/kesia-sodre-da-motta-gomes/psicologo/brasilia",
+          website: "",
+          instagram: "",
+          linkedin: "",
+          whatsapp: "",
+          facebook: "https://www.facebook.com/p/psicologakesiasodre-100064062402270/"
+        },
+        contentLinks: [],
+        evidence: ["Doctoralia", "Facebook profissional"]
+      },
+      {
+        name: "Íria Jacoby de Oliveira",
+        tier: "A",
+        role: "Psicóloga",
+        crp: "CRP 07/14469",
+        city: "Porto Alegre, RS (online)",
+        online: true,
+        photo: "https://prod-vittude-static-files.s3.amazonaws.com/profile_photos/psicologo-iria-jacoby-de-oliveira.jpg",
+        rating: "4.6 | 2419 atendimentos/avaliações",
+        summary: "Forte atuação em luto perinatal, morte e luto, TEPT e relações abusivas, com base psicanalítica e longa experiência clínica.",
+        focus: ["Luto perinatal", "Morte e luto", "TEPT", "Relacionamentos abusivos", "Ansiedade"],
+        approaches: ["Psicanálise (Freud)", "Psicanálise (Lacan)", "Psicossomática Psicanalítica"],
+        formations: ["Neuropsicologia (UFRGS)", "Formação/Extensão em Psicanálise (TOPOS)", "Especialização em Psicologia Perinatal (em andamento)"],
+        contacts: {
+          platform: "https://vittude.com/psicologo/iria-jacoby-de-oliveira-1",
+          website: "",
+          instagram: "https://instagram.com/iria.jacoby.oliveira",
+          linkedin: "",
+          whatsapp: ""
+        },
+        contentLinks: [],
+        evidence: ["Vittude"]
+      },
+      {
+        name: "Marinuta de Almeida Cattoni",
+        tier: "A",
+        role: "Psicóloga",
+        crp: "CRP 12/13251",
+        city: "Florianópolis, SC",
+        online: true,
+        photo: "https://prod-vittude-static-files.s3.amazonaws.com/profile_photos/psicologo-marinuta-de-almeida-cattoni_lir2eKA.jpg",
+        rating: "5.0 | 3410 atendimentos/avaliações",
+        summary: "Perfil de alto volume de atendimentos com foco em morte e luto, e especialização ativa em psicotraumatologia.",
+        focus: ["Morte e luto", "Ansiedade", "Depressão", "Burnout", "Estresse"],
+        approaches: ["Humanista", "Terapia Relacional Sistêmica", "Psicodinâmica", "Psicodrama"],
+        formations: ["Especialização em Psicotraumatologia (2024-2026)", "Especialização em Terapia Relacional Sistêmica", "Graduação em Psicologia (UNISUL)"],
+        contacts: {
+          platform: "https://vittude.com/psicologo/marinuta-de-almeida-cattoni",
+          website: "",
+          instagram: "",
+          linkedin: "",
+          whatsapp: ""
+        },
+        contentLinks: ["https://youtu.be/0UlfpU9znkU"],
+        evidence: ["Vittude"]
+      },
+      {
+        name: "Eduarda Camilo",
+        tier: "A",
+        role: "Psicóloga",
+        crp: "CRP 03/15113",
+        city: "Online (base na BA)",
+        online: true,
+        photo: "https://prod-vittude-static-files.s3.amazonaws.com/psicologo-eduarda-camilo.webp",
+        rating: "4.9 | 1037 atendimentos/avaliações",
+        summary: "Atuação estruturada com TCC e TCD para ansiedade, luto e regulação emocional, com forte volume de prática clínica.",
+        focus: ["Morte e luto", "Ansiedade", "TOC", "Síndrome do pânico", "Depressão"],
+        approaches: ["Terapia Cognitivo-Comportamental", "Terapia Cognitivo-Comportamental Dialética"],
+        formations: ["Pós em Avaliação Psicológica", "Graduação em Psicologia"],
+        contacts: {
+          platform: "https://vittude.com/psicologo/eduarda-camilo",
+          website: "",
+          instagram: "https://instagram.com/eduardacamilo.psi",
+          linkedin: "",
+          whatsapp: ""
+        },
+        contentLinks: [],
+        evidence: ["Vittude"]
+      },
+      {
+        name: "Alan Alencar",
+        tier: "A",
+        role: "Psicólogo Clínico",
+        crp: "CRP 06/197253",
+        city: "São Paulo, SP",
+        online: true,
+        photo: "https://alanalencarpsicologia.com/wp-content/uploads/2026/01/foto-topo.png",
+        rating: "Sem indicador público de avaliações",
+        summary: "Atuação com abordagem integral combinando TCC, EMDR e referenciais existenciais (tomista/estoico), com presença digital própria e contato direto.",
+        focus: ["Trauma", "Luto", "Ansiedade", "Reestruturação emocional"],
+        approaches: ["TCC", "EMDR", "Psicologia Tomista", "Psicologia Estoica", "Logoterapia"],
+        formations: ["Psicologia (FMU, 2018)", "Formação em Psicoterapia EMDR"],
+        contacts: {
+          platform: "https://alanalencarpsicologia.com/",
+          website: "https://alanalencarpsicologia.com/",
+          instagram: "https://www.instagram.com/alan.alencar",
+          linkedin: "https://www.linkedin.com/in/alan-alencar-psicologo",
+          whatsapp: "https://wa.me/5511968358615"
+        },
+        contentLinks: [],
+        evidence: ["Site pessoal", "LinkedIn", "Oneliv"]
+      },
+      {
+        name: "Raissa Ruza",
+        tier: "A",
+        role: "Psicóloga",
+        crp: "CRP 06/150894",
+        city: "São Paulo, SP",
+        online: true,
+        photo: "https://pixel-p1.s3.sa-east-1.amazonaws.com/doctor/avatar/29732e60/29732e60-d612-4b02-8099-9b49ac8b64f9_small_square.jpg",
+        rating: "70 opiniões",
+        summary: "Psicóloga com formação USP e Einstein, foco em ansiedade/trauma e combinação de TCC + EMDR. Perfil com alta prova social pública.",
+        focus: ["Traumas psicológicos", "Transtornos de ansiedade", "TEPT"],
+        approaches: ["TCC", "Psicoterapia EMDR", "DBT (formação complementar)"],
+        formations: ["USP", "Neuropsicologia (Einstein)", "GPM (Harvard Medical School)", "Especialização em TCC", "Formação EMDR"],
+        contacts: {
+          platform: "https://www.doctoralia.com.br/raissa-ruza/psicologo/sao-paulo",
+          website: "https://raissaruza.com/",
+          instagram: "",
+          linkedin: "",
+          whatsapp: ""
+        },
+        contentLinks: [],
+        evidence: ["Doctoralia", "Site pessoal"]
+      },
+      {
+        name: "Noêmia Noronha Domingos",
+        tier: "A",
+        role: "Psicóloga",
+        crp: "CRP 04/77404",
+        city: "Belo Horizonte, MG",
+        online: true,
+        photo: "https://centralterapia.com.br/wp-content/uploads/2025/11/Psicologa-Online-Noemia-Noronha-Domingos.jpg",
+        rating: "Perfil em plataforma especializada",
+        summary: "Atuação em ansiedade e luto com base em TCC e avaliação psicológica, com formação complementar específica em estudos sobre luto.",
+        focus: ["Luto", "Ansiedade", "Equilíbrio emocional", "Autoconhecimento"],
+        approaches: ["TCC", "Avaliação Psicológica"],
+        formations: ["Pós em TCC", "Pós em Avaliação Psicológica", "Formação complementar em estudos sobre luto"],
+        contacts: {
+          platform: "https://centralterapia.com.br/profissional/noemia-noronha-domingos/",
+          website: "",
+          instagram: "https://www.instagram.com/psicologanoemianoronha/",
+          linkedin: "",
+          whatsapp: "https://wa.me/5535997010965"
+        },
+        contentLinks: [],
+        evidence: ["Central Terapia"]
+      },
+      {
+        name: "Thais de Araujo Leal",
+        tier: "A",
+        role: "Psicóloga Clínica",
+        crp: "CRP 09/17026",
+        city: "Brasília, DF",
+        online: true,
+        photo: "https://centralterapia.com.br/wp-content/uploads/2024/01/Thais-de-Araujo-Leal.jpg",
+        rating: "Perfil em diretório de TEPT",
+        summary: "Atendimento 100% online com TCC/Psicopatologia e experiência em TEPT, ansiedade e luto; menciona atuação com pacientes no Brasil e exterior.",
+        focus: ["TEPT", "Ansiedade", "TOC", "Luto", "Trauma"],
+        approaches: ["TCC", "Psicopatologia Clínica"],
+        formations: ["Psicologia (IESB)", "Especialização em TCC", "Especialização em Psicopatologia", "Atualização com Amy Wenzel"],
+        contacts: {
+          platform: "https://centralterapia.com.br/profissional/thais-de-araujo-leal/",
+          website: "",
+          instagram: "https://www.instagram.com/thaisleal.psico/",
+          linkedin: "",
+          whatsapp: "https://wa.me/5561993966012"
+        },
+        contentLinks: [],
+        evidence: ["Central Terapia"]
+      },
+      {
+        name: "Adriane Villanova Valente",
+        tier: "B",
+        role: "Psicóloga",
+        crp: "CRP 07/05672",
+        city: "Porto Alegre, RS (online)",
+        online: true,
+        photo: "https://prod-vittude-static-files.s3.amazonaws.com/psicologo-adriane-villanova-valente.webp",
+        rating: "4.9 | 306 atendimentos/avaliações",
+        summary: "Psicóloga com mais de 30 anos de formação, unindo EMDR e repertório de regulação fisiológica (teoria polivagal) para trauma, luto e transições de vida.",
+        focus: ["Morte e luto", "Fobias", "Estresse", "Orientação profissional"],
+        approaches: ["EMDR", "Terapia Breve Focada na Solução", "Coaching de Vida/Carreira"],
+        formations: ["PUCRS (formação base)", "Treinamentos em EMDR", "Teoria Polivagal"],
+        contacts: {
+          platform: "https://vittude.com/psicologo/adriane-villanova-valente",
+          website: "",
+          instagram: "",
+          linkedin: "",
+          whatsapp: ""
+        },
+        contentLinks: [],
+        evidence: ["Vittude"]
+      },
+      {
+        name: "Tereza Maria Costa e Silva de Lima",
+        tier: "B",
+        role: "Psicóloga",
+        crp: "CRP 02/18292",
+        city: "Recife, PE",
+        online: true,
+        photo: "https://pixel-p1.s3.sa-east-1.amazonaws.com/doctor/avatar/9d181631/9d181631-3423-4be3-b546-f10267bb1e68_small_square.jpg",
+        rating: "67 opiniões",
+        summary: "Amplo repertório em trauma/luto com EMDR, TCC, terapia do esquema e neuropsicologia; perfil com histórico sólido de formação continuada.",
+        focus: ["Traumas psicológicos", "Luto", "Ansiedade", "TEPT"],
+        approaches: ["EMDR", "TCC", "Terapia do Esquema", "Brainspotting"],
+        formations: ["Psicologia (UNICAP)", "EMDR", "Neuropsicologia", "Neurociência Aplicada", "Terapia Sistêmica Familiar"],
+        contacts: {
+          platform: "https://www.doctoralia.com.br/tereza-maria-costa-e-silva-de-lima/psicologo/recife",
+          website: "",
+          instagram: "https://www.instagram.com/tereza_s_lima",
+          linkedin: "",
+          whatsapp: ""
+        },
+        contentLinks: ["https://www.youtube.com/watch?v=qnQiV6AyJ5g", "https://www.youtube.com/watch?v=Vbi4tvP3s2M"],
+        evidence: ["Doctoralia", "Instagram"]
+      },
+      {
+        name: "Norma Brezinski Liporoni",
+        tier: "B",
+        role: "Psicóloga",
+        crp: "CRP 01/4735",
+        city: "Brasília, DF",
+        online: true,
+        photo: "https://s3-sa-east-1.amazonaws.com/doctoralia.com.br/doctor/964a58/964a58c1090e24067c0362658182faaa_220_square.jpg",
+        rating: "Sem indicador público de opiniões",
+        summary: "Profissional experiente (quase 30 anos), responsável técnica de clínica e com forte histórico em avaliação psicológica e prática clínica em diferentes frentes.",
+        focus: ["Avaliação psicológica", "Psicodiagnóstico", "Orientação vocacional"],
+        approaches: ["Clínica psicológica tradicional"],
+        formations: ["Psicologia (CEUB)", "Pós em Psicologia do Trânsito", "Pós em Gestão e Coaching", "Curso de Terapia Sexual"],
+        contacts: {
+          platform: "https://www.doctoralia.com.br/norma-brezinski-liporoni/psicologo/brasilia",
+          website: "",
+          instagram: "",
+          linkedin: "",
+          whatsapp: ""
+        },
+        contentLinks: [],
+        evidence: ["Doctoralia"]
+      },
+      {
+        name: "Julia Bertoldo",
+        tier: "B",
+        role: "Psicóloga",
+        crp: "CRP 02/25755",
+        city: "Recife, PE",
+        online: true,
+        photo: "https://centralterapia.com.br/wp-content/uploads/2025/10/Psicologa-Online-Julia-Bertoldo.jpg",
+        rating: "Perfil em diretório de TEPT",
+        summary: "Atuação clínica com mulheres, integrando psicologia contemporânea e análise bioenergética para trauma, luto e sintomas somáticos.",
+        focus: ["TEPT", "Luto", "Ansiedade", "Trauma com expressão corporal"],
+        approaches: ["Análise Bioenergética", "Psicologia Clínica Contemporânea"],
+        formations: ["Pós em Psicologia Clínica Contemporânea (foco em Bioenergética)", "Pós em Docência no Ensino Superior", "Graduação em Psicologia"],
+        contacts: {
+          platform: "https://centralterapia.com.br/profissional/julia-bertoldo/",
+          website: "",
+          instagram: "https://www.instagram.com/psi.juliabertoldo/",
+          linkedin: "https://www.linkedin.com/in/julia-bertoldo-aa3057141/",
+          whatsapp: "https://wa.me/5581983867021"
+        },
+        contentLinks: [],
+        evidence: ["Central Terapia", "LinkedIn"]
+      },
+      {
+        name: "Alessandra Hartveld",
+        tier: "B",
+        role: "Psicóloga",
+        crp: "CRP 05/22269",
+        city: "Rio de Janeiro, RJ",
+        online: true,
+        photo: "https://centralterapia.com.br/wp-content/uploads/2025/03/Psicologa-Alessandra-Hartveld.jpg",
+        rating: "28+ anos de experiência clínica",
+        summary: "Base junguiana e sistêmica para adultos e casais, com longa experiência e foco em ansiedade/depressão, podendo apoiar luto com dimensão existencial.",
+        focus: ["Luto", "Trauma", "Ansiedade", "Depressão", "Relacionamentos"],
+        approaches: ["Psicologia Analítica Junguiana", "Psicologia Sistêmica"],
+        formations: ["Psicologia (Universidade Santa Úrsula)", "Pós em Psicologia Analítica (IJRJ)", "Especialização em Psicologia Sistêmica Junguiana"],
+        contacts: {
+          platform: "https://centralterapia.com.br/profissional/alessandra-hartveld/",
+          website: "",
+          instagram: "https://www.instagram.com/psi.alessandrahartveld/",
+          linkedin: "https://www.linkedin.com/in/alessandrahartveld/",
+          whatsapp: "https://wa.me/85296183688"
+        },
+        contentLinks: [],
+        evidence: ["Central Terapia", "LinkedIn"]
+      },
+      {
+        name: "Eric Rugiadini e Silva",
+        tier: "B",
+        role: "Psicólogo e Psicanalista",
+        crp: "CRP 06/219176",
+        city: "São Paulo, SP",
+        online: true,
+        photo: "https://centralterapia.com.br/wp-content/uploads/2026/02/Psicologo-Online-Eric-Rugiadini-e-Silva.jpg",
+        rating: "Perfil em diretório de luto/perdas",
+        summary: "Psicanálise clínica com foco explícito em luto/perda e comorbidades frequentes (burnout, ansiedade, depressão, conflitos familiares).",
+        focus: ["Luto", "Perda", "Ansiedade", "Depressão", "Burnout"],
+        approaches: ["Psicanálise Clínica"],
+        formations: ["Graduação em Psicologia (FMU)", "Pós-graduação em Psicanálise Clínica"],
+        contacts: {
+          platform: "https://centralterapia.com.br/profissional/eric-rugiadini-e-silva/",
+          website: "",
+          instagram: "https://www.instagram.com/psi.ericrugiadini/",
+          linkedin: "https://www.linkedin.com/in/eric-rugiadini-e-silva-ab606527a/",
+          whatsapp: "https://wa.me/5511979855058"
+        },
+        contentLinks: [],
+        evidence: ["Central Terapia", "LinkedIn"]
+      }
+    ];
+
+    const cardsEl = document.getElementById("cards");
+    const searchEl = document.getElementById("search");
+    const tierEl = document.getElementById("tier");
+
+    function profileFallback(name) {
+      return `https://ui-avatars.com/api/?background=e9eef0&color=3d4d55&name=${encodeURIComponent(name)}&size=256`;
+    }
+
+    function cleanPhone(waUrl) {
+      if (!waUrl) return "";
+      const m = waUrl.match(/wa\.me\/(\d+)/i);
+      if (!m) return "";
+      const n = m[1];
+      if (n.length < 12) return n;
+      return `+${n.slice(0, 2)} ${n.slice(2, 4)} ${n.slice(4, 9)}-${n.slice(9, 13)}`;
+    }
+
+    function link(label, url) {
+      return url ? `<a class="a" target="_blank" rel="noopener noreferrer" href="${url}">${label}</a>` : "";
+    }
+
+    function render(list) {
+      cardsEl.innerHTML = list.map(t => {
+        const contactLinks = [
+          link("Perfil", t.contacts.platform),
+          link("Site", t.contacts.website),
+          link("Instagram", t.contacts.instagram),
+          link("LinkedIn", t.contacts.linkedin),
+          link("Facebook", t.contacts.facebook),
+          link("WhatsApp", t.contacts.whatsapp)
+        ].join("");
+
+        const contentLinks = (t.contentLinks || []).map((u, i) => link(`Conteúdo ${i + 1}`, u)).join("");
+        const phone = cleanPhone(t.contacts.whatsapp);
+
+        return `
+          <article class="card">
+            <div class="top">
+              <img class="photo" src="${t.photo || profileFallback(t.name)}" alt="Foto de ${t.name}" loading="lazy" onerror="this.src='${profileFallback(t.name)}'" />
+              <div>
+                <h2 class="name">${t.name}</h2>
+                <p class="role">${t.role}</p>
+                <div class="badges">
+                  <span class="badge">${t.crp}</span>
+                  <span class="badge">${t.city}</span>
+                  <span class="badge">${t.online ? "Atende online" : "Online não confirmado"}</span>
+                  <span class="badge alt">Tier ${t.tier}</span>
+                </div>
+              </div>
+            </div>
+            <div class="body">
+              <div class="sec">
+                <h4>Resumo</h4>
+                <p class="summary">${t.summary}</p>
+              </div>
+              <div class="sec">
+                <h4>Sinais de Reputação</h4>
+                <p class="summary">${t.rating}</p>
+              </div>
+              <div class="sec">
+                <h4>Foco Clínico</h4>
+                <ul class="list">${t.focus.map(i => `<li>${i}</li>`).join("")}</ul>
+              </div>
+              <div class="sec">
+                <h4>Abordagens</h4>
+                <ul class="list">${t.approaches.map(i => `<li>${i}</li>`).join("")}</ul>
+              </div>
+              <div class="sec">
+                <h4>Formação e Qualificação</h4>
+                <ul class="list">${t.formations.map(i => `<li>${i}</li>`).join("")}</ul>
+              </div>
+              <div class="sec">
+                <h4>Contato e Redes</h4>
+                <div class="links">${contactLinks || "<span class='summary'>Sem links públicos adicionais além do perfil principal.</span>"}</div>
+                ${phone ? `<p class="summary" style="margin-top:8px"><strong>WhatsApp:</strong> ${phone}</p>` : ""}
+              </div>
+              <div class="sec">
+                <h4>Textos / Vídeos</h4>
+                <div class="links">${contentLinks || "<span class='summary'>Nenhum conteúdo público relevante encontrado na coleta.</span>"}</div>
+              </div>
+              <div class="foot">
+                ${(t.evidence || []).map(e => `<span class="badge">${e}</span>`).join("")}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function applyFilters() {
+      const q = searchEl.value.trim().toLowerCase();
+      const tier = tierEl.value;
+
+      const filtered = therapists.filter(t => {
+        const hay = [
+          t.name, t.role, t.crp, t.city, t.summary,
+          ...(t.focus || []), ...(t.approaches || []), ...(t.formations || [])
+        ].join(" ").toLowerCase();
+
+        const okSearch = !q || hay.includes(q);
+        const okTier = tier === "all" || t.tier === tier;
+        return okSearch && okTier;
+      });
+
+      render(filtered);
+    }
+
+    searchEl.addEventListener("input", applyFilters);
+    tierEl.addEventListener("change", applyFilters);
+    render(therapists);
+  </script>
+</body>
+</html>
