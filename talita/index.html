@@ -940,7 +940,24 @@
     const tierEl = document.getElementById("tier");
 
     function profileFallback(name) {
-      return `https://ui-avatars.com/api/?background=e9eef0&color=3d4d55&name=${encodeURIComponent(name)}&size=256`;
+      const initials = (name || "PS")
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(part => part[0] ? part[0].toUpperCase() : "")
+        .join("") || "PS";
+
+      const safeInitials = initials.replace(/[^A-Z0-9]/g, "") || "PS";
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+          <rect width="256" height="256" fill="#e9eef0"/>
+          <text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle"
+                font-family="Arial, sans-serif" font-size="88" fill="#3d4d55">${safeInitials}</text>
+        </svg>
+      `.replace(/\s+/g, " ").trim();
+
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
     }
 
     function instagramPhoto(instagramUrl) {
@@ -981,7 +998,7 @@
         return `
           <article class="card">
             <div class="top">
-              <img class="photo" src="${photo}" alt="Foto de ${t.name}" loading="lazy" onerror="this.src='${profileFallback(t.name)}'" />
+              <img class="photo" src="${photo}" alt="Foto de ${t.name}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${profileFallback(t.name)}'" />
               <div>
                 <h2 class="name">${t.name}</h2>
                 <p class="role">${t.role}</p>
