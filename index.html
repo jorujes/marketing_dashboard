@@ -1,1326 +1,1060 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing Dashboard - Versão Completa</title>
-    
-    <!-- CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        
-        .chart-container {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .metric-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: relative;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-        
-        .metric-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        
-        .metric-card.financial {
-            border-left: 4px solid #28a745;
-        }
-        
-        .metric-card.performance {
-            border-left: 4px solid #17a2b8;
-        }
-        
-        .metric-card.volume {
-            border-left: 4px solid #6610f2;
-        }
-        
-        .metric-card.health {
-            border-left: 4px solid #fd7e14;
-        }
-        
-        .metric-icon {
-            font-size: 2.5rem;
-            opacity: 0.1;
-            position: absolute;
-            right: 1rem;
-            top: 1rem;
-        }
-        
-        .metric-value {
-            font-size: 1.875rem;
-            font-weight: bold;
-            margin: 0.5rem 0;
-            line-height: 1.2;
-        }
-        
-        .metric-label {
-            color: #495057;
-            font-size: 0.875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-        }
-        
-        .metric-detail {
-            font-size: 0.75rem;
-            color: #6c757d;
-            margin-top: 0.5rem;
-        }
-        
-        .metric-badge {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-top: 0.5rem;
-        }
-        
-        .metric-progress {
-            height: 4px;
-            background: #e9ecef;
-            border-radius: 2px;
-            margin-top: 0.5rem;
-            overflow: hidden;
-        }
-        
-        .metric-progress-bar {
-            height: 100%;
-            border-radius: 2px;
-            transition: width 0.3s ease;
-        }
-        
-        .metric-group {
-            margin-bottom: 2rem;
-        }
-        
-        .metric-group-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .metric-group-title i {
-            font-size: 1.25rem;
-        }
-        
-        .chart-wrapper {
-            position: relative;
-            height: 400px;
-        }
-        
-        canvas {
-            max-width: 100%;
-            max-height: 100%;
-        }
-        
-        /* Ensure tooltips can overflow containers */
-        .chart-container {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        
-        .chart-wrapper {
-            position: relative;
-            height: 400px;
-        }
-        
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Curadoria de Terapeutas | Luto, Trauma e TEPT</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --paper: #fffdf8;
+      --ink: #1f2a2e;
+      --muted: #5f6b6f;
+      --accent: #0f766e;
+      --line: #e7dfd1;
+      --chip: #eef6f5;
+      --chip-2: #fff4e5;
+      --shadow: 0 10px 28px rgba(31, 42, 46, 0.08);
+    }
 
-    </style>
+    * { box-sizing: border-box; }
 
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(1200px 560px at 100% 0%, #f7e5c1 0%, transparent 72%),
+        radial-gradient(900px 520px at 0% 100%, #d9efe9 0%, transparent 65%),
+        var(--bg);
+      color: var(--ink);
+    }
+
+    .wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #fffdf8, #f4f8f8);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .title {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.15;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 980px;
+      line-height: 1.5;
+    }
+
+    .meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .pill strong { color: var(--ink); }
+
+    .search-row {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 10px;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-size: 14px;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 104px 1fr;
+      gap: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .photo {
+      width: 104px;
+      height: 104px;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      background: #f0f0f0;
+    }
+
+    .name {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .role {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .badge {
+      font-size: 12px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      background: var(--chip);
+      color: #164e4a;
+    }
+
+    .badge.alt {
+      background: var(--chip-2);
+      color: #7c2d12;
+    }
+
+    .body {
+      padding: 14px 16px 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .sec h4 {
+      margin: 0 0 6px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--muted);
+    }
+
+    .summary {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 16px;
+      display: grid;
+      gap: 4px;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .a {
+      text-decoration: none;
+      font-size: 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--accent);
+      padding: 6px 10px;
+    }
+
+    .a:hover { border-color: var(--accent); }
+
+    .foot {
+      border-top: 1px dashed var(--line);
+      padding-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 960px) {
+      .grid { grid-template-columns: 1fr; }
+      .search-row { grid-template-columns: 1fr; }
+      .title { font-size: 27px; }
+    }
+  </style>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-primary mb-4">
-        <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1">
-                <i class="fas fa-chart-line me-2"></i>Marketing Dashboard
-            </span>
-        </div>
-    </nav>
-    
-    <div class="container-fluid">
-        <!-- File Upload -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Carregar Dados</h5>
-                        <div class="input-group">
-                            <input type="file" class="form-control" id="csvFile" accept=".csv">
-                            <button class="btn btn-primary" onclick="loadFile()">
-                                <i class="fas fa-upload me-2"></i>Carregar
-                            </button>
-                        </div>
-                        <small class="text-muted mt-2 d-block">
-                            Selecione o arquivo "desempenho_campanhas.csv" ou outro arquivo CSV com a mesma estrutura.
-                        </small>
-                    </div>
+  <div class="wrap">
+    <section class="hero">
+      <h1 class="title">Curadoria de Terapeutas para Luto, Trauma e TEPT</h1>
+      <p class="subtitle">
+        Seleção com 20 profissionais brasileiros, priorizando presença pública robusta e dados verificáveis em fontes primárias
+        (site próprio, instituto, Instagram profissional, LinkedIn, publicações e vídeos). Cada ficha traz formação, abordagens,
+        resumo clínico, contatos e links de evidência para facilitar comparação e escolha.
+      </p>
+      <div class="meta">
+        <div class="pill"><strong>20</strong> perfis selecionados</div>
+        <div class="pill"><strong>Online</strong> como preferência principal</div>
+        <div class="pill"><strong>Curadoria</strong> com ênfase em luto traumático e EMDR</div>
+      </div>
+      <div class="search-row">
+        <input id="search" placeholder="Buscar por nome, cidade, abordagem, formação..." />
+        <select id="tier">
+          <option value="all">Todos os níveis (A e B)</option>
+          <option value="A">Somente Tier A</option>
+          <option value="B">Somente Tier B</option>
+        </select>
+      </div>
+      <p class="note">
+        Observação: esta curadoria não substitui entrevista inicial. Vale validar disponibilidade real de agenda,
+        valor da sessão, aderência pessoal e plano terapêutico na primeira conversa.
+      </p>
+    </section>
+
+    <section class="grid" id="cards"></section>
+  </div>
+
+  <script>
+    const therapists = [
+      {
+        name: "Maria Helena Pereira Franco",
+        tier: "A",
+        role: "Psicóloga clínica, professora e pesquisadora em luto",
+        crp: "CRP 06/1690",
+        city: "São Paulo, SP",
+        online: true,
+        score: 93,
+        photo: "",
+        rating: "Referência nacional em luto e tanatologia",
+        summary: "Psicóloga, mestre e doutora em Psicologia Clínica pela PUC-SP, com pós-doutorado em Londres. Fundadora do LELu (Laboratório de Estudos e Intervenções sobre o Luto), ex-presidente da ABMLuto e fellow da IWG. Atua há décadas em pesquisa, formação e atendimento em luto, cuidados paliativos e situações de perda complexa.",
+        focus: ["Luto", "Luto complicado", "Cuidados paliativos", "Morte e morrer", "Formação de terapeutas"],
+        approaches: ["Psicoterapia do luto", "Thanatologia", "Intervenção em crise"],
+        formations: ["Graduação em Psicologia - PUC-SP", "Mestrado em Psicologia Clínica - PUC-SP", "Doutorado em Psicologia Clínica - PUC-SP", "Pós-doutorado - London School of Hygiene and Tropical Medicine / UCL"],
+        contacts: {
+          platform: "https://www.pucsp.br/colaborador/profa-dra-maria-helena-pereira-franco",
+          website: "https://www.pucsp.br/pos-graduacao/especializacao-mba/acoes-terapeuticas-para-situacoes-de-luto",
+          instagram: "https://www.instagram.com/mhelenapfranco/",
+          linkedin: "https://www.linkedin.com/in/maria-helena-pereira-franco/",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://scholar.google.com/citations?user=_R2YeXUAAAAJ&hl=en",
+          "https://www.gruposummus.com.br/blog/entrevista-com-maria-helena-pereira-franco-especial-50-anos/"
+        ],
+        evidence: [
+          "https://www.iea.usp.br/pessoas/pasta-pessoam/maria-helena-pereira-franco",
+          "https://bv.fapesp.br/pt/pesquisador/5769/maria-helena-pereira-franco/",
+          "https://www.pucsp.br/colaborador/profa-dra-maria-helena-pereira-franco",
+          "https://www.instagram.com/mhelenapfranco/",
+          "https://www.escavador.com/sobre/4877904/maria-helena-pereira-franco",
+          "https://abmluto.com.br"
+        ]
+      },
+      {
+        name: "Daniela Reis e Silva",
+        tier: "A",
+        role: "Psicóloga clínica, terapeuta EMDR e especialista em luto",
+        crp: "CRP 16/517",
+        city: "Vitória, ES",
+        online: true,
+        score: 91,
+        photo: "",
+        rating: "Doutorado com foco em EMDR para luto",
+        summary: "Psicóloga clínica com longa experiência em trauma e luto, doutora em Psicologia Clínica (PUC-SP). Coordenadora do Instituto Acalanto (ES), com atuação em situações críticas, comportamento suicida e formação de profissionais. Na rede TraumaClinic, seu perfil destaca tese em EMDR para situações de luto e atendimento presencial/online.",
+        focus: ["Luto", "Trauma", "TEPT", "Comportamento suicida", "Situações críticas"],
+        approaches: ["EMDR", "Brainspotting", "Psicoterapia do luto"],
+        formations: ["Graduação em Psicologia - PUC-RJ", "Doutorado em Psicologia Clínica - PUC-SP", "Certificação EMDR", "Supervisão EMDR"],
+        contacts: {
+          platform: "https://www.traumaclinic.com.br/procureumprofissional-brasil-es",
+          website: "https://danielareis.com.br",
+          instagram: "https://www.instagram.com/danielareisesilva/",
+          linkedin: "https://www.linkedin.com/in/daniela-reis-e-silva/",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.youtube.com/watch?v=o2JWDojIQjM",
+          "https://www.instagram.com/danielareisesilva/"
+        ],
+        evidence: [
+          "https://www.traumaclinic.com.br/procureumprofissional-brasil-es",
+          "https://www.instagram.com/danielareisesilva/",
+          "https://intccrio.com.br/profissionais/daniela-reis-e-silva/",
+          "https://www.escavador.com/sobre/1264068/daniela-reis-e-silva"
+        ]
+      },
+      {
+        name: "Gabriela Casellato",
+        tier: "A",
+        role: "Psicóloga clínica e pesquisadora em perdas e luto",
+        crp: "CRP 06/48701-7",
+        city: "São Paulo, SP",
+        online: true,
+        score: 90,
+        photo: "",
+        rating: "Autora de livros de referência em luto",
+        summary: "Psicóloga com mestrado e doutorado em Psicologia Clínica pela PUC-SP, com prática dedicada a perdas e luto desde a década de 1990. Cofundadora do 4 Estações Instituto de Psicologia, atua em clínica, formação de profissionais e produção científica. É autora/organizadora de obras como 'O Resgate da Empatia' e 'Dor silenciosa ou dor silenciada?', com forte reconhecimento no campo do luto não reconhecido.",
+        focus: ["Luto não reconhecido", "Perdas complexas", "Teoria do apego", "Formação clínica"],
+        approaches: ["Psicoterapia focada em luto", "Teoria do Apego", "Hipnoterapia"],
+        formations: ["Graduação em Psicologia - PUC-SP", "Mestrado em Psicologia Clínica - PUC-SP", "Doutorado em Psicologia Clínica - PUC-SP"],
+        contacts: {
+          platform: "https://casellato.org/bio/",
+          website: "https://casellato.org/",
+          instagram: "https://www.instagram.com/gabriela.casellato.psicologia/",
+          linkedin: "",
+          whatsapp: "https://casellato.org/contato/"
+        },
+        contentLinks: [
+          "https://casellato.org/publicacoes/",
+          "https://casellato.org/reflexoes/",
+          "https://www.youtube.com/channel/UCr--53SKXh9irYyuf6XbwlQ"
+        ],
+        evidence: [
+          "https://casellato.org/bio/",
+          "https://www.4estacoes.com/quem_somos.asp",
+          "https://www.instagram.com/gabriela.casellato.psicologia/",
+          "https://www.escavador.com/sobre/2097728/gabriela-casellato-brown-ferreira-santos"
+        ]
+      },
+      {
+        name: "Esly Carvalho",
+        tier: "A",
+        role: "Psicóloga, Trainer of Trainers em EMDR, presidente da TraumaClinic",
+        crp: "CRP 01/1.162",
+        city: "Brasília, DF",
+        online: true,
+        score: 95,
+        photo: "https://s3.us-east-1.amazonaws.com/contents.newzenler.com/20688/library/sly66634147d2107_lg.jpg",
+        rating: "Pioneira do EMDR no Brasil",
+        summary: "Ph.D. em Psicologia, com mais de quatro décadas de prática clínica, é uma das principais referências de EMDR no Brasil e na América Latina. Formada diretamente por Francine Shapiro em 1997, lidera formação e supervisão de milhares de profissionais. Preside o Grupo TraumaClinic e atua em trauma, TEPT e luto traumático, com forte produção técnica e presença institucional.",
+        focus: ["Trauma", "TEPT", "Luto traumático", "Formação EMDR", "Supervisão clínica"],
+        approaches: ["EMDR", "Brainspotting", "Psicodrama"],
+        formations: ["Graduação em Psicologia - CEUB (conclusão), com início na UFRGS", "Doutorado em Psicologia", "Trainer of Trainers - EMDR Institute (EUA)", "Fellow - ASGPP"],
+        contacts: {
+          platform: "https://www.traumaclinic.com.br/eslycarvalho",
+          website: "https://www.traumaclinic.com.br/eslycarvalho",
+          instagram: "https://www.instagram.com/doutoraeslycarvalho/",
+          linkedin: "",
+          whatsapp: "https://api.whatsapp.com/send?phone=556191361635"
+        },
+        contentLinks: [
+          "https://www.traumaclinic.com.br/blog",
+          "https://www.traumaclinic.com.br/livros",
+          "https://www.youtube.com/watch?v=y0pC9XIA9Xg"
+        ],
+        evidence: [
+          "https://www.traumaclinic.com.br/eslycarvalho",
+          "https://www.escavador.com/sobre/3007127/esly-regina-souza-de-carvalho",
+          "https://www.sfrankelgroup.com/esly-carvalho-phd.html",
+          "https://www.instagram.com/doutoraeslycarvalho/",
+          "https://www.traumaclinic.com.br/f/ftemdr"
+        ]
+      },
+      {
+        name: "André Monteiro",
+        tier: "A",
+        role: "Psicólogo PhD, Trainer of Trainers em EMDR",
+        crp: "CRP 01/3832",
+        city: "Brasília, DF",
+        online: true,
+        score: 92,
+        photo: "",
+        rating: "Referência internacional em EMDR",
+        summary: "Psicólogo com especialização, mestrado e doutorado em Psicologia Clínica pela UnB. Atua com psicoterapia há décadas, com foco em trauma e EMDR desde 2000. Trainer of Trainers reconhecido por EMDR Institute, EMDR Iberoamérica e EMDR Europe, já presidiu a Associação EMDR Brasil e ocupa posição internacional de liderança na área. Também tem trajetória docente e experiência de pós-doutorado em instituições psiquiátricas europeias.",
+        focus: ["Trauma", "TEPT", "Luto", "Formação EMDR", "Trauma transgeracional"],
+        approaches: ["EMDR", "Brainspotting", "Arte-terapia"],
+        formations: ["Graduação em Psicologia - UnB", "Mestrado em Psicologia Clínica - UnB", "Doutorado em Psicologia Clínica - UnB", "Trainer of Trainers - EMDR Institute"],
+        contacts: {
+          platform: "https://www.espacodamente.com/our_team/andre-monteiro/",
+          website: "https://www.espacodamente.com/our_team/andre-monteiro/",
+          instagram: "https://www.instagram.com/andre.monteiro.emdr/",
+          linkedin: "",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.udemy.com/user/michel-monteiro/",
+          "https://www.youtube.com/watch?v=sx-pgcFjAX0"
+        ],
+        evidence: [
+          "https://www.sfrankelgroup.com/andre-monteiro-phd.html",
+          "https://www.espacodamente.com/our_team/andre-monteiro/",
+          "https://www.instagram.com/andre.monteiro.emdr/",
+          "https://www.udemy.com/user/michel-monteiro/"
+        ]
+      },
+      {
+        name: "Valéria Tinoco",
+        tier: "A",
+        role: "Psicóloga clínica, mestre e doutora em Psicologia Clínica",
+        crp: "CRP 06/53670-7",
+        city: "São Paulo, SP",
+        online: true,
+        score: 88,
+        photo: "",
+        rating: "Diretora e supervisora do 4 Estações",
+        summary: "Psicóloga e psicoterapeuta com mestrado e doutorado pela PUC-SP. Diretora, professora e supervisora do 4 Estações Instituto de Psicologia, com atuação destacada em formação e intervenção em luto e perdas, além de teoria do apego. Publica e participa de pesquisas e eventos na área de morte, luto e cuidados paliativos.",
+        focus: ["Luto", "Perdas", "Teoria do apego", "Cuidados paliativos"],
+        approaches: ["Psicoterapia do luto", "Teoria do Apego", "Psicologia Clínica"],
+        formations: ["Graduação em Psicologia - PUC-SP", "Mestrado em Psicologia Clínica - PUC-SP", "Doutorado em Psicologia Clínica - PUC-SP"],
+        contacts: {
+          platform: "https://www.4estacoes.com/quem_somos.asp",
+          website: "https://www.4estacoes.com/",
+          instagram: "https://www.instagram.com/valeriatinoco.psicologia/",
+          linkedin: "https://br.linkedin.com/in/valeria-tinoco-a4581b14",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.instagram.com/valeriatinoco.psicologia/",
+          "https://www.4estacoes.com/curso_especializacao.asp"
+        ],
+        evidence: [
+          "https://www.4estacoes.com/quem_somos.asp",
+          "https://www.instagram.com/valeriatinoco.psicologia/",
+          "https://www.escavador.com/sobre/6468374/valeria-ulbricht-tinoco-mendes",
+          "https://pmc.ncbi.nlm.nih.gov/articles/PMC7787239/"
+        ]
+      },
+      {
+        name: "Luciana Mazorra",
+        tier: "A",
+        role: "Psicóloga clínica, doutora e pesquisadora em luto",
+        crp: "CRP 06/53780-3",
+        city: "São Paulo, SP",
+        online: true,
+        score: 88,
+        photo: "",
+        rating: "Cofundadora do 4 Estações e membro da IWG",
+        summary: "Psicóloga, mestre e doutora em Psicologia Clínica pela PUC-SP, com especialização em clínica e psicoterapia psicanalítica em Madrid. Cofundadora e supervisora do 4 Estações, atua em pesquisa, docência e atendimento em perdas e luto. Tem produção científica e capítulos publicados em obras de referência sobre luto, infância enlutada e cuidados paliativos.",
+        focus: ["Luto", "Luto infantil", "Perdas complexas", "Cuidados paliativos"],
+        approaches: ["Psicoterapia do luto", "Psicanálise", "Intervenções em perda"],
+        formations: ["Graduação em Psicologia - PUC-SP", "Mestrado em Psicologia Clínica - PUC-SP", "Doutorado em Psicologia Clínica - PUC-SP", "Especialização em Clínica e Psicoterapia Psicanalítica - Universidad Pontificia Comillas"],
+        contacts: {
+          platform: "https://www.4estacoes.com/quem_somos.asp",
+          website: "https://www.4estacoes.com/",
+          instagram: "https://www.instagram.com/luciana.mazorra/",
+          linkedin: "https://br.linkedin.com/in/lucianamazorra",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.youtube.com/watch?v=SEEOe0gWZn0",
+          "https://www.instagram.com/luciana.mazorra/"
+        ],
+        evidence: [
+          "https://www.4estacoes.com/quem_somos.asp",
+          "https://www.instagram.com/luciana.mazorra/",
+          "https://tede2.pucsp.br/bitstream/handle/15837/1/Luciana%20Mazorra.pdf",
+          "https://www.escavador.com/sobre/1264066/luciana-mazorra"
+        ]
+      },
+      {
+        name: "Karen Scavacini",
+        tier: "A",
+        role: "Psicóloga doutora em saúde mental e posvenção do suicídio",
+        crp: "CRP 06/64761",
+        city: "São Paulo, SP",
+        online: true,
+        score: 88,
+        photo: "",
+        rating: "Fundadora do Vita Alere, referência em posvenção",
+        summary: "Psicóloga (CRP 06/64761) com trajetória acadêmica e institucional consolidada em prevenção e posvenção do suicídio, campo diretamente ligado ao luto traumático. Tem mestrado com vínculo ao Karolinska Institutet e doutorado pela USP, além de atuação como fundadora e CEO do Instituto Vita Alere. Mantém produção técnica contínua, participação em redes internacionais de prevenção e presença pública com palestras, entrevistas e materiais educativos para profissionais e famílias. Seu trabalho combina saúde mental comunitária, formação de equipes e intervenção em contextos de perda por suicídio.",
+        focus: ["Posvenção", "Luto por suicídio", "Prevenção do suicídio", "Saúde mental"],
+        approaches: ["Posvenção", "Intervenção em crise", "Psicoeducação em saúde mental"],
+        formations: ["Mestrado em Saúde Pública (suicidologia) - Karolinska Institutet", "Doutorado em Psicologia - USP (2018)", "Formação contínua em prevenção/posvenção do suicídio"],
+        contacts: {
+          platform: "https://vitaalere.com.br/nossa-equipe/",
+          website: "https://vitaalere.com.br",
+          instagram: "https://www.instagram.com/karensca/",
+          linkedin: "https://www.linkedin.com/in/karen-scavacini/",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://vitaalere.com.br",
+          "https://www.instagram.com/karensca/",
+          "https://tedxblumenau.com.br/speakers/karen-scavacini/",
+          "https://www.youtube.com/results?search_query=karen+scavacini"
+        ],
+        evidence: [
+          "https://vitaalere.com.br/nossa-equipe/",
+          "https://www.instagram.com/karensca/",
+          "https://www.linkedin.com/in/karen-scavacini/",
+          "https://enafam.com.br/speaker/karen-scavacini/",
+          "https://www.escavador.com/sobre/4859437/karen-scavacini"
+        ]
+      },
+      {
+        name: "Rita Silva e Silva",
+        tier: "A",
+        role: "Psicóloga clínica e Full Trainer em EMDR",
+        crp: "CRP 04/15828",
+        city: "Belo Horizonte, MG",
+        online: true,
+        score: 83,
+        photo: "",
+        rating: "Treinadora oficial em EMDR e especialista em trauma complexo",
+        summary: "Psicóloga clínica com mais de 25 anos de experiência, diretora do Instituto Trauma Center Psi. Full Trainer em EMDR (EMDR Institute, EUA), supervisora e facilitadora com atuação em trauma complexo. Também possui especialização em Neurociências e Comportamento (UFMG), com forte trabalho em formação clínica e atendimento de casos de alta complexidade.",
+        focus: ["EMDR", "Trauma complexo", "TEPT", "Luto", "Formação de profissionais"],
+        approaches: ["EMDR", "Hipnoterapia Ericksoniana", "Psicoterapia do trauma"],
+        formations: ["Graduação em Psicologia - FUMEC", "Especialização em Neurociências e Comportamento - UFMG", "Full Trainer - EMDR Institute"],
+        contacts: {
+          platform: "https://www.ritasilvaesilva.com.br/ritasilvaesilva",
+          website: "https://www.ritasilvaesilva.com.br/",
+          instagram: "https://www.instagram.com/ritasilvaesilvapsi/",
+          linkedin: "https://www.linkedin.com/in/rita-silva-e-silva-4b73145/",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.ritasilvaesilva.com.br/",
+          "https://intccrio.com.br/profissionais/rita-silva-e-silva/"
+        ],
+        evidence: [
+          "https://www.ritasilvaesilva.com.br/ritasilvaesilva",
+          "https://www.ritasilvaesilva.com.br/",
+          "https://intccrio.com.br/profissionais/rita-silva-e-silva/",
+          "https://www.instagram.com/ritasilvaesilvapsi/"
+        ]
+      },
+      {
+        name: "Sirley Bittu",
+        tier: "A",
+        role: "Psicóloga especialista clínica, supervisora e facilitadora EMDR",
+        crp: "CRP 33754-0",
+        city: "São Paulo, SP",
+        online: true,
+        score: 84,
+        photo: "https://sirleybittupsicologa.com.br/wp-content/uploads/2023/08/sirley_bittu-psicologa-emdr-perfil-1.webp",
+        rating: "Mais de 30 anos de experiência clínica",
+        summary: "Psicóloga com longa prática clínica e atuação intensa em trauma emocional. CEO da Clínica Self Care, em São Paulo, e certificada como supervisora/facilitadora EMDR por instituições internacionais. Ministra cursos e workshops para profissionais, com conteúdos específicos sobre trauma, apego e luto. Mantém produção contínua de artigos e formação avançada.",
+        focus: ["Trauma", "Luto", "Apego", "EMDR", "Formação clínica"],
+        approaches: ["EMDR", "Brainspotting", "Psicoterapia do trauma"],
+        formations: ["Graduação em Psicologia - Faculdade de Filosofia, Ciências e Letras São Marcos", "Especialização em Psicodrama Terapêutico - Instituto Sedes Sapientiae", "Certificação EMDR - EMDR Institute", "Certificação EMDR Consultant - EMDRIA"],
+        contacts: {
+          platform: "https://sirleybittupsicologa.com.br/",
+          website: "https://sirleybittupsicologa.com.br/",
+          instagram: "https://www.instagram.com/sirleybittupsi/",
+          linkedin: "https://br.linkedin.com/in/sirley-bittu-42133457",
+          whatsapp: "https://wa.me/5511944622520"
+        },
+        contentLinks: [
+          "https://sirleybittupsicologa.com.br/artigos/",
+          "https://sirleybittupsicologa.com.br/palestras-e-workshop/",
+          "https://www.youtube.com/channel/UCpfr7yR5GTPZMbUHosLNqSg"
+        ],
+        evidence: [
+          "https://sirleybittupsicologa.com.br/sobre-mim/",
+          "https://br.linkedin.com/in/sirley-bittu-42133457",
+          "https://clinicaselfcare.com/dra-sirley-bittu/",
+          "https://www.instagram.com/sirleybittupsi/",
+          "https://credentials.emdria.org/fd0d9c0a-9884-47a3-bd8a-2c44d1ea2cd0",
+          "https://www.escavador.com/sobre/1625021303/sirley-regina-dos-santos-marcusso-bittu"
+        ]
+      },
+      {
+        name: "Silvana Ricci Salomoni",
+        tier: "A",
+        role: "Psicóloga clínica, trainer EMDR e terapeuta de casal/família",
+        crp: "CRP 08/1126",
+        city: "Curitiba, PR",
+        online: true,
+        score: 87,
+        photo: "",
+        rating: "Trainer EMDR com base acadêmica sólida",
+        summary: "Psicóloga pela UFPR, mestre em Psicologia Clínica pela PUC-SP e trainer em Psicoterapia EMDR. Atua também com terapia familiar sistêmica e terapia de casal, integrando experiência clínica de longa duração com formação de profissionais. Possui histórico de trabalho institucional no TJ-PR e participação em conteúdos técnicos sobre EMDR.",
+        focus: ["Trauma", "EMDR", "Luto", "Terapia de casal", "Família"],
+        approaches: ["EMDR", "Terapia Sistêmica", "Terapia de Casal"],
+        formations: ["Graduação em Psicologia - UFPR", "Mestrado em Psicologia Clínica - PUC-SP", "Formação Trainer EMDR"],
+        contacts: {
+          platform: "https://www.traumaclinic.com.br/procureumprofissional-treinadores",
+          website: "https://www.traumaclinic.com.br/procureumprofissional-treinadores",
+          instagram: "https://www.instagram.com/silvana_salomoni/",
+          linkedin: "",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.youtube.com/watch?v=0B2_Wst8i3A",
+          "https://www.youtube.com/watch?v=Q6SHhtF0WXc"
+        ],
+        evidence: [
+          "https://www.traumaclinic.com.br/procureumprofissional-treinadores",
+          "https://www.instagram.com/silvana_salomoni/",
+          "https://www.youtube.com/watch?v=0B2_Wst8i3A",
+          "https://www.youtube.com/watch?v=Q6SHhtF0WXc"
+        ]
+      },
+      {
+        name: "Jackeline Gomes",
+        tier: "A",
+        role: "Psicóloga, Full Trainer EMDR e Trainer of Trainers",
+        crp: "CRP não localizado publicamente com consistência",
+        city: "Belo Horizonte, MG",
+        online: true,
+        score: 85,
+        photo: "",
+        rating: "Atuação forte em formação EMDR e trauma",
+        summary: "Psicóloga formada pela UFMG e mestre em Psicologia pela PUC Minas, com trajetória consolidada em trauma e EMDR no Brasil. Atua como Full Trainer e Trainer of Trainers em redes de formação internacional, além de participar de congressos e supervisões clínicas em psicotrauma. Mantém presença pública ativa em canais profissionais e no Instagram técnico, com conteúdos voltados a aplicação clínica de EMDR e cuidado em sofrimento traumático. Também reúne formação complementar em Brainspotting e hipnoterapia ericksoniana, combinando ensino e prática clínica em adultos e contextos de perda.",
+        focus: ["EMDR", "Trauma", "Luto", "Formação clínica"],
+        approaches: ["EMDR", "Psicoterapia breve", "Hipnoterapia Ericksoniana"],
+        formations: ["Graduação em Psicologia - UFMG (1997)", "Mestrado em Psicologia - PUC Minas (2009)", "Full Trainer em EMDR", "Trainer of Trainers - EMDR Global Network", "Formação em Brainspotting"],
+        contacts: {
+          platform: "https://www.traumaclinic.com.br/f/ftemdr",
+          website: "https://intccrio.com.br/profissionais/jackeline-gomes/",
+          instagram: "https://www.instagram.com/emdrbelohorizonte/",
+          linkedin: "https://br.linkedin.com/in/jackeline-figueiredo-barbosa-gomes-04391161",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.youtube.com/watch?v=sx-pgcFjAX0",
+          "https://www.instagram.com/emdrbelohorizonte/",
+          "https://congresoemdral2024.com/jackeline-barbosa-gomes"
+        ],
+        evidence: [
+          "https://www.traumaclinic.com.br/f/ftemdr",
+          "https://intccrio.com.br/profissionais/jackeline-gomes/",
+          "https://congresoemdral2024.com/jackeline-barbosa-gomes",
+          "https://br.linkedin.com/in/jackeline-figueiredo-barbosa-gomes-04391161",
+          "https://www.instagram.com/emdrbelohorizonte/"
+        ]
+      },
+      {
+        name: "Tatiana Suckau",
+        tier: "A",
+        role: "Psicóloga clínica e terapeuta EMDR",
+        crp: "CRP 07/35917",
+        city: "Carazinho, RS",
+        online: true,
+        score: 87,
+        photo: "",
+        rating: "Atende brasileiros em múltiplos países",
+        summary: "Psicóloga clínica (CRP 07/35917) com foco em trauma, luto, ansiedade e depressão, com atuação presencial e online para brasileiros no Brasil e no exterior. Seu perfil profissional público indica formação em Psicologia pela Unisul e capacitações em EMDR e TCC, com prática voltada ao reprocessamento de experiências traumáticas e estabilização emocional. Integra equipe do Espaço da Mente e mantém comunicação ativa em Instagram e site próprio, com materiais de psicoeducação e orientação clínica para pessoas em sofrimento intenso.",
+        focus: ["Trauma", "Luto", "TEPT", "Ansiedade", "Depressão"],
+        approaches: ["EMDR", "TCC"],
+        formations: ["Graduação em Psicologia - Unisul", "Formação em EMDR - Espaço da Mente", "Capacitação clínica - CEDEP", "Formação em Terapia Cognitivo-Comportamental"],
+        contacts: {
+          platform: "https://www.espacodamente.com/our_team/tatianamendez/",
+          website: "https://tatianasuckau.com.br/",
+          instagram: "https://www.instagram.com/psi.tatianasuckau/",
+          linkedin: "https://linkedin.com/in/tatiana-suckau-mendez-2b5152131",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://tatianasuckau.com.br/",
+          "https://www.instagram.com/psi.tatianasuckau/",
+          "https://www.espacodamente.com/our_team/tatianamendez/"
+        ],
+        evidence: [
+          "https://tatianasuckau.com.br/",
+          "https://www.instagram.com/psi.tatianasuckau/",
+          "https://linkedin.com/in/tatiana-suckau-mendez-2b5152131",
+          "https://www.espacodamente.com/our_team/tatianamendez/",
+          "https://www.psymeetsocial.com/psicologo/tatiana-suckau-mendez"
+        ]
+      },
+      {
+        name: "Paula Farineli",
+        tier: "A",
+        role: "Psicóloga clínica, especialista em psicoterapia do luto",
+        crp: "CRP 08/31131",
+        city: "Mandaguari, PR",
+        online: true,
+        score: 89,
+        photo: "",
+        rating: "Foco clínico central em luto",
+        summary: "Psicóloga clínica (CRP 08/31131) com atuação direcionada à psicoterapia do luto e acolhimento de pessoas em processo de perda. Em sua presença pública, descreve abordagem centrada na escuta qualificada e no respeito ao tempo emocional de cada paciente, com atendimentos online e produção frequente de conteúdo sobre luto nas redes. Há registros de participação em entrevistas e programas educativos sobre reconstrução de vida após perdas, reforçando perfil de comunicação clínica ativa. Também informa formação em Psicologia e continuidade acadêmica em Psicologia Hospitalar.",
+        focus: ["Luto", "Perdas", "Acolhimento emocional", "Adaptação pós-perda"],
+        approaches: ["Psicoterapia do luto", "Psicologia Hospitalar", "Atendimento humanizado"],
+        formations: ["Graduação em Psicologia - Unicesumar", "Pós-graduação em Psicologia Hospitalar (em andamento)"],
+        contacts: {
+          platform: "https://www.doctoralia.com.br/paula-farineli/psicologo/mandaguari",
+          website: "",
+          instagram: "https://www.instagram.com/psicologapaulafarineli/",
+          linkedin: "https://www.linkedin.com/in/paula-farineli-360a46165",
+          whatsapp: "https://www.facebook.com/psicologapaulafarineli/"
+        },
+        contentLinks: [
+          "https://www.instagram.com/psicologapaulafarineli/",
+          "https://www.youtube.com/watch?v=2fCfqxlutr8",
+          "https://www.doctoralia.com.br/paula-farineli/psicologo/mandaguari"
+        ],
+        evidence: [
+          "https://www.instagram.com/psicologapaulafarineli/",
+          "https://www.linkedin.com/in/paula-farineli-360a46165",
+          "https://www.youtube.com/watch?v=2fCfqxlutr8",
+          "https://www.doctoralia.com.br/paula-farineli/psicologo/mandaguari",
+          "https://www.facebook.com/psicologapaulafarineli/about/"
+        ]
+      },
+      {
+        name: "Ana Clara Bastos",
+        tier: "A",
+        role: "Psicóloga clínica e professora, foco em perdas e luto",
+        crp: "CRP 03/6778",
+        city: "Salvador, BA",
+        online: true,
+        score: 91,
+        photo: "",
+        rating: "Mais de 3 mil alunos em formação na área de luto",
+        summary: "Psicóloga (CRP 03/6778) com atuação clínica e acadêmica concentrada em perdas, luto e cuidados paliativos. Sua presença pública combina atendimento, supervisão clínica e formação de psicólogos, com forte difusão técnica em canais digitais e cursos profissionais. Registros acadêmicos e institucionais apontam trajetória de pós-graduação na UFBA e especialização em luto no Instituto Quatro Estações, além de produção contínua de conteúdo sobre manejo clínico do enlutamento. Em redes sociais profissionais, mantém comunicação estruturada sobre casos de perda complexa e organização de conduta terapêutica para psicólogos.",
+        focus: ["Perdas e luto", "Cuidados paliativos", "Formação de psicólogos", "Luto antecipatório"],
+        approaches: ["Psicoterapia do luto", "Terapia Sistêmica", "Abordagem clínica baseada em evidências"],
+        formations: ["Graduação em Psicologia - Faculdade Ruy Barbosa (2004-2009)", "Mestrado em Psicologia - UFBA (2014)", "Doutorado em Psicologia do Desenvolvimento Humano - UFBA", "Especialização em Luto - Instituto Quatro Estações"],
+        contacts: {
+          platform: "https://anaclarabastos.com.br/lista-espera/",
+          website: "https://anaclarabastos.com.br/",
+          instagram: "https://www.instagram.com/psicologa.anaclarabastos/",
+          linkedin: "https://br.linkedin.com/in/ana-clara-bastos",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.youtube.com/@psicologa.anaclarabastos",
+          "https://www.instagram.com/psicologa.anaclarabastos/",
+          "https://anaclarabastos.com.br/"
+        ],
+        evidence: [
+          "https://anaclarabastos.com.br/lista-espera/",
+          "https://pospsi.ufba.br/sites/pospsi.ufba.br/files/ana_clara_bastos.pdf",
+          "https://repositorio.ufba.br/handle/ri/30441",
+          "https://www.instagram.com/psicologa.anaclarabastos/",
+          "https://br.linkedin.com/in/ana-clara-bastos",
+          "https://www.escavador.com/sobre/6585570/ana-clara-de-sousa-bittencourt-bastos"
+        ]
+      },
+      {
+        name: "Lisiane Mendes Costa",
+        tier: "B",
+        role: "Psicóloga clínica, terapeuta EMDR e Brainspotting",
+        crp: "CRP 07/23521",
+        city: "Rio Grande, RS",
+        online: true,
+        score: 78,
+        photo: "",
+        rating: "Perfil técnico ativo em trauma e regulação emocional",
+        summary: "Psicóloga clínica (CRP 07/23521) com atuação em trauma, luto, fobias e ansiedade, articulando EMDR e Brainspotting em prática clínica com adultos. Mantém presença pública no projeto Tranquilitude, com conteúdos de psicoeducação e estratégias de regulação emocional baseadas em neurociências aplicadas. Fontes públicas apontam formação base no Rio Grande do Sul e atuação presencial no sul do país, além de atendimento online e posicionamento profissional consistente em temas de trauma psicológico e reorganização de vida após experiências adversas.",
+        focus: ["Trauma", "Luto", "Fobias", "Ansiedade"],
+        approaches: ["EMDR", "Brainspotting", "Neurociências aplicadas"],
+        formations: ["Graduação em Psicologia - FURG (fonte principal pública)", "Especialização em Neurociências do Comportamento - UNESC (em andamento)", "Formação em EMDR - TraumaClinic", "Formação em Brainspotting", "Treinamento AIM (informado em perfil profissional)"],
+        contacts: {
+          platform: "https://www.tranquilitude.com.br/",
+          website: "https://www.tranquilitude.com.br/",
+          instagram: "https://www.instagram.com/atitudetranquila/",
+          linkedin: "https://br.linkedin.com/in/lisiane-mendes-costa",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.tranquilitude.com.br/emdr",
+          "https://www.instagram.com/atitudetranquila/",
+          "https://www.tranquilitude.com.br/"
+        ],
+        evidence: [
+          "https://br.linkedin.com/in/lisiane-mendes-costa",
+          "https://www.tranquilitude.com.br/minha-historia",
+          "https://www.tranquilitude.com.br/",
+          "https://www.tranquilitude.com.br/emdr",
+          "https://www.instagram.com/atitudetranquila/"
+        ]
+      },
+      {
+        name: "Eleonora Monteiro",
+        tier: "B",
+        role: "Psicóloga clínica, terapeuta EMDR e Brainspotting",
+        crp: "CRP 08/12807",
+        city: "Maringá, PR",
+        online: true,
+        score: 81,
+        photo: "",
+        rating: "Atuação online estruturada em trauma e luto",
+        summary: "Psicóloga clínica (CRP 08/12807) com prática voltada ao tratamento de trauma, luto e ansiedade, usando EMDR e Brainspotting como bases centrais de intervenção. Sua presença pública combina site profissional, perfil técnico em redes sociais e canais de contato direto, com foco em atendimento de adultos no formato online. Fontes institucionais e perfis profissionais indicam formação em Psicologia pela UEM, certificações em EMDR e treinamento complementar em Brainspotting, além de trajetória aplicada a reprocessamento de memórias traumáticas e redução de sintomas persistentes.",
+        focus: ["Trauma", "Luto", "Ansiedade", "TEPT"],
+        approaches: ["EMDR", "Brainspotting", "Terapia focada em trauma"],
+        formations: ["Graduação em Psicologia - UEM", "Certificação EMDR - EMDR Institute Inc.", "Formação em Brainspotting", "Pós-graduação em Gestão de Pessoas"],
+        contacts: {
+          platform: "https://www.psicoterapiaemdr.com.br",
+          website: "https://www.psicoterapiaemdr.com.br",
+          instagram: "https://www.instagram.com/psieleonoramonteiro/",
+          linkedin: "https://www.linkedin.com/in/eleonoramonteiro/",
+          whatsapp: "https://api.whatsapp.com/send?phone=5544999829809"
+        },
+        contentLinks: [
+          "https://www.psicoterapiaemdr.com.br/",
+          "https://www.instagram.com/psieleonoramonteiro/",
+          "https://www.linkedin.com/in/eleonoramonteiro/"
+        ],
+        evidence: [
+          "https://www.psicoterapiaemdr.com.br/",
+          "https://www.instagram.com/psieleonoramonteiro/",
+          "https://www.linkedin.com/in/eleonoramonteiro/",
+          "https://por.aibapt.org/memberslist-brazil-pr",
+          "https://www.doctoralia.com.br/eleonora-monteiro/psicologo/maringa"
+        ]
+      },
+      {
+        name: "Francielly Pedroso",
+        tier: "B",
+        role: "Psicóloga clínica, terapeuta EMDR",
+        crp: "CRP 08/20098",
+        city: "Londrina, PR",
+        online: true,
+        score: 84,
+        photo: "",
+        rating: "Site próprio com trilha de formação detalhada",
+        summary: "Psicóloga clínica (CRP 08/20098) com foco em trauma e luto, com atuação presencial e online e presença pública consistente em site próprio e redes profissionais. Seu percurso divulgado reúne graduação em Psicologia, formação em EMDR e especializações voltadas a psicopedagogia clínica e neurociências, reforçando perfil técnico para casos de sofrimento emocional persistente. Também participa de redes de atendimento em psicotrauma e mantém comunicação ativa sobre reprocessamento terapêutico, ansiedade e reorganização emocional após eventos críticos.",
+        focus: ["Trauma", "Luto", "TEPT", "Ansiedade"],
+        approaches: ["EMDR", "TCC", "Psicoterapia clínica"],
+        formations: ["Graduação em Psicologia - Faculdade Pitágoras de Londrina (2013)", "Especialização em Psicopedagogia Clínica e Institucional (2019)", "Formação em EMDR - Associação Brasileira de EMDR (2020)", "Especialização em Neurociências - UEL (2022)"],
+        contacts: {
+          platform: "https://franciellypedroso.com/sobre/",
+          website: "https://franciellypedroso.com/",
+          instagram: "https://www.instagram.com/psicologafranciellypedroso/",
+          linkedin: "",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://franciellypedroso.com/",
+          "https://www.instagram.com/psicologafranciellypedroso/",
+          "https://franciellypedroso.com/sobre/"
+        ],
+        evidence: [
+          "https://franciellypedroso.com/sobre/",
+          "https://www.instagram.com/psicologafranciellypedroso/",
+          "https://www.emdr.org.br/certificados",
+          "https://franciellypedroso.com/"
+        ]
+      },
+      {
+        name: "Alessandra Valeriano",
+        tier: "B",
+        role: "Psicóloga clínica com foco em luto e trauma",
+        crp: "CRP 04/45431",
+        city: "Belo Horizonte, MG",
+        online: true,
+        score: 82,
+        photo: "",
+        rating: "Atuação sólida em luto, psico-oncologia e cuidados paliativos",
+        summary: "Psicóloga clínica (CRP 04/45431) com atuação em luto, trauma e contextos de adoecimento crônico, incluindo casos de câncer e perdas familiares complexas. Registros públicos apontam formação de base em Minas Gerais, especialização em cuidados paliativos e mestrado em Psicologia Clínica na PUC-SP com pesquisa sobre luto em crianças e famílias, sob orientação de referência nacional na área. Mantém comunicação profissional em redes sociais e atendimento em Belo Horizonte com oferta online, combinando psicoterapia do luto, EMDR e enfoque clínico em sofrimento emocional de alta intensidade.",
+        focus: ["Luto", "Trauma", "Cuidados paliativos", "Ansiedade"],
+        approaches: ["Psicoterapia do luto", "EMDR", "Psico-oncologia"],
+        formations: ["Graduação em Psicologia - Centro Universitário Newton Paiva (2006)", "Cuidados Paliativos - Casa do Cuidar (2012)", "Mestrado em Psicologia Clínica - PUC-SP (2015)", "Formação em EMDR - ITC"],
+        contacts: {
+          platform: "https://www.doctoralia.com.br/alessandra-valeriano/psicologo/belo-horizonte",
+          website: "",
+          instagram: "https://www.instagram.com/psialevaleriano/",
+          linkedin: "",
+          whatsapp: "https://wa.me/5531982806677"
+        },
+        contentLinks: [
+          "https://www.instagram.com/psialevaleriano/",
+          "https://www.escavador.com/sobre/4980508/alessandra-rodrigues-valeriano"
+        ],
+        evidence: [
+          "https://www.instagram.com/psialevaleriano/",
+          "https://wa.me/5531982806677",
+          "https://www.doctoralia.com.br/alessandra-valeriano/psicologo/belo-horizonte",
+          "https://www.escavador.com/sobre/4980508/alessandra-rodrigues-valeriano",
+          "http://www.pucsp.br/pos-graduacao/mestrado-doutorado/psicologia-psicologia-clinica"
+        ]
+      },
+      {
+        name: "Maria Cecília Ramos Hyppólito",
+        tier: "B",
+        role: "Psicóloga clínica com foco em trauma e luto",
+        crp: "CRP 06/62790-0",
+        city: "São Paulo, SP",
+        online: true,
+        score: 81,
+        photo: "",
+        rating: "Boa combinação entre prática clínica e presença digital",
+        summary: "Psicóloga clínica (CRP 06/62790-0) com atuação em trauma e luto, com base em São Paulo e atendimentos online para brasileiros no Brasil e no exterior. Mantém site profissional, Instagram técnico e canal em vídeo com conteúdos sobre sofrimento emocional, reorganização psíquica e processamento de memórias difíceis. Fontes públicas indicam formação em Psicologia e capacitações complementares em EMDR, trauma complexo e recursos de trabalho com criança interior, compondo um perfil clínico voltado a casos de ansiedade, TEPT e perdas significativas.",
+        focus: ["Trauma", "Luto", "TEPT", "Ansiedade"],
+        approaches: ["EMDR", "TCC", "Psicoterapia clínica focada em trauma"],
+        formations: ["Graduação em Psicologia - Universidade Paulistana", "Formação em EMDR - Associação Brasileira de EMDR", "Capacitação em traumas complexos", "Formação em técnica da criança interior"],
+        contacts: {
+          platform: "https://www.psicologacecilia.com.br/home/",
+          website: "https://www.psicologacecilia.com.br/home/",
+          instagram: "https://www.instagram.com/mariaceciliaramoshyppolito/",
+          linkedin: "https://www.linkedin.com/in/maria-cec%C3%ADlia-ramos-hypp%C3%B3lito-37196828",
+          whatsapp: "https://wa.me/5511997023870"
+        },
+        contentLinks: [
+          "https://www.youtube.com/c/psicologamariaceciliaramoshyppolito",
+          "https://www.instagram.com/mariaceciliaramoshyppolito/",
+          "https://www.psicologacecilia.com.br/home/"
+        ],
+        evidence: [
+          "https://www.psicologacecilia.com.br/home/",
+          "https://www.instagram.com/mariaceciliaramoshyppolito/",
+          "https://www.youtube.com/c/psicologamariaceciliaramoshyppolito",
+          "https://www.doctoralia.com.br/maria-cecilia-ramos-hyppolito-2/psicologo/sao-paulo",
+          "https://www.psitto.com.br/psicologo/maria-cecilia-ramos-hyppolito/"
+        ]
+      }
+    ];
+
+    const cardsEl = document.getElementById("cards");
+    const searchEl = document.getElementById("search");
+    const tierEl = document.getElementById("tier");
+
+    function profileFallback(name) {
+      return `https://ui-avatars.com/api/?background=e9eef0&color=3d4d55&name=${encodeURIComponent(name)}&size=256`;
+    }
+
+    function instagramPhoto(instagramUrl) {
+      if (!instagramUrl) return "";
+      const m = instagramUrl.match(/instagram\.com\/([^/?#]+)/i);
+      if (!m) return "";
+      return `https://unavatar.io/instagram/${m[1]}`;
+    }
+
+    function cleanPhone(waUrl) {
+      if (!waUrl) return "";
+      const m = waUrl.match(/wa\.me\/(\d+)/i) || waUrl.match(/phone=(\d+)/i);
+      if (!m) return "";
+      const n = m[1];
+      if (n.length < 12) return n;
+      return `+${n.slice(0, 2)} ${n.slice(2, 4)} ${n.slice(4, 9)}-${n.slice(9, 13)}`;
+    }
+
+    function link(label, url) {
+      return url ? `<a class="a" target="_blank" rel="noopener noreferrer" href="${url}">${label}</a>` : "";
+    }
+
+    function render(list) {
+      cardsEl.innerHTML = list.map(t => {
+        const photo = t.photo || instagramPhoto(t.contacts.instagram) || profileFallback(t.name);
+        const contactLinks = [
+          link("Perfil", t.contacts.platform),
+          link("Site", t.contacts.website),
+          link("Instagram", t.contacts.instagram),
+          link("LinkedIn", t.contacts.linkedin),
+          link("WhatsApp", t.contacts.whatsapp)
+        ].join("");
+
+        const contentLinks = (t.contentLinks || []).map((u, i) => link(`Conteúdo ${i + 1}`, u)).join("");
+        const evidenceLinks = (t.evidence || []).map((u, i) => link(`Evidência ${i + 1}`, u)).join("");
+        const phone = cleanPhone(t.contacts.whatsapp);
+
+        return `
+          <article class="card">
+            <div class="top">
+              <img class="photo" src="${photo}" alt="Foto de ${t.name}" loading="lazy" onerror="this.src='${profileFallback(t.name)}'" />
+              <div>
+                <h2 class="name">${t.name}</h2>
+                <p class="role">${t.role}</p>
+                <div class="badges">
+                  <span class="badge">${t.crp}</span>
+                  <span class="badge">${t.city}</span>
+                  <span class="badge">${t.online ? "Atende online" : "Online não confirmado"}</span>
+                  <span class="badge alt">Tier ${t.tier}</span>
+                  <span class="badge alt">Score ${t.score}</span>
                 </div>
+              </div>
             </div>
-        </div>
-        
-        <!-- KPIs Section -->
-        <div id="kpiSection" style="display:none;">
-            <!-- Financial Metrics -->
-            <div class="metric-group">
-                <h5 class="metric-group-title">
-                    <i class="fas fa-dollar-sign text-success"></i> Métricas Financeiras
-                </h5>
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="metric-card financial">
-                            <i class="fas fa-chart-line metric-icon text-success"></i>
-                            <div class="metric-label">Faturamento Total</div>
-                            <div class="metric-value text-success" id="totalRevenue">-</div>
-                            <div class="metric-detail" id="revenueDetail">-</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="metric-card financial">
-                            <i class="fas fa-money-bill-wave metric-icon text-danger"></i>
-                            <div class="metric-label">Investimento Total</div>
-                            <div class="metric-value text-danger" id="totalInvestment">-</div>
-                            <div class="metric-detail" id="investmentDetail">-</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="metric-card financial">
-                            <i class="fas fa-percentage metric-icon"></i>
-                            <div class="metric-label">Margem Total</div>
-                            <div class="metric-value" id="totalMargin">-</div>
-                            <div class="metric-detail" id="marginDetail">-</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="metric-card financial">
-                            <i class="fas fa-piggy-bank metric-icon"></i>
-                            <div class="metric-label">Lucro Líquido</div>
-                            <div class="metric-value" id="netProfit">-</div>
-                            <div class="metric-badge" id="profitBadge">-</div>
-                        </div>
-                    </div>
-                </div>
+            <div class="body">
+              <div class="sec">
+                <h4>Resumo</h4>
+                <p class="summary">${t.summary}</p>
+              </div>
+              <div class="sec">
+                <h4>Sinais de Reputação</h4>
+                <p class="summary">${t.rating}</p>
+              </div>
+              <div class="sec">
+                <h4>Foco Clínico</h4>
+                <ul class="list">${t.focus.map(i => `<li>${i}</li>`).join("")}</ul>
+              </div>
+              <div class="sec">
+                <h4>Abordagens</h4>
+                <ul class="list">${t.approaches.map(i => `<li>${i}</li>`).join("")}</ul>
+              </div>
+              <div class="sec">
+                <h4>Formação e Qualificação</h4>
+                <ul class="list">${t.formations.map(i => `<li>${i}</li>`).join("")}</ul>
+              </div>
+              <div class="sec">
+                <h4>Contato e Redes</h4>
+                <div class="links">${contactLinks || "<span class='summary'>Sem links públicos adicionais além do perfil principal.</span>"}</div>
+                ${phone ? `<p class="summary" style="margin-top:8px"><strong>WhatsApp:</strong> ${phone}</p>` : ""}
+              </div>
+              <div class="sec">
+                <h4>Textos / Vídeos</h4>
+                <div class="links">${contentLinks || "<span class='summary'>Nenhum conteúdo público relevante encontrado na coleta.</span>"}</div>
+              </div>
+              <div class="sec">
+                <h4>Links de Evidência</h4>
+                <div class="links">${evidenceLinks || "<span class='summary'>Sem links adicionais na coleta.</span>"}</div>
+              </div>
             </div>
+          </article>
+        `;
+      }).join("");
+    }
 
-            <!-- Performance Metrics -->
-            <div class="metric-group">
-                <h5 class="metric-group-title">
-                    <i class="fas fa-tachometer-alt text-info"></i> Indicadores de Performance
-                </h5>
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="metric-card performance">
-                            <i class="fas fa-chart-line metric-icon text-info"></i>
-                            <div class="metric-label">ROI Médio</div>
-                            <div class="metric-value text-info" id="avgROI">-</div>
-                            <div class="metric-progress">
-                                <div class="metric-progress-bar bg-info" id="roiProgress"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="metric-card performance">
-                            <i class="fas fa-percentage metric-icon text-warning"></i>
-                            <div class="metric-label">Taxa de Conversão</div>
-                            <div class="metric-value text-warning" id="conversionRate">-</div>
-                            <div class="metric-detail" id="conversionDetail">-</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="metric-card performance">
-                            <i class="fas fa-receipt metric-icon"></i>
-                            <div class="metric-label">Ticket Médio</div>
-                            <div class="metric-value" id="avgTicket">-</div>
-                            <div class="metric-detail">Por lead capturado</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="metric-card performance">
-                            <i class="fas fa-coins metric-icon text-primary"></i>
-                            <div class="metric-label">Custo por Lead</div>
-                            <div class="metric-value text-primary" id="avgCPL">-</div>
-                            <div class="metric-badge" id="cplBadge">-</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    function applyFilters() {
+      const q = searchEl.value.trim().toLowerCase();
+      const tier = tierEl.value;
 
-            <!-- Volume & Health Metrics -->
-            <div class="metric-group">
-                <h5 class="metric-group-title">
-                    <i class="fas fa-chart-bar text-purple"></i> Volume e Saúde das Campanhas
-                </h5>
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="metric-card volume">
-                            <i class="fas fa-users metric-icon text-primary"></i>
-                            <div class="metric-label">Total de Leads</div>
-                            <div class="metric-value text-primary" id="totalLeads">-</div>
-                            <div class="metric-detail" id="leadsDetail">-</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="metric-card volume">
-                            <i class="fas fa-bullhorn metric-icon text-secondary"></i>
-                            <div class="metric-label">Campanhas Ativas</div>
-                            <div class="metric-value text-secondary" id="activeCampaigns">-</div>
-                            <div class="metric-detail" id="campaignsDetail">-</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="metric-card health">
-                            <i class="fas fa-check-circle metric-icon text-success"></i>
-                            <div class="metric-label">Campanhas Lucrativas</div>
-                            <div class="metric-value text-success" id="profitableCampaigns">-</div>
-                            <div class="metric-badge bg-success text-white" id="profitablePercent">-</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="metric-card health">
-                            <i class="fas fa-times-circle metric-icon text-danger"></i>
-                            <div class="metric-label">Campanhas Deficitárias</div>
-                            <div class="metric-value text-danger" id="lossCampaigns">-</div>
-                            <div class="metric-badge bg-danger text-white" id="lossPercent">-</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Navigation Tabs -->
-        <ul class="nav nav-tabs mb-4" id="mainTabs" style="display:none;">
-            <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="tab" href="#dashboardTab">
-                    <i class="fas fa-chart-line me-2"></i>Dashboard
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tableTab">
-                    <i class="fas fa-table me-2"></i>Tabela Completa
-                </a>
-            </li>
-        </ul>
+      const filtered = therapists.filter(t => {
+        const hay = [
+          t.name, t.role, t.crp, t.city, t.summary,
+          ...(t.focus || []), ...(t.approaches || []), ...(t.formations || [])
+        ].join(" ").toLowerCase();
 
-        <!-- Tab Content -->
-        <div class="tab-content" id="tabContent" style="display:none;">
-            <!-- Dashboard Tab -->
-            <div class="tab-pane fade show active" id="dashboardTab">
-                <div class="row" id="chartsRow">
-                    <div class="col-lg-6">
-                        <div class="chart-container">
-                            <h5>💰 Top 10 Campanhas por Faturamento</h5>
-                            <div class="chart-wrapper">
-                                <canvas id="chart1"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-6">
-                        <div class="chart-container">
-                            <h5>🔥 Distribuição de Leads por Temperatura</h5>
-                            <div class="chart-wrapper">
-                                <canvas id="chart2"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-6">
-                        <div class="chart-container">
-                            <h5>📈 Top 10 Campanhas por ROI</h5>
-                            <div class="chart-wrapper">
-                                <canvas id="chart3"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-6">
-                        <div class="chart-container">
-                            <h5>💸 Análise de Margem</h5>
-                            <div class="chart-wrapper">
-                                <canvas id="chart4"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-8">
-                        <div class="chart-container">
-                            <h5>📊 Performance Comparativa: Investimento vs Faturamento</h5>
-                            <div class="chart-wrapper">
-                                <canvas id="chart5"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-4">
-                        <div class="chart-container">
-                            <h5>🎯 Distribuição de Probabilidade de Conversão</h5>
-                            <div class="chart-wrapper">
-                                <canvas id="chart6"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-6">
-                        <div class="chart-container">
-                            <h5>💵 Custo por Lead (Top 10 Mais Caros)</h5>
-                            <div class="chart-wrapper">
-                                <canvas id="chart7"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-6">
-                        <div class="chart-container">
-                            <h5>🏆 Eficiência: Leads Gerados por Campanha</h5>
-                            <div class="chart-wrapper">
-                                <canvas id="chart8"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        const okSearch = !q || hay.includes(q);
+        const okTier = tier === "all" || t.tier === tier;
+        return okSearch && okTier;
+      });
 
-            <!-- Table Tab -->
-            <div class="tab-pane fade" id="tableTab">
-                <div class="chart-container">
-                    <h5>📋 Dados Completos das Campanhas</h5>
-                    <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
-                        <table class="table table-sm table-hover table-striped">
-                            <thead class="sticky-top bg-white">
-                                <tr>
-                                    <th>Campanha</th>
-                                    <th>Investimento</th>
-                                    <th>Faturamento</th>
-                                    <th>Margem</th>
-                                    <th>Lucro Líq.</th>
-                                    <th>ROI %</th>
-                                    <th>Leads</th>
-                                    <th>CPL</th>
-                                    <th>🥶</th>
-                                    <th>😐</th>
-                                    <th>🥵</th>
-                                    <th>Conv. %</th>
-                                </tr>
-                            </thead>
-                            <tbody id="dataTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+      render(filtered);
+    }
 
-
-        </div>
-    </div>
-    
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    
-    <script>
-        let data = [];
-        let charts = {};
-        
-        // Simple Chart.js defaults
-        Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-        
-        // Utility functions
-        function formatMoney(val) {
-            return 'R$ ' + val.toFixed(2)
-                .replace('.', ',')  // Troca ponto por vírgula nos decimais
-                .replace(/\d(?=(\d{3})+,)/g, '$&.');  // Adiciona pontos nos milhares
-        }
-        
-        function parseNumber(str) {
-            if (!str || str === '0,00') return 0;
-            return parseFloat(str.replace(/\./g, '').replace(',', '.'));
-        }
-        
-        // Load file
-        function loadFile() {
-            const file = document.getElementById('csvFile').files[0];
-            if (!file) {
-                alert('Selecione um arquivo!');
-                return;
-            }
-            
-            Papa.parse(file, {
-                header: true,
-                complete: function(results) {
-                    processData(results.data);
-                }
-            });
-            
-            // Chart 5: Comparison Investment vs Revenue
-            const comparisonData = data
-                .filter(row => row.revenue > 0 || row.investment > 0)
-                .sort((a, b) => b.revenue - a.revenue)
-                .slice(0, 15);
-            
-            if (charts.chart5) charts.chart5.destroy();
-            charts.chart5 = new Chart(document.getElementById('chart5'), {
-                type: 'bar',
-                data: {
-                    labels: comparisonData.map(r => r.name.substring(0, 20) + '...'),
-                    datasets: [{
-                        label: 'Faturamento',
-                        data: comparisonData.map(r => r.revenue),
-                        backgroundColor: '#28a745'
-                    }, {
-                        label: 'Investimento',
-                        data: comparisonData.map(r => r.investment),
-                        backgroundColor: '#dc3545'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            ticks: {
-                                callback: function(value) {
-                                    return formatMoney(value);
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                title: function(tooltipItems) {
-                                    return comparisonData[tooltipItems[0].dataIndex].name;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Chart 6: Conversion Probability
-            const totalLowProb = data.reduce((sum, row) => sum + row.lowProb, 0);
-            const totalMedProb = data.reduce((sum, row) => sum + row.medProb, 0);
-            const totalHighProb = data.reduce((sum, row) => sum + row.highProb, 0);
-            
-            if (charts.chart6) charts.chart6.destroy();
-            charts.chart6 = new Chart(document.getElementById('chart6'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['Pouco Provável', 'Possível', 'Muito Provável'],
-                    datasets: [{
-                        data: [totalLowProb, totalMedProb, totalHighProb],
-                        backgroundColor: ['#dc3545', '#ffc107', '#28a745']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-            
-            // Chart 7: Cost per Lead
-            const topCPL = data
-                .filter(row => row.costPerLead > 0)
-                .sort((a, b) => b.costPerLead - a.costPerLead)
-                .slice(0, 10);
-            
-            if (charts.chart7) charts.chart7.destroy();
-            charts.chart7 = new Chart(document.getElementById('chart7'), {
-                type: 'bar',
-                data: {
-                    labels: topCPL.map(r => r.name.substring(0, 25) + '...'),
-                    datasets: [{
-                        label: 'Custo por Lead',
-                        data: topCPL.map(r => r.costPerLead),
-                        backgroundColor: '#ff6384'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
-                    scales: {
-                        x: {
-                            ticks: {
-                                callback: function(value) {
-                                    return formatMoney(value);
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                title: function(tooltipItems) {
-                                    return topCPL[tooltipItems[0].dataIndex].name;
-                                },
-                                label: function(context) {
-                                    const item = topCPL[context.dataIndex];
-                                    return [
-                                        'CPL: ' + formatMoney(context.raw),
-                                        'Total Leads: ' + item.leads,
-                                        'Investimento: ' + formatMoney(item.investment)
-                                    ];
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Chart 8: Leads by Campaign
-            const topLeads = data
-                .filter(row => row.leads > 0)
-                .sort((a, b) => b.leads - a.leads)
-                .slice(0, 10);
-            
-            if (charts.chart8) charts.chart8.destroy();
-            charts.chart8 = new Chart(document.getElementById('chart8'), {
-                type: 'bar',
-                data: {
-                    labels: topLeads.map(r => r.name.substring(0, 25) + '...'),
-                    datasets: [{
-                        label: 'Leads Frios 🥶',
-                        data: topLeads.map(r => r.coldLeads),
-                        backgroundColor: '#3498db'
-                    }, {
-                        label: 'Leads Mornos 😐',
-                        data: topLeads.map(r => r.warmLeads),
-                        backgroundColor: '#f39c12'
-                    }, {
-                        label: 'Leads Quentes 🥵',
-                        data: topLeads.map(r => r.hotLeads),
-                        backgroundColor: '#e74c3c'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: { stacked: true },
-                        y: { stacked: true }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                title: function(tooltipItems) {
-                                    return topLeads[tooltipItems[0].dataIndex].name;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-        }
-        
-        // Populate table
-        function populateTable() {
-            const tbody = document.getElementById('dataTableBody');
-            tbody.innerHTML = '';
-            
-            data
-                .sort((a, b) => b.revenue - a.revenue)
-                .forEach(row => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td title="${row.name}" style="cursor: help;">
-                            ${row.name.substring(0, 40)}...
-                        </td>
-                        <td>${formatMoney(row.investment)}</td>
-                        <td>${formatMoney(row.revenue)}</td>
-                        <td class="${row.margin >= 0 ? 'text-success' : 'text-danger'}">
-                            ${formatMoney(row.margin)}
-                        </td>
-                        <td class="${row.netProfit >= 0 ? 'text-success' : 'text-danger'}">
-                            ${formatMoney(row.netProfit)}
-                        </td>
-                        <td class="${row.roi >= 0 ? 'text-success' : 'text-danger'}">
-                            ${row.roi.toFixed(1)}%
-                        </td>
-                        <td>${row.leads}</td>
-                        <td>${formatMoney(row.costPerLead)}</td>
-                        <td>${row.coldLeads}</td>
-                        <td>${row.warmLeads}</td>
-                        <td>${row.hotLeads}</td>
-                        <td>${row.conversionRate.toFixed(1)}%</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-        }
-        
-        // Process data
-        function processData(rawData) {
-            data = rawData
-                .filter(row => row.Campanhas && row.Campanhas.trim() !== '')
-                .map(row => ({
-                    name: row.Campanhas,
-                    investment: parseNumber(row.Investimento),
-                    revenue: parseNumber(row.Faturamento),
-                    margin: parseNumber(row.Margem),
-                    leads: parseInt(row['No. de Leads']) || 0,
-                    costPerLead: parseNumber(row['Custo por lead']),
-                    coldLeads: parseInt(row['Leads 🥶']) || 0,
-                    warmLeads: parseInt(row['Leads 😐']) || 0,
-                    hotLeads: parseInt(row['Leads 🥵']) || 0,
-                    coldPercent: parseFloat((row['% Leads 🥶'] || '0').replace('%', '')) || 0,
-                    warmPercent: parseFloat((row['% Leads 😐'] || '0').replace('%', '')) || 0,
-                    hotPercent: parseFloat((row['% Leads 🥵'] || '0').replace('%', '')) || 0,
-                    lowProb: parseInt(row['Pouco Provável']) || 0,
-                    medProb: parseInt(row['Possível']) || 0,
-                    highProb: parseInt(row['Muito Provável']) || 0,
-                    netProfit: 0,
-                    roi: 0,
-                    conversionRate: 0
-                }));
-            
-            // Calculate additional metrics
-            data.forEach(row => {
-                row.netProfit = row.revenue - row.investment;
-                if (row.investment > 0) {
-                    row.roi = ((row.revenue - row.investment) / row.investment) * 100;
-                } else if (row.revenue > 0) {
-                    row.roi = 100;
-                }
-                if (row.leads > 0) {
-                    row.conversionRate = (row.highProb / row.leads) * 100;
-                }
-            });
-            
-            updateKPIs();
-            createCharts();
-            populateTable();
-            
-            // Show UI
-            document.getElementById('kpiSection').style.display = 'block';
-            document.getElementById('mainTabs').style.display = 'block';
-            document.getElementById('tabContent').style.display = 'block';
-        }
-        
-        // Update KPIs
-        function updateKPIs() {
-            // Calculate metrics
-            const totalRevenue = data.reduce((sum, row) => sum + row.revenue, 0);
-            const totalInvestment = data.reduce((sum, row) => sum + row.investment, 0);
-            const totalMargin = data.reduce((sum, row) => sum + row.margin, 0);
-            const totalNetProfit = totalRevenue - totalInvestment;
-            const totalLeads = data.reduce((sum, row) => sum + row.leads, 0);
-            const avgROI = totalInvestment > 0 ? ((totalRevenue - totalInvestment) / totalInvestment * 100) : 0;
-            const avgCPL = totalLeads > 0 ? totalInvestment / totalLeads : 0;
-            const totalConverted = data.reduce((sum, row) => sum + row.highProb, 0);
-            const conversionRate = totalLeads > 0 ? (totalConverted / totalLeads * 100) : 0;
-            const activeCampaigns = data.length;
-            const profitableCampaigns = data.filter(row => row.netProfit > 0).length;
-            const lossCampaigns = data.filter(row => row.netProfit < 0).length;
-            const neutralCampaigns = data.filter(row => row.netProfit === 0).length;
-            // Ticket médio calculado sobre leads convertidos (muito provável)
-            const avgTicket = totalConverted > 0 ? totalRevenue / totalConverted : 0;
-            
-            // Calculate additional insights
-            const campaignsWithRevenue = data.filter(row => row.revenue > 0).length;
-            const campaignsWithInvestment = data.filter(row => row.investment > 0).length;
-            const profitablePercent = (profitableCampaigns / activeCampaigns * 100).toFixed(0);
-            const lossPercent = (lossCampaigns / activeCampaigns * 100).toFixed(0);
-            const marginPercent = totalRevenue > 0 ? (totalMargin / totalRevenue * 100).toFixed(1) : 0;
-            const totalColdLeads = data.reduce((sum, row) => sum + row.coldLeads, 0);
-            const totalWarmLeads = data.reduce((sum, row) => sum + row.warmLeads, 0);
-            const totalHotLeads = data.reduce((sum, row) => sum + row.hotLeads, 0);
-            
-            // Update Financial Metrics
-            document.getElementById('totalRevenue').textContent = formatMoney(totalRevenue);
-            document.getElementById('revenueDetail').textContent = `${campaignsWithRevenue} campanhas gerando receita`;
-            
-            document.getElementById('totalInvestment').textContent = formatMoney(totalInvestment);
-            document.getElementById('investmentDetail').textContent = `${campaignsWithInvestment} campanhas com investimento`;
-            
-            document.getElementById('totalMargin').textContent = formatMoney(totalMargin);
-            document.getElementById('totalMargin').className = 'metric-value ' + (totalMargin >= 0 ? 'text-success' : 'text-danger');
-            document.getElementById('marginDetail').textContent = `${marginPercent}% da receita`;
-            
-            document.getElementById('netProfit').textContent = formatMoney(totalNetProfit);
-            document.getElementById('netProfit').className = 'metric-value ' + (totalNetProfit >= 0 ? 'text-success' : 'text-danger');
-            document.getElementById('profitBadge').textContent = totalNetProfit >= 0 ? '✓ Lucrativo' : '✗ Prejuízo';
-            document.getElementById('profitBadge').className = 'metric-badge ' + (totalNetProfit >= 0 ? 'bg-success text-white' : 'bg-danger text-white');
-            
-            // Update Performance Metrics
-            document.getElementById('avgROI').textContent = avgROI.toFixed(1) + '%';
-            const roiProgressBar = document.getElementById('roiProgress');
-            roiProgressBar.style.width = Math.min(avgROI / 2, 100) + '%';
-            
-            document.getElementById('conversionRate').textContent = conversionRate.toFixed(1) + '%';
-            document.getElementById('conversionDetail').textContent = `${totalConverted} de ${totalLeads} leads`;
-            
-            document.getElementById('avgTicket').textContent = formatMoney(avgTicket);
-            
-            document.getElementById('avgCPL').textContent = formatMoney(avgCPL);
-            document.getElementById('cplBadge').textContent = avgCPL < 100 ? 'Eficiente' : avgCPL < 200 ? 'Moderado' : 'Alto';
-            document.getElementById('cplBadge').className = 'metric-badge ' + 
-                (avgCPL < 100 ? 'bg-success text-white' : avgCPL < 200 ? 'bg-warning text-dark' : 'bg-danger text-white');
-            
-            // Update Volume & Health Metrics
-            document.getElementById('totalLeads').textContent = totalLeads.toLocaleString('pt-BR');
-            document.getElementById('leadsDetail').textContent = `🥶 ${totalColdLeads} | 😐 ${totalWarmLeads} | 🥵 ${totalHotLeads}`;
-            
-            document.getElementById('activeCampaigns').textContent = activeCampaigns;
-            document.getElementById('campaignsDetail').textContent = neutralCampaigns > 0 ? 
-                `${neutralCampaigns} sem movimentação` : 'Todas com movimentação';
-            
-            document.getElementById('profitableCampaigns').textContent = profitableCampaigns;
-            document.getElementById('profitablePercent').textContent = profitablePercent + '% do total';
-            
-            document.getElementById('lossCampaigns').textContent = lossCampaigns;
-            document.getElementById('lossPercent').textContent = lossPercent + '% do total';
-        }
-        
-        // Create charts
-        function createCharts() {
-            // Chart 1: Top 10 Revenue
-            const top10Revenue = data
-                .filter(row => row.revenue > 0)
-                .sort((a, b) => b.revenue - a.revenue)
-                .slice(0, 10);
-            
-            if (charts.chart1) charts.chart1.destroy();
-            charts.chart1 = new Chart(document.getElementById('chart1'), {
-                type: 'bar',
-                data: {
-                    labels: top10Revenue.map(r => r.name.substring(0, 30) + '...'),
-                    datasets: [{
-                        label: 'Faturamento',
-                        data: top10Revenue.map(r => r.revenue),
-                        backgroundColor: '#28a745'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            ticks: {
-                                callback: function(value) {
-                                    return formatMoney(value);
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                            titleFont: { size: 14, weight: 'bold' },
-                            bodyFont: { size: 13 },
-                            padding: 15,
-                            displayColors: false,
-                            callbacks: {
-                                title: function(tooltipItems) {
-                                    const index = tooltipItems[0].dataIndex;
-                                    return top10Revenue[index].name;
-                                },
-                                label: function(context) {
-                                    const campaign = top10Revenue[context.dataIndex];
-                                    return [
-                                        'Faturamento: ' + formatMoney(campaign.revenue),
-                                        'Investimento: ' + formatMoney(campaign.investment),
-                                        'ROI: ' + campaign.roi.toFixed(1) + '%',
-                                        'Leads: ' + campaign.leads
-                                    ];
-                                }
-                            }
-                        }
-                    }
-
-                }
-            });
-            
-            // Chart 2: Lead Temperature
-            const totalCold = data.reduce((sum, row) => sum + row.coldLeads, 0);
-            const totalWarm = data.reduce((sum, row) => sum + row.warmLeads, 0);
-            const totalHot = data.reduce((sum, row) => sum + row.hotLeads, 0);
-            
-            if (charts.chart2) charts.chart2.destroy();
-            charts.chart2 = new Chart(document.getElementById('chart2'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['Leads Frios 🥶', 'Leads Mornos 😐', 'Leads Quentes 🥵'],
-                    datasets: [{
-                        data: [totalCold, totalWarm, totalHot],
-                        backgroundColor: ['#3498db', '#f39c12', '#e74c3c']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                }
-            });
-            
-            // Chart 3: Top 10 ROI
-            const top10ROI = data
-                .filter(row => row.investment > 0)
-                .sort((a, b) => b.roi - a.roi)
-                .slice(0, 10);
-            
-            if (charts.chart3) charts.chart3.destroy();
-            charts.chart3 = new Chart(document.getElementById('chart3'), {
-                type: 'bar',
-                data: {
-                    labels: top10ROI.map(r => r.name.substring(0, 30) + '...'),
-                    datasets: [{
-                        label: 'ROI %',
-                        data: top10ROI.map(r => r.roi),
-                        backgroundColor: '#17a2b8'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
-                    scales: {
-                        x: {
-                            ticks: {
-                                callback: function(value) {
-                                    return value.toFixed(0) + '%';
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                            titleFont: { size: 14, weight: 'bold' },
-                            bodyFont: { size: 13 },
-                            padding: 15,
-                            displayColors: false,
-                            callbacks: {
-                                title: function(tooltipItems) {
-                                    const index = tooltipItems[0].dataIndex;
-                                    return top10ROI[index].name;
-                                },
-                                label: function(context) {
-                                    const item = top10ROI[context.dataIndex];
-                                    return [
-                                        'ROI: ' + item.roi.toFixed(1) + '%',
-                                        'Investimento: ' + formatMoney(item.investment),
-                                        'Faturamento: ' + formatMoney(item.revenue)
-                                    ];
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Chart 4: Margin Analysis
-            const marginData = data
-                .sort((a, b) => b.margin - a.margin)
-                .slice(0, 15);
-            
-            if (charts.chart4) charts.chart4.destroy();
-            charts.chart4 = new Chart(document.getElementById('chart4'), {
-                type: 'bar',
-                data: {
-                    labels: marginData.map(r => r.name.substring(0, 20) + '...'),
-                    datasets: [{
-                        label: 'Margem',
-                        data: marginData.map(r => r.margin),
-                        backgroundColor: marginData.map(r => r.margin >= 0 ? '#28a745' : '#dc3545')
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            ticks: {
-                                callback: function(value) {
-                                    return formatMoney(value);
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                            titleFont: { size: 14, weight: 'bold' },
-                            bodyFont: { size: 13 },
-                            padding: 15,
-                            displayColors: false,
-                            callbacks: {
-                                title: function(tooltipItems) {
-                                    const index = tooltipItems[0].dataIndex;
-                                    return marginData[index].name;
-                                },
-                                label: function(context) {
-                                    const item = marginData[context.dataIndex];
-                                    return [
-                                        'Margem: ' + formatMoney(item.margin),
-                                        'Faturamento: ' + formatMoney(item.revenue),
-                                        'Investimento: ' + formatMoney(item.investment),
-                                        'ROI: ' + item.roi.toFixed(1) + '%'
-                                    ];
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Chart 5: Comparison Investment vs Revenue
-            const comparisonData = data
-                .filter(row => row.revenue > 0 || row.investment > 0)
-                .sort((a, b) => b.revenue - a.revenue)
-                .slice(0, 15);
-            
-            if (charts.chart5) charts.chart5.destroy();
-            charts.chart5 = new Chart(document.getElementById('chart5'), {
-                type: 'bar',
-                data: {
-                    labels: comparisonData.map(r => r.name.substring(0, 20) + '...'),
-                    datasets: [{
-                        label: 'Faturamento',
-                        data: comparisonData.map(r => r.revenue),
-                        backgroundColor: '#28a745'
-                    }, {
-                        label: 'Investimento',
-                        data: comparisonData.map(r => r.investment),
-                        backgroundColor: '#dc3545'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            ticks: {
-                                callback: function(value) {
-                                    return formatMoney(value);
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                            titleFont: { size: 14, weight: 'bold' },
-                            bodyFont: { size: 13 },
-                            padding: 15,
-                            displayColors: true,
-                            callbacks: {
-                                title: function(tooltipItems) {
-                                    const index = tooltipItems[0].dataIndex;
-                                    return comparisonData[index].name;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Chart 6: Conversion Probability
-            const totalLowProb = data.reduce((sum, row) => sum + row.lowProb, 0);
-            const totalMedProb = data.reduce((sum, row) => sum + row.medProb, 0);
-            const totalHighProb = data.reduce((sum, row) => sum + row.highProb, 0);
-            
-            if (charts.chart6) charts.chart6.destroy();
-            charts.chart6 = new Chart(document.getElementById('chart6'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['Pouco Provável', 'Possível', 'Muito Provável'],
-                    datasets: [{
-                        data: [totalLowProb, totalMedProb, totalHighProb],
-                        backgroundColor: ['#dc3545', '#ffc107', '#28a745']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = ((context.raw / total) * 100).toFixed(1);
-                                    return context.label + ': ' + context.raw + ' (' + percentage + '%)';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Chart 7: Cost per Lead
-            const topCPL = data
-                .filter(row => row.costPerLead > 0)
-                .sort((a, b) => b.costPerLead - a.costPerLead)
-                .slice(0, 10);
-            
-            if (charts.chart7) charts.chart7.destroy();
-            charts.chart7 = new Chart(document.getElementById('chart7'), {
-                type: 'bar',
-                data: {
-                    labels: topCPL.map(r => r.name.substring(0, 25) + '...'),
-                    datasets: [{
-                        label: 'Custo por Lead',
-                        data: topCPL.map(r => r.costPerLead),
-                        backgroundColor: '#ff6384'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
-                    scales: {
-                        x: {
-                            ticks: {
-                                callback: function(value) {
-                                    return formatMoney(value);
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                            titleFont: { size: 14, weight: 'bold' },
-                            bodyFont: { size: 13 },
-                            padding: 15,
-                            displayColors: false,
-                            callbacks: {
-                                title: function(tooltipItems) {
-                                    const index = tooltipItems[0].dataIndex;
-                                    return topCPL[index].name;
-                                },
-                                label: function(context) {
-                                    const item = topCPL[context.dataIndex];
-                                    return [
-                                        'CPL: ' + formatMoney(item.costPerLead),
-                                        'Total Leads: ' + item.leads,
-                                        'Investimento: ' + formatMoney(item.investment)
-                                    ];
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Chart 8: Leads by Campaign
-            const topLeads = data
-                .filter(row => row.leads > 0)
-                .sort((a, b) => b.leads - a.leads)
-                .slice(0, 10);
-            
-            if (charts.chart8) charts.chart8.destroy();
-            charts.chart8 = new Chart(document.getElementById('chart8'), {
-                type: 'bar',
-                data: {
-                    labels: topLeads.map(r => r.name.substring(0, 25) + '...'),
-                    datasets: [{
-                        label: 'Leads Frios 🥶',
-                        data: topLeads.map(r => r.coldLeads),
-                        backgroundColor: '#3498db'
-                    }, {
-                        label: 'Leads Mornos 😐',
-                        data: topLeads.map(r => r.warmLeads),
-                        backgroundColor: '#f39c12'
-                    }, {
-                        label: 'Leads Quentes 🥵',
-                        data: topLeads.map(r => r.hotLeads),
-                        backgroundColor: '#e74c3c'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: { stacked: true },
-                        y: { stacked: true }
-                    },
-                    plugins: {
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                            titleFont: { size: 14, weight: 'bold' },
-                            bodyFont: { size: 13 },
-                            padding: 15,
-                            callbacks: {
-                                title: function(tooltipItems) {
-                                    const index = tooltipItems[0].dataIndex;
-                                    return topLeads[index].name;
-                                },
-                                footer: function(tooltipItems) {
-                                    const index = tooltipItems[0].dataIndex;
-                                    const campaign = topLeads[index];
-                                    return [
-                                        'Total: ' + campaign.leads + ' leads',
-                                        'Taxa conversão: ' + campaign.conversionRate.toFixed(1) + '%'
-                                    ];
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        // Pre-loaded CSV data
-        const preloadedCSV = `Campanhas,Investimento,Faturamento,Margem,No. de Leads,Custo por lead,Leads 🥶,Leads 😐,Leads 🥵,% Leads 🥶,% Leads 😐,% Leads 🥵,Pouco Provável,Possível,Muito Provável,% Pouco Provável,% Possível,% Muito Provável
-(33333333333) Desconhecido,"0,00","121.105,80","121.105,80",381,"0,00",108,101,172,28%,27%,45%,20,36,24,25%,45%,30%
-"(22677628551)(Jorge) Campanha Imigração isolado  - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","33.991,29","55.020,00","21.028,71",277,"122,71",42,82,153,15%,30%,55%,24,43,24,26%,47%,26%
-Chat box,"0,00","13.400,00","13.400,00",161,"0,00",31,73,57,19%,45%,35%,8,10,4,36%,45%,18%
-(22691691512) Advogado para Imigração - Inglês,"12.085,04","7.302,49","-4.782,55",140,"86,32",34,57,49,24%,41%,35%,10,8,6,42%,33%,25%
-Imigração,"0,00","21.350,00","21.350,00",103,"0,00",8,33,62,8%,32%,60%,8,13,8,28%,45%,28%
-"(22677628554)(Jorge) Campanha Imobiliário - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","5.011,92","10.700,00","5.688,08",73,"68,66",11,21,41,15%,29%,56%,5,6,7,28%,33%,39%
-"(22677628548)(Jorge)  CPA - Advogado Despejo - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","5.731,19","3.600,00","-2.131,19",66,"86,84",20,20,26,30%,30%,39%,12,6,3,57%,29%,14%
-"(22677628680)(Jorge) CPA - Advogado Leilão - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","8.355,31","4.500,00","-3.855,31",61,"136,97",9,23,28,15%,38%,46%,3,7,3,23%,54%,23%
-"(22677628557)(Jorge)  CPC - Advogado Inventário - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","5.847,14","2.800,00","-3.047,14",49,"119,33",9,16,24,18%,33%,49%,6,3,2,55%,27%,18%
-"(921620721971) CPC - Advogado Inventário - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","4.488,10","1.000,00","-3.488,10",37,"121,30",9,17,11,24%,46%,30%,4,2,2,50%,25%,25%
-"(22150233328) Campanha Imigração isolado  - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","4.909,02","12.400,00","7.490,98",26,"188,81",5,6,15,19%,23%,58%,2,10,1,15%,77%,8%
-"(21640660051) CPA - Advogado erro médico - Frase - Sexo Desconhecido - Idade Desconhecida - 30% - São Paulo, SP","3.155,92","2.000,00","-1.155,92",24,"131,50",8,1,15,33%,4%,63%,4,5,1,40%,50%,10%
-"(21671719354) CPA - Advogado erro médico - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","1.146,43","300,00","-846,43",23,"49,84",3,6,14,13%,26%,61%,2,6,0,25%,75%,0%
-"(21620721059) CPA - Advogado Despejo - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","2.126,16","4.900,00","2.773,84",22,"96,64",4,8,10,18%,36%,45%,0,2,0,0%,100%,0%
-(21668053385)   Campanha Imigração - Teste,"4.643,09","2.700,00","-1.943,09",21,"221,10",11,3,7,52%,14%,33%,3,2,0,60%,40%,0%
-Imobiliario ,"0,00","0,00","0,00",19,"0,00",1,7,11,5%,37%,58%,2,2,2,33%,33%,33%
-"(22150233331) Campanha Imigração isolado  - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - SP, Estado","806,90","2.666,70","1.859,80",18,"44,83",3,4,10,17%,22%,56%,0,1,3,0%,25%,75%
-"(21671719198) CPA - Advogado erro médico - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","890,10","1.500,00","609,90",16,"55,63",1,2,13,6%,13%,81%,4,1,2,57%,14%,29%
-(22706807703) Advogado para Imigração - Inglês (Europa),"4.951,88","7.441,00","2.489,12",15,"330,13",2,3,10,13%,20%,67%,0,3,2,0%,60%,40%
-(22569365668) CPA - Advogado Erro Médico - Exata - Feminino - Idade Desconhecida - SP e RJ,"1.574,64","2.500,00","925,36",15,"104,98",2,4,9,13%,27%,60%,3,1,1,60%,20%,20%
-(22711049421) CPC - advogado criminal - Frase - Sexo Desconhecido - Idade Desconhecida - Geral - RJ,"2.042,03","0,00","-2.042,03",14,"145,86",2,5,7,14%,36%,50%,1,3,0,25%,75%,0%
-(22620940201) Advogado Empresarial,"2.731,18","5.200,00","2.468,82",13,"210,09",3,2,8,23%,15%,62%,1,1,1,33%,33%,33%
-"(21661494183) CPA - Advogado Leilão - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","1.488,98","3.500,00","2.011,02",13,"114,54",4,2,7,31%,15%,54%,1,1,1,33%,33%,33%
-"(22150233313) Campanha Família - inventario - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - SP, Estado","407,25","0,00","-407,25",13,"31,33",1,5,7,8%,38%,54%,1,1,0,50%,50%,0%
-"(21620721989) CPC - Advogado Inventário - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - Rio de Janeiro, RJ","796,67","0,00","-796,67",12,"66,39",4,3,5,33%,25%,42%,3,1,0,75%,25%,0%
-"(21620721551) CPA - Advogado Despejo - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","907,23","1.700,00","792,77",12,"75,60",1,7,4,8%,58%,33%,0,2,1,0%,67%,33%
-(21891545514) CPA - advogado criminal - Frase - Sexo Desconhecido - Idade Desconhecida - Geral - RJ,"1.103,48","0,00","-1.103,48",11,"100,32",2,4,5,18%,36%,45%,1,1,1,33%,33%,33%
-"(21620722691 CPC - Advogado Usucapião - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","1.768,33","0,00","-1.768,33",11,"160,76",1,6,4,9%,55%,36%,1,1,1,33%,33%,33%
-(22537348073) CPC - advogado tributarista - Exata - Sexo Desconhecido - Idade Desconhecida - Geral - RJ e SP,"3.224,61","13.200,00","9.975,39",10,"322,46",3,2,5,30%,20%,50%,0,2,0,0%,100%,0%
-(22659876371) Advogado Tributarista,"1.399,35","7.800,00","6.400,65",9,"155,48",2,2,5,22%,22%,56%,0,3,1,0%,75%,25%
-"(21640660237) CPA - Advogado Recuperação Judicial - Frase - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP","2.362,49","0,00","-2.362,49",9,"262,50",2,4,3,22%,44%,33%,0,3,0,0%,100%,0%
-Inventário ,"0,00","0,00","0,00",9,"0,00",0,4,5,0%,44%,56%,2,4,0,33%,67%,0%
-Bloqueio de Conta,"0,00","0,00","0,00",8,"0,00",1,3,4,13%,38%,50%,2,0,0,100%,0%,0%
-Erro Médico,"0,00","0,00","0,00",8,"0,00",1,1,6,13%,13%,75%,2,1,0,67%,33%,0%
-"(22150233298) Campanha Imobiliário - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","693,14","6.300,00","5.606,86",7,"99,02",0,3,4,0%,43%,57%,0,0,1,0%,0%,100%
-"(21668053580)   CPA - Advogado Inventário - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","493,40","0,00","-493,40",7,"70,49",3,1,3,43%,14%,43%,0,0,1,0%,0%,100%
-"(22150233301) Campanha Imobiliário - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - SP, Estado","532,81","0,00","-532,81",7,"76,12",0,1,5,0%,14%,71%,0,0,2,0%,0%,100%
-Despejo,"0,00","750,00","750,00",7,"0,00",0,3,4,0%,43%,57%,2,1,0,67%,33%,0%
-(21894375061) CPA - holding e planejamento sucessório - Frase - Sexo Desconhecido - Idade Desconhecida -  10% - SP,"6.368,27","0,00","-6.368,27",6,"1.061,38",2,1,3,33%,17%,50%,0,1,0,0%,100%,0%
-(21830564767) Campanha Direito - Leilão de Imóveis - Para o ocupante - CPC - RJ ( 50% - Obj. Leads ),"353,34","657,00","303,66",6,"58,89",1,2,3,17%,33%,50%,1,1,1,33%,33%,33%
-(21850569838) CPC - Leilão de Imóveis - Exata - Sexo Desconhecido - Idade Desconhecida - 10% - SP - Guarulhos - S1,"810,44","0,00","-810,44",5,"162,09",1,0,4,20%,0%,80%,1,1,2,25%,25%,50%
-"(22139379321)   Campanha Imigração - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","234,16","0,00","-234,16",5,"46,83",0,2,3,0%,40%,60%,1,2,0,33%,67%,0%
-"(21640660201) CPA - Advogado erro médico - Exata - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP","388,26","250,00","-138,26",5,"77,65",0,2,3,0%,40%,60%,1,1,0,50%,50%,0%
-(22706807700) Advogado para Imigração - Inglês (EUA e +),"2.739,60","0,00","-2.739,60",4,"684,90",0,4,0,0%,100%,0%,0,1,0,0%,100%,0%
-"(21668051450)   CPC - Falência - Exata - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - São Paulo, SP, Cidade Inteira","311,55","0,00","-311,55",4,"77,89",0,1,3,0%,25%,75%,1,0,0,100%,0%,0%
-(22668349806) Advogado Aduaneiro - SP e RJ - Frase,"376,61","0,00","-376,61",3,"125,54",0,1,2,0%,33%,67%,1,0,0,100%,0%,0%
-"(21613193937) CPA - Advogado para imissão na posse - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - Rio de Janeiro, RJ","384,97","0,00","-384,97",3,"128,32",1,1,1,33%,33%,33%,1,0,0,100%,0%,0%
-(22668349809) Advogado Aduaneiro  - SP e RJ - Exata,"497,40","2.500,00","2.002,60",3,"165,80",0,2,1,0%,67%,33%,0,1,0,0%,100%,0%
-"(22150233316) Campanha Empresarial - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","231,01","0,00","-231,01",3,"77,00",1,1,1,33%,33%,33%,0,1,0,0%,100%,0%
-(77777777777) Instagram,"0,00","0,00","0,00",3,"0,00",0,2,1,0%,67%,33%,0,0,0,0%,0%,0%
-(22691824757) Advogado para Imigração - Espanhol,"664,47","0,00","-664,47",2,"332,24",0,2,0,0%,100%,0%,0,0,0,0%,0%,0%
-"(21668053676) CPC - Advogado Leilão - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","111,99","0,00","-111,99",2,"56,00",0,2,0,0%,100%,0%,0,0,0,0%,0%,0%
-(21798749170) CPC - advogado criminal - Exata - Sexo Desconhecido - Idade Desconhecida - Geral - RJ e SP,"493,25","0,00","-493,25",2,"246,63",0,1,1,0%,50%,50%,0,0,0,0%,0%,0%
-"(21636786920) CPC - Advogado erro médico - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","1.024,37","0,00","-1.024,37",2,"512,19",1,0,1,50%,0%,50%,0,0,0,0%,0%,0%
-Usucapião,"0,00","0,00","0,00",2,"0,00",1,0,1,50%,0%,50%,0,0,0,0%,0%,0%
-Leilão ,"0,00","0,00","0,00",2,"0,00",0,0,2,0%,0%,100%,1,0,1,50%,0%,50%
-"(21668053334)   CPC - Advogado de Imigração - Correspondência Desconhecida - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - Rio de Janeiro, RJ, Cidade Inteira","316,21","500,00","183,79",1,"316,21",0,1,0,0%,100%,0%,0,0,0,0%,0%,0%
-"(21636787097) CPC - Advogado Recuperação Judicial - Frase - Sexo Desconhecido - Idade Desconhecida - 10% - Rio de Janeiro, RJ","511,17","0,00","-511,17",1,"511,17",0,0,1,0%,0%,100%,0,0,0,0%,0%,0%
-"(21668051756)   CPA - Advogado Bloqueio de Conta - Frase - Sexo Desconhecido - Idade Desconhecida - 10% - Rio de Janeiro, RJ, Cidade Inteira","516,10","0,00","-516,10",1,"516,10",0,0,1,0%,0%,100%,0,0,0,0%,0%,0%
-"(21661492305)   CPC - Inventário - Frase - Sexo Desconhecido - Idade Desconhecida - Renda Desconhecida - São Paulo, SP, Cidade Inteira","20,58","0,00","-20,58",1,"20,58",0,0,1,0%,0%,100%,0,0,0,0%,0%,0%
-"(21661492773)   CPA - despejo - Sexo Desconhecido - Idade Desconhecida - 20% - Rio de Janeiro, RJ, Cidade Inteira","170,45","0,00","-170,45",1,"170,45",0,0,1,0%,0%,100%,0,1,0,0%,100%,0%
-"(21668053325)   CPA - Advogado Erro Médico - Exata - Sexo Desconhecido - Idade Desconhecida - 10% - Rio de Janeiro, RJ, Cidade Inteira","48,76","0,00","-48,76",1,"48,76",0,0,1,0%,0%,100%,1,0,0,100%,0%,0%
-(21832152456) CPC - Criminal - estelionato - EXATA - Sexo Desconhecido - Idade Desconhecida - Geral - RJ - CRIMINAL,"49,77","0,00","-49,77",1,"49,77",0,1,0,0%,100%,0%,0,0,0,0%,0%,0%
-"(21668053595)  CPC - Advogado Inventário - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","329,37","0,00","-329,37",1,"329,37",1,0,0,100%,0%,0%,0,0,0,0%,0%,0%
-"(21668053643)   CPC - Advogado Inventário - Exata - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP","764,68","0,00","-764,68",1,"764,68",0,0,1,0%,0%,100%,1,0,0,100%,0%,0%
-(22827231802) Erro Médico - Cirurgias Plásticas,"300,80","0,00","-300,80",1,"300,80",0,0,1,0%,0%,100%,0,0,0,0%,0%,0%
-(21798749173) CPA - advogado criminal - Frase - Sexo Desconhecido - Idade Desconhecida - Geral - SP,"544,76","0,00","-544,76",1,"544,76",1,0,0,100%,0%,0%,0,0,0,0%,0%,0%
-"(21668051240)   CPA - Advogados Imobiliário - Ampla - Sexo Desconhecido - Idade Desconhecida - Renda Desconhecida - São Paulo, SP, Cidade Inteira","5,22","0,00","-5,22",1,"5,22",0,0,1,0%,0%,100%,0,0,0,0%,0%,0%
-(21913234525) CPC - Termos gerais - ADV Urgente - EXATA- Sexo Desconhecido - Idade Desconhecida - Geral - SP,"0,00","0,00","0,00",1,"0,00",0,1,0,0%,100%,0%,0,0,0,0%,0%,0%
-"(21661492704)   CPA - Inventário - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP, Cidade Inteira","0,00","0,00","0,00",1,"0,00",0,0,1,0%,0%,100%,0,0,0,0%,0%,0%
-(21830564638) Campanha Direito - Leilão de Imóveis - Para o ocupante - CPC - SP ( 50% - Obj. Leads ),"272,30","2.000,00","1.727,70",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(22150233319) Campanha Empresarial - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - SP, Estado","94,66","0,00","-94,66",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(21636787115) CPC - Advogado Recuperação Judicial - Frase - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP","94,96","0,00","-94,96",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(21620722535) CPC - Advogado Despejo - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","391,57","0,00","-391,57",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(22739664875) Campanha Imigração isolado  - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","650,50","0,00","-650,50",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(21661494219) CPA - Advogado Despejo - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","215,45","0,00","-215,45",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-(22586043778)  CPC - Advogado Recuperação Judicial - Credores - Frase - Sexo Desconhecido - Idade Desconhecida - Renda todas - RJ e SP,"989,89","0,00","-989,89",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(22197030432) Campanha Advogado geral - Aeroporto - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - Guarulhos, SP","10,68","0,00","-10,68",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(21661492257)   CPC - Advogado Usucapião - Frase - Sexo Desconhecido - Idade Desconhecida - 30% - São Paulo, SP, Cidade Inteira","40,69","0,00","-40,69",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(21668051216)   CPC - Advogado Meio Ambiente - Exata - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - São Paulo, SP, Cidade Inteira","15,04","0,00","-15,04",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(21620721062) CPA - Advogado Despejo - Frase - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP","67,10","0,00","-67,10",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-(21830564779) Base CPC - advogado leilão de imóveis - (FRASE) - (10%) - SP,"1,01","0,00","-1,01",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(21668051891)   CPA - Advogado Bloqueio de Conta - Exata - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP, Cidade Inteira","17,28","0,00","-17,28",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(21668051039)   CPC - Bloqueio de Conta - Exata - Sexo Desconhecido - Idade Desconhecida - 10% - São Paulo, SP, Cidade Inteira","15,82","0,00","-15,82",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-(22792395741) Advogado para Imigração - Inglês,"5,30","0,00","-5,30",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(21620722043) CPC - Advogado Despejo - Exata - Sexo Desconhecido - Idade Desconhecida - Renda todas - São Paulo, SP","150,68","0,00","-150,68",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-CPA - Advogado Recuperação Judicial - Frase - Sexo Desconhecido - Idade Desconhecida - Geral - SP - Cliques,"293,67","0,00","-293,67",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(22177795347) Campanha Usucapião - Teste -  Frase - Sexo Desconhecido - Idade Desconhecida - Segmentação de Renda Desconhecida - RJ, Estado","40,50","0,00","-40,50",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-(22820745294) Imigração - Nômade Digital (inglês),"124,07","0,00","-124,07",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-(22830344532) Imigração - Investidores (inglês),"353,59","0,00","-353,59",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-(22222222222) SEO,"0,00","19.522,50","19.522,50",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-"(21640660048) CPA - Advogado erro médico - Frase - Sexo Desconhecido - Idade Desconhecida - 20% - São Paulo, SP","0,00","2.000,00","2.000,00",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%
-(Sem Campanha),"0,00","8.050,00","8.050,00",0,"0,00",0,0,0,0%,0%,0%,0,0,0,0%,0%,0%`;
-
-        // Auto-load with pre-loaded data
-        window.addEventListener('DOMContentLoaded', async () => {
-            // First try to load from CSV file
-            try {
-                const response = await fetch('../desempenho_campanhas.csv');
-                if (response.ok) {
-                    const text = await response.text();
-                    console.log('CSV loaded successfully from file');
-                    Papa.parse(text, {
-                        header: true,
-                        complete: function(results) {
-                            processData(results.data);
-                        }
-                    });
-                    return; // Exit if file load successful
-                }
-            } catch (e) {
-                console.log('Could not load external CSV file (CORS restriction). Using pre-loaded data instead.');
-            }
-            
-            // Use pre-loaded data as fallback
-            Papa.parse(preloadedCSV, {
-                header: true,
-                complete: function(results) {
-                    processData(results.data);
-                }
-            });
-        });
-    </script>
+    searchEl.addEventListener("input", applyFilters);
+    tierEl.addEventListener("change", applyFilters);
+    render(therapists);
+  </script>
 </body>
 </html>
