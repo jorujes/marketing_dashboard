@@ -3,15 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Curadoria de Terapeutas | Luto e Trauma</title>
+  <title>Curadoria de Terapeutas | Luto, Trauma e TEPT</title>
   <style>
     :root {
-      --bg: #f5f1e8;
+      --bg: #f4efe6;
       --paper: #fffdf8;
       --ink: #1f2a2e;
       --muted: #5f6b6f;
       --accent: #0f766e;
-      --accent-2: #b45309;
       --line: #e7dfd1;
       --chip: #eef6f5;
       --chip-2: #fff4e5;
@@ -24,14 +23,14 @@
       margin: 0;
       font-family: "Avenir Next", "Segoe UI", Roboto, sans-serif;
       background:
-        radial-gradient(1100px 500px at 100% 0%, #f9e8c8 0%, transparent 70%),
-        radial-gradient(900px 500px at 0% 100%, #d9efe9 0%, transparent 65%),
+        radial-gradient(1200px 560px at 100% 0%, #f7e5c1 0%, transparent 72%),
+        radial-gradient(900px 520px at 0% 100%, #d9efe9 0%, transparent 65%),
         var(--bg);
       color: var(--ink);
     }
 
     .wrap {
-      max-width: 1220px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 24px;
     }
@@ -55,7 +54,8 @@
       margin: 10px 0 0;
       color: var(--muted);
       font-size: 15px;
-      max-width: 920px;
+      max-width: 980px;
+      line-height: 1.5;
     }
 
     .meta {
@@ -82,7 +82,7 @@
     .search-row {
       margin-top: 16px;
       display: grid;
-      grid-template-columns: 1fr 240px;
+      grid-template-columns: 1fr 260px;
       gap: 10px;
     }
 
@@ -222,6 +222,7 @@
       margin-top: 14px;
       color: var(--muted);
       font-size: 12px;
+      line-height: 1.4;
     }
 
     @media (max-width: 960px) {
@@ -234,18 +235,19 @@
 <body>
   <div class="wrap">
     <section class="hero">
-      <h1 class="title">Curadoria de Terapeutas para Luto e Trauma</h1>
+      <h1 class="title">Curadoria de Terapeutas para Luto, Trauma e TEPT</h1>
       <p class="subtitle">
-        Lista com 15 opções online, priorizando profissionais com evidência de atuação em luto, trauma e TEPT.
-        Cada ficha traz formação, abordagens, foco clínico, sinais de reputação, links de contato e evidências de origem.
+        Seleção com 20 profissionais brasileiros, priorizando presença pública robusta e dados verificáveis em fontes primárias
+        (site próprio, instituto, Instagram profissional, LinkedIn, publicações e vídeos). Cada ficha traz formação, abordagens,
+        resumo clínico, contatos e links de evidência para facilitar comparação e escolha.
       </p>
       <div class="meta">
-        <div class="pill"><strong>15</strong> perfis selecionados</div>
+        <div class="pill"><strong>20</strong> perfis selecionados</div>
         <div class="pill"><strong>Online</strong> como preferência principal</div>
-        <div class="pill"><strong>Fontes</strong> Doctoralia, Vittude, Central Terapia, sites pessoais</div>
+        <div class="pill"><strong>Curadoria</strong> com ênfase em luto traumático e EMDR</div>
       </div>
       <div class="search-row">
-        <input id="search" placeholder="Buscar por nome, abordagem, cidade, foco clínico..." />
+        <input id="search" placeholder="Buscar por nome, cidade, abordagem, formação..." />
         <select id="tier">
           <option value="all">Todos os níveis (A e B)</option>
           <option value="A">Somente Tier A</option>
@@ -253,7 +255,8 @@
         </select>
       </div>
       <p class="note">
-        Observação: esta curadoria não substitui entrevista inicial. Vale validar disponibilidade, valor, aderência pessoal e plano terapêutico na primeira conversa.
+        Observação: esta curadoria não substitui entrevista inicial. Vale validar disponibilidade real de agenda,
+        valor da sessão, aderência pessoal e plano terapêutico na primeira conversa.
       </p>
     </section>
 
@@ -263,350 +266,672 @@
   <script>
     const therapists = [
       {
-        name: "João Palma Filho",
+        name: "Maria Helena Pereira Franco",
         tier: "A",
-        role: "Psicólogo e Psicanalista",
-        crp: "CRP 06/146528",
+        role: "Psicóloga clínica, professora e pesquisadora em luto",
+        crp: "CRP 06/1690",
         city: "São Paulo, SP",
         online: true,
-        photo: "https://pixel-p1.s3.sa-east-1.amazonaws.com/doctor/avatar/5c867e9b/5c867e9b-2f4d-4bf6-ba41-04b90e742182_small_square.jpg",
-        rating: "53 opiniões",
-        summary: "Atendimento com psicanálise e EMDR para trauma e luto, com histórico acadêmico robusto (mestrado/doutorado) e alta tração pública em plataforma clínica.",
-        focus: ["Traumas psicológicos", "Atendimento para luto", "Transtornos de ansiedade", "Psicanálise com adultos"],
-        approaches: ["Psicoterapia EMDR", "Psicanálise"],
-        formations: ["Doutorado em Psicologia Clínica (PUC-SP)", "Mestrado em Psicologia", "Formação em EMDR", "Formação em Terapia Narrativa (PUC-SP)"],
+        score: 93,
+        photo: "",
+        rating: "Referência nacional em luto e tanatologia",
+        summary: "Psicóloga, mestre e doutora em Psicologia Clínica pela PUC-SP, com pós-doutorado em Londres. Fundadora do LELu (Laboratório de Estudos e Intervenções sobre o Luto), ex-presidente da ABMLuto e fellow da IWG. Atua há décadas em pesquisa, formação e atendimento em luto, cuidados paliativos e situações de perda complexa.",
+        focus: ["Luto", "Luto complicado", "Cuidados paliativos", "Morte e morrer", "Formação de terapeutas"],
+        approaches: ["Psicoterapia do luto", "Thanatologia", "Intervenção em crise"],
+        formations: ["Graduação em Psicologia - PUC-SP", "Mestrado em Psicologia Clínica - PUC-SP", "Doutorado em Psicologia Clínica - PUC-SP", "Pós-doutorado - London School of Hygiene and Tropical Medicine / UCL"],
         contacts: {
-          platform: "https://www.doctoralia.com.br/joao-palma-filho/psicologo-psicanalista/sao-paulo",
-          website: "http://www.joaopalmafilho.com.br",
-          instagram: "https://www.instagram.com/joaopalmafilho/",
-          linkedin: "",
+          platform: "https://www.pucsp.br/colaborador/profa-dra-maria-helena-pereira-franco",
+          website: "https://www.pucsp.br/pos-graduacao/especializacao-mba/acoes-terapeuticas-para-situacoes-de-luto",
+          instagram: "https://www.instagram.com/mhelenapfranco/",
+          linkedin: "https://www.linkedin.com/in/maria-helena-pereira-franco/",
           whatsapp: ""
         },
-        contentLinks: ["https://www.youtube.com/watch?v=TckJb_Fb8Kk", "https://www.youtube.com/watch?v=QavNPom2Gic"],
-        evidence: ["Doctoralia", "Instagram", "Site pessoal"]
+        contentLinks: [
+          "https://scholar.google.com/citations?user=_R2YeXUAAAAJ&hl=en",
+          "https://www.gruposummus.com.br/blog/entrevista-com-maria-helena-pereira-franco-especial-50-anos/"
+        ],
+        evidence: [
+          "https://www.iea.usp.br/pessoas/pasta-pessoam/maria-helena-pereira-franco",
+          "https://bv.fapesp.br/pt/pesquisador/5769/maria-helena-pereira-franco/",
+          "https://www.pucsp.br/colaborador/profa-dra-maria-helena-pereira-franco",
+          "https://www.instagram.com/mhelenapfranco/",
+          "https://www.escavador.com/sobre/4877904/maria-helena-pereira-franco",
+          "https://abmluto.com.br"
+        ]
       },
       {
-        name: "Késia Sodre da Motta Gomes",
+        name: "Daniela Reis e Silva",
         tier: "A",
-        role: "Psicóloga Clínica",
-        crp: "CRP DF 01/22429",
+        role: "Psicóloga clínica, terapeuta EMDR e especialista em luto",
+        crp: "CRP 16/517",
+        city: "Vitória, ES",
+        online: true,
+        score: 91,
+        photo: "",
+        rating: "Doutorado com foco em EMDR para luto",
+        summary: "Psicóloga clínica com longa experiência em trauma e luto, doutora em Psicologia Clínica (PUC-SP). Coordenadora do Instituto Acalanto (ES), com atuação em situações críticas, comportamento suicida e formação de profissionais. Na rede TraumaClinic, seu perfil destaca tese em EMDR para situações de luto e atendimento presencial/online.",
+        focus: ["Luto", "Trauma", "TEPT", "Comportamento suicida", "Situações críticas"],
+        approaches: ["EMDR", "Brainspotting", "Psicoterapia do luto"],
+        formations: ["Graduação em Psicologia - PUC-RJ", "Doutorado em Psicologia Clínica - PUC-SP", "Certificação EMDR", "Supervisão EMDR"],
+        contacts: {
+          platform: "https://www.traumaclinic.com.br/procureumprofissional-brasil-es",
+          website: "https://danielareis.com.br",
+          instagram: "https://www.instagram.com/danielareisesilva/",
+          linkedin: "https://www.linkedin.com/in/daniela-reis-e-silva/",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.youtube.com/watch?v=o2JWDojIQjM",
+          "https://www.instagram.com/danielareisesilva/"
+        ],
+        evidence: [
+          "https://www.traumaclinic.com.br/procureumprofissional-brasil-es",
+          "https://www.instagram.com/danielareisesilva/",
+          "https://intccrio.com.br/profissionais/daniela-reis-e-silva/",
+          "https://www.escavador.com/sobre/1264068/daniela-reis-e-silva"
+        ]
+      },
+      {
+        name: "Gabriela Casellato",
+        tier: "A",
+        role: "Psicóloga clínica e pesquisadora em perdas e luto",
+        crp: "CRP 06/48701-7",
+        city: "São Paulo, SP",
+        online: true,
+        score: 90,
+        photo: "",
+        rating: "Autora de livros de referência em luto",
+        summary: "Psicóloga com mestrado e doutorado em Psicologia Clínica pela PUC-SP, com prática dedicada a perdas e luto desde a década de 1990. Cofundadora do 4 Estações Instituto de Psicologia, atua em clínica, formação de profissionais e produção científica. É autora/organizadora de obras como 'O Resgate da Empatia' e 'Dor silenciosa ou dor silenciada?', com forte reconhecimento no campo do luto não reconhecido.",
+        focus: ["Luto não reconhecido", "Perdas complexas", "Teoria do apego", "Formação clínica"],
+        approaches: ["Psicoterapia focada em luto", "Teoria do Apego", "Hipnoterapia"],
+        formations: ["Graduação em Psicologia - PUC-SP", "Mestrado em Psicologia Clínica - PUC-SP", "Doutorado em Psicologia Clínica - PUC-SP"],
+        contacts: {
+          platform: "https://casellato.org/bio/",
+          website: "https://casellato.org/",
+          instagram: "https://www.instagram.com/gabriela.casellato.psicologia/",
+          linkedin: "",
+          whatsapp: "https://casellato.org/contato/"
+        },
+        contentLinks: [
+          "https://casellato.org/publicacoes/",
+          "https://casellato.org/reflexoes/",
+          "https://www.youtube.com/channel/UCr--53SKXh9irYyuf6XbwlQ"
+        ],
+        evidence: [
+          "https://casellato.org/bio/",
+          "https://www.4estacoes.com/quem_somos.asp",
+          "https://www.instagram.com/gabriela.casellato.psicologia/",
+          "https://www.escavador.com/sobre/2097728/gabriela-casellato-brown-ferreira-santos"
+        ]
+      },
+      {
+        name: "Esly Carvalho",
+        tier: "A",
+        role: "Psicóloga, Trainer of Trainers em EMDR, presidente da TraumaClinic",
+        crp: "CRP 01/1.162",
         city: "Brasília, DF",
         online: true,
-        photo: "https://s3-sa-east-1.amazonaws.com/doctoralia.com.br/doctor/c9c47a/c9c47a5972bea27ef2d34b70f91b1f48_220_square.jpg",
-        rating: "16 opiniões",
-        summary: "Atendimento online com EMDR e ACP, destacando TEPT, fobias e luto. Perfil com boa descrição técnica sobre trauma e uso de abordagem reconhecida pela OMS para TEPT.",
-        focus: ["TEPT", "Trauma", "Luto", "Fobias", "Ansiedade"],
-        approaches: ["Psicoterapia EMDR", "Abordagem Centrada na Pessoa"],
-        formations: ["Psicologia (Estácio)", "Especialização Humanista (Unyleya)", "Formação EMDR reconhecida pela Associação Brasileira de EMDR"],
+        score: 95,
+        photo: "https://s3.us-east-1.amazonaws.com/contents.newzenler.com/20688/library/sly66634147d2107_lg.jpg",
+        rating: "Pioneira do EMDR no Brasil",
+        summary: "Ph.D. em Psicologia, com mais de quatro décadas de prática clínica, é uma das principais referências de EMDR no Brasil e na América Latina. Formada diretamente por Francine Shapiro em 1997, lidera formação e supervisão de milhares de profissionais. Preside o Grupo TraumaClinic e atua em trauma, TEPT e luto traumático, com forte produção técnica e presença institucional.",
+        focus: ["Trauma", "TEPT", "Luto traumático", "Formação EMDR", "Supervisão clínica"],
+        approaches: ["EMDR", "Brainspotting", "Psicodrama"],
+        formations: ["Graduação em Psicologia - CEUB (conclusão), com início na UFRGS", "Doutorado em Psicologia", "Trainer of Trainers - EMDR Institute (EUA)", "Fellow - ASGPP"],
         contacts: {
-          platform: "https://www.doctoralia.com.br/kesia-sodre-da-motta-gomes/psicologo/brasilia",
-          website: "",
-          instagram: "",
+          platform: "https://www.traumaclinic.com.br/eslycarvalho",
+          website: "https://www.traumaclinic.com.br/eslycarvalho",
+          instagram: "https://www.instagram.com/doutoraeslycarvalho/",
           linkedin: "",
-          whatsapp: "",
-          facebook: "https://www.facebook.com/p/psicologakesiasodre-100064062402270/"
+          whatsapp: "https://api.whatsapp.com/send?phone=556191361635"
         },
-        contentLinks: [],
-        evidence: ["Doctoralia", "Facebook profissional"]
+        contentLinks: [
+          "https://www.traumaclinic.com.br/blog",
+          "https://www.traumaclinic.com.br/livros",
+          "https://www.youtube.com/watch?v=y0pC9XIA9Xg"
+        ],
+        evidence: [
+          "https://www.traumaclinic.com.br/eslycarvalho",
+          "https://www.escavador.com/sobre/3007127/esly-regina-souza-de-carvalho",
+          "https://www.sfrankelgroup.com/esly-carvalho-phd.html",
+          "https://www.instagram.com/doutoraeslycarvalho/",
+          "https://www.traumaclinic.com.br/f/ftemdr"
+        ]
       },
       {
-        name: "Íria Jacoby de Oliveira",
+        name: "André Monteiro",
         tier: "A",
-        role: "Psicóloga",
-        crp: "CRP 07/14469",
-        city: "Porto Alegre, RS (online)",
+        role: "Psicólogo PhD, Trainer of Trainers em EMDR",
+        crp: "CRP 01/3832",
+        city: "Brasília, DF",
         online: true,
-        photo: "https://prod-vittude-static-files.s3.amazonaws.com/profile_photos/psicologo-iria-jacoby-de-oliveira.jpg",
-        rating: "4.6 | 2419 atendimentos/avaliações",
-        summary: "Forte atuação em luto perinatal, morte e luto, TEPT e relações abusivas, com base psicanalítica e longa experiência clínica.",
-        focus: ["Luto perinatal", "Morte e luto", "TEPT", "Relacionamentos abusivos", "Ansiedade"],
-        approaches: ["Psicanálise (Freud)", "Psicanálise (Lacan)", "Psicossomática Psicanalítica"],
-        formations: ["Neuropsicologia (UFRGS)", "Formação/Extensão em Psicanálise (TOPOS)", "Especialização em Psicologia Perinatal (em andamento)"],
+        score: 92,
+        photo: "",
+        rating: "Referência internacional em EMDR",
+        summary: "Psicólogo com especialização, mestrado e doutorado em Psicologia Clínica pela UnB. Atua com psicoterapia há décadas, com foco em trauma e EMDR desde 2000. Trainer of Trainers reconhecido por EMDR Institute, EMDR Iberoamérica e EMDR Europe, já presidiu a Associação EMDR Brasil e ocupa posição internacional de liderança na área. Também tem trajetória docente e experiência de pós-doutorado em instituições psiquiátricas europeias.",
+        focus: ["Trauma", "TEPT", "Luto", "Formação EMDR", "Trauma transgeracional"],
+        approaches: ["EMDR", "Brainspotting", "Arte-terapia"],
+        formations: ["Graduação em Psicologia - UnB", "Mestrado em Psicologia Clínica - UnB", "Doutorado em Psicologia Clínica - UnB", "Trainer of Trainers - EMDR Institute"],
         contacts: {
-          platform: "https://vittude.com/psicologo/iria-jacoby-de-oliveira-1",
-          website: "",
-          instagram: "https://instagram.com/iria.jacoby.oliveira",
+          platform: "https://www.espacodamente.com/our_team/andre-monteiro/",
+          website: "https://www.espacodamente.com/our_team/andre-monteiro/",
+          instagram: "https://www.instagram.com/andre.monteiro.emdr/",
           linkedin: "",
           whatsapp: ""
         },
-        contentLinks: [],
-        evidence: ["Vittude"]
+        contentLinks: [
+          "https://www.udemy.com/user/michel-monteiro/",
+          "https://www.youtube.com/watch?v=sx-pgcFjAX0"
+        ],
+        evidence: [
+          "https://www.sfrankelgroup.com/andre-monteiro-phd.html",
+          "https://www.espacodamente.com/our_team/andre-monteiro/",
+          "https://www.instagram.com/andre.monteiro.emdr/",
+          "https://www.udemy.com/user/michel-monteiro/"
+        ]
       },
       {
-        name: "Marinuta de Almeida Cattoni",
+        name: "Valéria Tinoco",
         tier: "A",
-        role: "Psicóloga",
-        crp: "CRP 12/13251",
-        city: "Florianópolis, SC",
-        online: true,
-        photo: "https://prod-vittude-static-files.s3.amazonaws.com/profile_photos/psicologo-marinuta-de-almeida-cattoni_lir2eKA.jpg",
-        rating: "5.0 | 3410 atendimentos/avaliações",
-        summary: "Perfil de alto volume de atendimentos com foco em morte e luto, e especialização ativa em psicotraumatologia.",
-        focus: ["Morte e luto", "Ansiedade", "Depressão", "Burnout", "Estresse"],
-        approaches: ["Humanista", "Terapia Relacional Sistêmica", "Psicodinâmica", "Psicodrama"],
-        formations: ["Especialização em Psicotraumatologia (2024-2026)", "Especialização em Terapia Relacional Sistêmica", "Graduação em Psicologia (UNISUL)"],
-        contacts: {
-          platform: "https://vittude.com/psicologo/marinuta-de-almeida-cattoni",
-          website: "",
-          instagram: "",
-          linkedin: "",
-          whatsapp: ""
-        },
-        contentLinks: ["https://youtu.be/0UlfpU9znkU"],
-        evidence: ["Vittude"]
-      },
-      {
-        name: "Eduarda Camilo",
-        tier: "A",
-        role: "Psicóloga",
-        crp: "CRP 03/15113",
-        city: "Online (base na BA)",
-        online: true,
-        photo: "https://prod-vittude-static-files.s3.amazonaws.com/psicologo-eduarda-camilo.webp",
-        rating: "4.9 | 1037 atendimentos/avaliações",
-        summary: "Atuação estruturada com TCC e TCD para ansiedade, luto e regulação emocional, com forte volume de prática clínica.",
-        focus: ["Morte e luto", "Ansiedade", "TOC", "Síndrome do pânico", "Depressão"],
-        approaches: ["Terapia Cognitivo-Comportamental", "Terapia Cognitivo-Comportamental Dialética"],
-        formations: ["Pós em Avaliação Psicológica", "Graduação em Psicologia"],
-        contacts: {
-          platform: "https://vittude.com/psicologo/eduarda-camilo",
-          website: "",
-          instagram: "https://instagram.com/eduardacamilo.psi",
-          linkedin: "",
-          whatsapp: ""
-        },
-        contentLinks: [],
-        evidence: ["Vittude"]
-      },
-      {
-        name: "Alan Alencar",
-        tier: "A",
-        role: "Psicólogo Clínico",
-        crp: "CRP 06/197253",
+        role: "Psicóloga clínica, mestre e doutora em Psicologia Clínica",
+        crp: "CRP 06/53670-7",
         city: "São Paulo, SP",
         online: true,
-        photo: "https://alanalencarpsicologia.com/wp-content/uploads/2026/01/foto-topo.png",
-        rating: "Sem indicador público de avaliações",
-        summary: "Atuação com abordagem integral combinando TCC, EMDR e referenciais existenciais (tomista/estoico), com presença digital própria e contato direto.",
-        focus: ["Trauma", "Luto", "Ansiedade", "Reestruturação emocional"],
-        approaches: ["TCC", "EMDR", "Psicologia Tomista", "Psicologia Estoica", "Logoterapia"],
-        formations: ["Psicologia (FMU, 2018)", "Formação em Psicoterapia EMDR"],
+        score: 88,
+        photo: "",
+        rating: "Diretora e supervisora do 4 Estações",
+        summary: "Psicóloga e psicoterapeuta com mestrado e doutorado pela PUC-SP. Diretora, professora e supervisora do 4 Estações Instituto de Psicologia, com atuação destacada em formação e intervenção em luto e perdas, além de teoria do apego. Publica e participa de pesquisas e eventos na área de morte, luto e cuidados paliativos.",
+        focus: ["Luto", "Perdas", "Teoria do apego", "Cuidados paliativos"],
+        approaches: ["Psicoterapia do luto", "Teoria do Apego", "Psicologia Clínica"],
+        formations: ["Graduação em Psicologia - PUC-SP", "Mestrado em Psicologia Clínica - PUC-SP", "Doutorado em Psicologia Clínica - PUC-SP"],
         contacts: {
-          platform: "https://alanalencarpsicologia.com/",
-          website: "https://alanalencarpsicologia.com/",
-          instagram: "https://www.instagram.com/alan.alencar",
-          linkedin: "https://www.linkedin.com/in/alan-alencar-psicologo",
-          whatsapp: "https://wa.me/5511968358615"
-        },
-        contentLinks: [],
-        evidence: ["Site pessoal", "LinkedIn", "Oneliv"]
-      },
-      {
-        name: "Raissa Ruza",
-        tier: "A",
-        role: "Psicóloga",
-        crp: "CRP 06/150894",
-        city: "São Paulo, SP",
-        online: true,
-        photo: "https://pixel-p1.s3.sa-east-1.amazonaws.com/doctor/avatar/29732e60/29732e60-d612-4b02-8099-9b49ac8b64f9_small_square.jpg",
-        rating: "70 opiniões",
-        summary: "Psicóloga com formação USP e Einstein, foco em ansiedade/trauma e combinação de TCC + EMDR. Perfil com alta prova social pública.",
-        focus: ["Traumas psicológicos", "Transtornos de ansiedade", "TEPT"],
-        approaches: ["TCC", "Psicoterapia EMDR", "DBT (formação complementar)"],
-        formations: ["USP", "Neuropsicologia (Einstein)", "GPM (Harvard Medical School)", "Especialização em TCC", "Formação EMDR"],
-        contacts: {
-          platform: "https://www.doctoralia.com.br/raissa-ruza/psicologo/sao-paulo",
-          website: "https://raissaruza.com/",
-          instagram: "",
-          linkedin: "",
+          platform: "https://www.4estacoes.com/quem_somos.asp",
+          website: "https://www.4estacoes.com/",
+          instagram: "https://www.instagram.com/valeriatinoco.psicologia/",
+          linkedin: "https://br.linkedin.com/in/valeria-tinoco-a4581b14",
           whatsapp: ""
         },
-        contentLinks: [],
-        evidence: ["Doctoralia", "Site pessoal"]
+        contentLinks: [
+          "https://www.instagram.com/valeriatinoco.psicologia/",
+          "https://www.4estacoes.com/curso_especializacao.asp"
+        ],
+        evidence: [
+          "https://www.4estacoes.com/quem_somos.asp",
+          "https://www.instagram.com/valeriatinoco.psicologia/",
+          "https://www.escavador.com/sobre/6468374/valeria-ulbricht-tinoco-mendes",
+          "https://pmc.ncbi.nlm.nih.gov/articles/PMC7787239/"
+        ]
       },
       {
-        name: "Noêmia Noronha Domingos",
+        name: "Luciana Mazorra",
         tier: "A",
-        role: "Psicóloga",
-        crp: "CRP 04/77404",
+        role: "Psicóloga clínica, doutora e pesquisadora em luto",
+        crp: "CRP 06/53780-3",
+        city: "São Paulo, SP",
+        online: true,
+        score: 88,
+        photo: "",
+        rating: "Cofundadora do 4 Estações e membro da IWG",
+        summary: "Psicóloga, mestre e doutora em Psicologia Clínica pela PUC-SP, com especialização em clínica e psicoterapia psicanalítica em Madrid. Cofundadora e supervisora do 4 Estações, atua em pesquisa, docência e atendimento em perdas e luto. Tem produção científica e capítulos publicados em obras de referência sobre luto, infância enlutada e cuidados paliativos.",
+        focus: ["Luto", "Luto infantil", "Perdas complexas", "Cuidados paliativos"],
+        approaches: ["Psicoterapia do luto", "Psicanálise", "Intervenções em perda"],
+        formations: ["Graduação em Psicologia - PUC-SP", "Mestrado em Psicologia Clínica - PUC-SP", "Doutorado em Psicologia Clínica - PUC-SP", "Especialização em Clínica e Psicoterapia Psicanalítica - Universidad Pontificia Comillas"],
+        contacts: {
+          platform: "https://www.4estacoes.com/quem_somos.asp",
+          website: "https://www.4estacoes.com/",
+          instagram: "https://www.instagram.com/luciana.mazorra/",
+          linkedin: "https://br.linkedin.com/in/lucianamazorra",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.youtube.com/watch?v=SEEOe0gWZn0",
+          "https://www.instagram.com/luciana.mazorra/"
+        ],
+        evidence: [
+          "https://www.4estacoes.com/quem_somos.asp",
+          "https://www.instagram.com/luciana.mazorra/",
+          "https://tede2.pucsp.br/bitstream/handle/15837/1/Luciana%20Mazorra.pdf",
+          "https://www.escavador.com/sobre/1264066/luciana-mazorra"
+        ]
+      },
+      {
+        name: "Karen Scavacini",
+        tier: "A",
+        role: "Psicóloga doutora em saúde mental e posvenção do suicídio",
+        crp: "CRP 06/64761",
+        city: "São Paulo, SP",
+        online: true,
+        score: 88,
+        photo: "",
+        rating: "Fundadora do Vita Alere, referência em posvenção",
+        summary: "Psicóloga (CRP 06/64761) com trajetória acadêmica e institucional consolidada em prevenção e posvenção do suicídio, campo diretamente ligado ao luto traumático. Tem mestrado com vínculo ao Karolinska Institutet e doutorado pela USP, além de atuação como fundadora e CEO do Instituto Vita Alere. Mantém produção técnica contínua, participação em redes internacionais de prevenção e presença pública com palestras, entrevistas e materiais educativos para profissionais e famílias. Seu trabalho combina saúde mental comunitária, formação de equipes e intervenção em contextos de perda por suicídio.",
+        focus: ["Posvenção", "Luto por suicídio", "Prevenção do suicídio", "Saúde mental"],
+        approaches: ["Posvenção", "Intervenção em crise", "Psicoeducação em saúde mental"],
+        formations: ["Mestrado em Saúde Pública (suicidologia) - Karolinska Institutet", "Doutorado em Psicologia - USP (2018)", "Formação contínua em prevenção/posvenção do suicídio"],
+        contacts: {
+          platform: "https://vitaalere.com.br/nossa-equipe/",
+          website: "https://vitaalere.com.br",
+          instagram: "https://www.instagram.com/karensca/",
+          linkedin: "https://www.linkedin.com/in/karen-scavacini/",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://vitaalere.com.br",
+          "https://www.instagram.com/karensca/",
+          "https://tedxblumenau.com.br/speakers/karen-scavacini/",
+          "https://www.youtube.com/results?search_query=karen+scavacini"
+        ],
+        evidence: [
+          "https://vitaalere.com.br/nossa-equipe/",
+          "https://www.instagram.com/karensca/",
+          "https://www.linkedin.com/in/karen-scavacini/",
+          "https://enafam.com.br/speaker/karen-scavacini/",
+          "https://www.escavador.com/sobre/4859437/karen-scavacini"
+        ]
+      },
+      {
+        name: "Rita Silva e Silva",
+        tier: "A",
+        role: "Psicóloga clínica e Full Trainer em EMDR",
+        crp: "CRP 04/15828",
         city: "Belo Horizonte, MG",
         online: true,
-        photo: "https://centralterapia.com.br/wp-content/uploads/2025/11/Psicologa-Online-Noemia-Noronha-Domingos.jpg",
-        rating: "Perfil em plataforma especializada",
-        summary: "Atuação em ansiedade e luto com base em TCC e avaliação psicológica, com formação complementar específica em estudos sobre luto.",
-        focus: ["Luto", "Ansiedade", "Equilíbrio emocional", "Autoconhecimento"],
-        approaches: ["TCC", "Avaliação Psicológica"],
-        formations: ["Pós em TCC", "Pós em Avaliação Psicológica", "Formação complementar em estudos sobre luto"],
+        score: 83,
+        photo: "",
+        rating: "Treinadora oficial em EMDR e especialista em trauma complexo",
+        summary: "Psicóloga clínica com mais de 25 anos de experiência, diretora do Instituto Trauma Center Psi. Full Trainer em EMDR (EMDR Institute, EUA), supervisora e facilitadora com atuação em trauma complexo. Também possui especialização em Neurociências e Comportamento (UFMG), com forte trabalho em formação clínica e atendimento de casos de alta complexidade.",
+        focus: ["EMDR", "Trauma complexo", "TEPT", "Luto", "Formação de profissionais"],
+        approaches: ["EMDR", "Hipnoterapia Ericksoniana", "Psicoterapia do trauma"],
+        formations: ["Graduação em Psicologia - FUMEC", "Especialização em Neurociências e Comportamento - UFMG", "Full Trainer - EMDR Institute"],
         contacts: {
-          platform: "https://centralterapia.com.br/profissional/noemia-noronha-domingos/",
-          website: "",
-          instagram: "https://www.instagram.com/psicologanoemianoronha/",
-          linkedin: "",
-          whatsapp: "https://wa.me/5535997010965"
+          platform: "https://www.ritasilvaesilva.com.br/ritasilvaesilva",
+          website: "https://www.ritasilvaesilva.com.br/",
+          instagram: "https://www.instagram.com/ritasilvaesilvapsi/",
+          linkedin: "https://www.linkedin.com/in/rita-silva-e-silva-4b73145/",
+          whatsapp: ""
         },
-        contentLinks: [],
-        evidence: ["Central Terapia"]
+        contentLinks: [
+          "https://www.ritasilvaesilva.com.br/",
+          "https://intccrio.com.br/profissionais/rita-silva-e-silva/"
+        ],
+        evidence: [
+          "https://www.ritasilvaesilva.com.br/ritasilvaesilva",
+          "https://www.ritasilvaesilva.com.br/",
+          "https://intccrio.com.br/profissionais/rita-silva-e-silva/",
+          "https://www.instagram.com/ritasilvaesilvapsi/"
+        ]
       },
       {
-        name: "Thais de Araujo Leal",
+        name: "Sirley Bittu",
         tier: "A",
-        role: "Psicóloga Clínica",
-        crp: "CRP 09/17026",
-        city: "Brasília, DF",
-        online: true,
-        photo: "https://centralterapia.com.br/wp-content/uploads/2024/01/Thais-de-Araujo-Leal.jpg",
-        rating: "Perfil em diretório de TEPT",
-        summary: "Atendimento 100% online com TCC/Psicopatologia e experiência em TEPT, ansiedade e luto; menciona atuação com pacientes no Brasil e exterior.",
-        focus: ["TEPT", "Ansiedade", "TOC", "Luto", "Trauma"],
-        approaches: ["TCC", "Psicopatologia Clínica"],
-        formations: ["Psicologia (IESB)", "Especialização em TCC", "Especialização em Psicopatologia", "Atualização com Amy Wenzel"],
-        contacts: {
-          platform: "https://centralterapia.com.br/profissional/thais-de-araujo-leal/",
-          website: "",
-          instagram: "https://www.instagram.com/thaisleal.psico/",
-          linkedin: "",
-          whatsapp: "https://wa.me/5561993966012"
-        },
-        contentLinks: [],
-        evidence: ["Central Terapia"]
-      },
-      {
-        name: "Adriane Villanova Valente",
-        tier: "B",
-        role: "Psicóloga",
-        crp: "CRP 07/05672",
-        city: "Porto Alegre, RS (online)",
-        online: true,
-        photo: "https://prod-vittude-static-files.s3.amazonaws.com/psicologo-adriane-villanova-valente.webp",
-        rating: "4.9 | 306 atendimentos/avaliações",
-        summary: "Psicóloga com mais de 30 anos de formação, unindo EMDR e repertório de regulação fisiológica (teoria polivagal) para trauma, luto e transições de vida.",
-        focus: ["Morte e luto", "Fobias", "Estresse", "Orientação profissional"],
-        approaches: ["EMDR", "Terapia Breve Focada na Solução", "Coaching de Vida/Carreira"],
-        formations: ["PUCRS (formação base)", "Treinamentos em EMDR", "Teoria Polivagal"],
-        contacts: {
-          platform: "https://vittude.com/psicologo/adriane-villanova-valente",
-          website: "",
-          instagram: "",
-          linkedin: "",
-          whatsapp: ""
-        },
-        contentLinks: [],
-        evidence: ["Vittude"]
-      },
-      {
-        name: "Tereza Maria Costa e Silva de Lima",
-        tier: "B",
-        role: "Psicóloga",
-        crp: "CRP 02/18292",
-        city: "Recife, PE",
-        online: true,
-        photo: "https://pixel-p1.s3.sa-east-1.amazonaws.com/doctor/avatar/9d181631/9d181631-3423-4be3-b546-f10267bb1e68_small_square.jpg",
-        rating: "67 opiniões",
-        summary: "Amplo repertório em trauma/luto com EMDR, TCC, terapia do esquema e neuropsicologia; perfil com histórico sólido de formação continuada.",
-        focus: ["Traumas psicológicos", "Luto", "Ansiedade", "TEPT"],
-        approaches: ["EMDR", "TCC", "Terapia do Esquema", "Brainspotting"],
-        formations: ["Psicologia (UNICAP)", "EMDR", "Neuropsicologia", "Neurociência Aplicada", "Terapia Sistêmica Familiar"],
-        contacts: {
-          platform: "https://www.doctoralia.com.br/tereza-maria-costa-e-silva-de-lima/psicologo/recife",
-          website: "",
-          instagram: "https://www.instagram.com/tereza_s_lima",
-          linkedin: "",
-          whatsapp: ""
-        },
-        contentLinks: ["https://www.youtube.com/watch?v=qnQiV6AyJ5g", "https://www.youtube.com/watch?v=Vbi4tvP3s2M"],
-        evidence: ["Doctoralia", "Instagram"]
-      },
-      {
-        name: "Norma Brezinski Liporoni",
-        tier: "B",
-        role: "Psicóloga",
-        crp: "CRP 01/4735",
-        city: "Brasília, DF",
-        online: true,
-        photo: "https://s3-sa-east-1.amazonaws.com/doctoralia.com.br/doctor/964a58/964a58c1090e24067c0362658182faaa_220_square.jpg",
-        rating: "Sem indicador público de opiniões",
-        summary: "Profissional experiente (quase 30 anos), responsável técnica de clínica e com forte histórico em avaliação psicológica e prática clínica em diferentes frentes.",
-        focus: ["Avaliação psicológica", "Psicodiagnóstico", "Orientação vocacional"],
-        approaches: ["Clínica psicológica tradicional"],
-        formations: ["Psicologia (CEUB)", "Pós em Psicologia do Trânsito", "Pós em Gestão e Coaching", "Curso de Terapia Sexual"],
-        contacts: {
-          platform: "https://www.doctoralia.com.br/norma-brezinski-liporoni/psicologo/brasilia",
-          website: "",
-          instagram: "",
-          linkedin: "",
-          whatsapp: ""
-        },
-        contentLinks: [],
-        evidence: ["Doctoralia"]
-      },
-      {
-        name: "Julia Bertoldo",
-        tier: "B",
-        role: "Psicóloga",
-        crp: "CRP 02/25755",
-        city: "Recife, PE",
-        online: true,
-        photo: "https://centralterapia.com.br/wp-content/uploads/2025/10/Psicologa-Online-Julia-Bertoldo.jpg",
-        rating: "Perfil em diretório de TEPT",
-        summary: "Atuação clínica com mulheres, integrando psicologia contemporânea e análise bioenergética para trauma, luto e sintomas somáticos.",
-        focus: ["TEPT", "Luto", "Ansiedade", "Trauma com expressão corporal"],
-        approaches: ["Análise Bioenergética", "Psicologia Clínica Contemporânea"],
-        formations: ["Pós em Psicologia Clínica Contemporânea (foco em Bioenergética)", "Pós em Docência no Ensino Superior", "Graduação em Psicologia"],
-        contacts: {
-          platform: "https://centralterapia.com.br/profissional/julia-bertoldo/",
-          website: "",
-          instagram: "https://www.instagram.com/psi.juliabertoldo/",
-          linkedin: "https://www.linkedin.com/in/julia-bertoldo-aa3057141/",
-          whatsapp: "https://wa.me/5581983867021"
-        },
-        contentLinks: [],
-        evidence: ["Central Terapia", "LinkedIn"]
-      },
-      {
-        name: "Alessandra Hartveld",
-        tier: "B",
-        role: "Psicóloga",
-        crp: "CRP 05/22269",
-        city: "Rio de Janeiro, RJ",
-        online: true,
-        photo: "https://centralterapia.com.br/wp-content/uploads/2025/03/Psicologa-Alessandra-Hartveld.jpg",
-        rating: "28+ anos de experiência clínica",
-        summary: "Base junguiana e sistêmica para adultos e casais, com longa experiência e foco em ansiedade/depressão, podendo apoiar luto com dimensão existencial.",
-        focus: ["Luto", "Trauma", "Ansiedade", "Depressão", "Relacionamentos"],
-        approaches: ["Psicologia Analítica Junguiana", "Psicologia Sistêmica"],
-        formations: ["Psicologia (Universidade Santa Úrsula)", "Pós em Psicologia Analítica (IJRJ)", "Especialização em Psicologia Sistêmica Junguiana"],
-        contacts: {
-          platform: "https://centralterapia.com.br/profissional/alessandra-hartveld/",
-          website: "",
-          instagram: "https://www.instagram.com/psi.alessandrahartveld/",
-          linkedin: "https://www.linkedin.com/in/alessandrahartveld/",
-          whatsapp: "https://wa.me/85296183688"
-        },
-        contentLinks: [],
-        evidence: ["Central Terapia", "LinkedIn"]
-      },
-      {
-        name: "Eric Rugiadini e Silva",
-        tier: "B",
-        role: "Psicólogo e Psicanalista",
-        crp: "CRP 06/219176",
+        role: "Psicóloga especialista clínica, supervisora e facilitadora EMDR",
+        crp: "CRP 33754-0",
         city: "São Paulo, SP",
         online: true,
-        photo: "https://centralterapia.com.br/wp-content/uploads/2026/02/Psicologo-Online-Eric-Rugiadini-e-Silva.jpg",
-        rating: "Perfil em diretório de luto/perdas",
-        summary: "Psicanálise clínica com foco explícito em luto/perda e comorbidades frequentes (burnout, ansiedade, depressão, conflitos familiares).",
-        focus: ["Luto", "Perda", "Ansiedade", "Depressão", "Burnout"],
-        approaches: ["Psicanálise Clínica"],
-        formations: ["Graduação em Psicologia (FMU)", "Pós-graduação em Psicanálise Clínica"],
+        score: 84,
+        photo: "https://sirleybittupsicologa.com.br/wp-content/uploads/2023/08/sirley_bittu-psicologa-emdr-perfil-1.webp",
+        rating: "Mais de 30 anos de experiência clínica",
+        summary: "Psicóloga com longa prática clínica e atuação intensa em trauma emocional. CEO da Clínica Self Care, em São Paulo, e certificada como supervisora/facilitadora EMDR por instituições internacionais. Ministra cursos e workshops para profissionais, com conteúdos específicos sobre trauma, apego e luto. Mantém produção contínua de artigos e formação avançada.",
+        focus: ["Trauma", "Luto", "Apego", "EMDR", "Formação clínica"],
+        approaches: ["EMDR", "Brainspotting", "Psicoterapia do trauma"],
+        formations: ["Graduação em Psicologia - Faculdade de Filosofia, Ciências e Letras São Marcos", "Especialização em Psicodrama Terapêutico - Instituto Sedes Sapientiae", "Certificação EMDR - EMDR Institute", "Certificação EMDR Consultant - EMDRIA"],
         contacts: {
-          platform: "https://centralterapia.com.br/profissional/eric-rugiadini-e-silva/",
-          website: "",
-          instagram: "https://www.instagram.com/psi.ericrugiadini/",
-          linkedin: "https://www.linkedin.com/in/eric-rugiadini-e-silva-ab606527a/",
-          whatsapp: "https://wa.me/5511979855058"
+          platform: "https://sirleybittupsicologa.com.br/",
+          website: "https://sirleybittupsicologa.com.br/",
+          instagram: "https://www.instagram.com/sirleybittupsi/",
+          linkedin: "https://br.linkedin.com/in/sirley-bittu-42133457",
+          whatsapp: "https://wa.me/5511944622520"
         },
-        contentLinks: [],
-        evidence: ["Central Terapia", "LinkedIn"]
+        contentLinks: [
+          "https://sirleybittupsicologa.com.br/artigos/",
+          "https://sirleybittupsicologa.com.br/palestras-e-workshop/",
+          "https://www.youtube.com/channel/UCpfr7yR5GTPZMbUHosLNqSg"
+        ],
+        evidence: [
+          "https://sirleybittupsicologa.com.br/sobre-mim/",
+          "https://br.linkedin.com/in/sirley-bittu-42133457",
+          "https://clinicaselfcare.com/dra-sirley-bittu/",
+          "https://www.instagram.com/sirleybittupsi/",
+          "https://credentials.emdria.org/fd0d9c0a-9884-47a3-bd8a-2c44d1ea2cd0",
+          "https://www.escavador.com/sobre/1625021303/sirley-regina-dos-santos-marcusso-bittu"
+        ]
+      },
+      {
+        name: "Silvana Ricci Salomoni",
+        tier: "A",
+        role: "Psicóloga clínica, trainer EMDR e terapeuta de casal/família",
+        crp: "CRP 08/1126",
+        city: "Curitiba, PR",
+        online: true,
+        score: 87,
+        photo: "",
+        rating: "Trainer EMDR com base acadêmica sólida",
+        summary: "Psicóloga pela UFPR, mestre em Psicologia Clínica pela PUC-SP e trainer em Psicoterapia EMDR. Atua também com terapia familiar sistêmica e terapia de casal, integrando experiência clínica de longa duração com formação de profissionais. Possui histórico de trabalho institucional no TJ-PR e participação em conteúdos técnicos sobre EMDR.",
+        focus: ["Trauma", "EMDR", "Luto", "Terapia de casal", "Família"],
+        approaches: ["EMDR", "Terapia Sistêmica", "Terapia de Casal"],
+        formations: ["Graduação em Psicologia - UFPR", "Mestrado em Psicologia Clínica - PUC-SP", "Formação Trainer EMDR"],
+        contacts: {
+          platform: "https://www.traumaclinic.com.br/procureumprofissional-treinadores",
+          website: "https://www.traumaclinic.com.br/procureumprofissional-treinadores",
+          instagram: "https://www.instagram.com/silvana_salomoni/",
+          linkedin: "",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.youtube.com/watch?v=0B2_Wst8i3A",
+          "https://www.youtube.com/watch?v=Q6SHhtF0WXc"
+        ],
+        evidence: [
+          "https://www.traumaclinic.com.br/procureumprofissional-treinadores",
+          "https://www.instagram.com/silvana_salomoni/",
+          "https://www.youtube.com/watch?v=0B2_Wst8i3A",
+          "https://www.youtube.com/watch?v=Q6SHhtF0WXc"
+        ]
+      },
+      {
+        name: "Jackeline Gomes",
+        tier: "A",
+        role: "Psicóloga, Full Trainer EMDR e Trainer of Trainers",
+        crp: "CRP não localizado publicamente com consistência",
+        city: "Belo Horizonte, MG",
+        online: true,
+        score: 85,
+        photo: "",
+        rating: "Atuação forte em formação EMDR e trauma",
+        summary: "Psicóloga formada pela UFMG e mestre em Psicologia pela PUC Minas, com trajetória consolidada em trauma e EMDR no Brasil. Atua como Full Trainer e Trainer of Trainers em redes de formação internacional, além de participar de congressos e supervisões clínicas em psicotrauma. Mantém presença pública ativa em canais profissionais e no Instagram técnico, com conteúdos voltados a aplicação clínica de EMDR e cuidado em sofrimento traumático. Também reúne formação complementar em Brainspotting e hipnoterapia ericksoniana, combinando ensino e prática clínica em adultos e contextos de perda.",
+        focus: ["EMDR", "Trauma", "Luto", "Formação clínica"],
+        approaches: ["EMDR", "Psicoterapia breve", "Hipnoterapia Ericksoniana"],
+        formations: ["Graduação em Psicologia - UFMG (1997)", "Mestrado em Psicologia - PUC Minas (2009)", "Full Trainer em EMDR", "Trainer of Trainers - EMDR Global Network", "Formação em Brainspotting"],
+        contacts: {
+          platform: "https://www.traumaclinic.com.br/f/ftemdr",
+          website: "https://intccrio.com.br/profissionais/jackeline-gomes/",
+          instagram: "https://www.instagram.com/emdrbelohorizonte/",
+          linkedin: "https://br.linkedin.com/in/jackeline-figueiredo-barbosa-gomes-04391161",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.youtube.com/watch?v=sx-pgcFjAX0",
+          "https://www.instagram.com/emdrbelohorizonte/",
+          "https://congresoemdral2024.com/jackeline-barbosa-gomes"
+        ],
+        evidence: [
+          "https://www.traumaclinic.com.br/f/ftemdr",
+          "https://intccrio.com.br/profissionais/jackeline-gomes/",
+          "https://congresoemdral2024.com/jackeline-barbosa-gomes",
+          "https://br.linkedin.com/in/jackeline-figueiredo-barbosa-gomes-04391161",
+          "https://www.instagram.com/emdrbelohorizonte/"
+        ]
+      },
+      {
+        name: "Tatiana Suckau",
+        tier: "A",
+        role: "Psicóloga clínica e terapeuta EMDR",
+        crp: "CRP 07/35917",
+        city: "Carazinho, RS",
+        online: true,
+        score: 87,
+        photo: "",
+        rating: "Atende brasileiros em múltiplos países",
+        summary: "Psicóloga clínica (CRP 07/35917) com foco em trauma, luto, ansiedade e depressão, com atuação presencial e online para brasileiros no Brasil e no exterior. Seu perfil profissional público indica formação em Psicologia pela Unisul e capacitações em EMDR e TCC, com prática voltada ao reprocessamento de experiências traumáticas e estabilização emocional. Integra equipe do Espaço da Mente e mantém comunicação ativa em Instagram e site próprio, com materiais de psicoeducação e orientação clínica para pessoas em sofrimento intenso.",
+        focus: ["Trauma", "Luto", "TEPT", "Ansiedade", "Depressão"],
+        approaches: ["EMDR", "TCC"],
+        formations: ["Graduação em Psicologia - Unisul", "Formação em EMDR - Espaço da Mente", "Capacitação clínica - CEDEP", "Formação em Terapia Cognitivo-Comportamental"],
+        contacts: {
+          platform: "https://www.espacodamente.com/our_team/tatianamendez/",
+          website: "https://tatianasuckau.com.br/",
+          instagram: "https://www.instagram.com/psi.tatianasuckau/",
+          linkedin: "https://linkedin.com/in/tatiana-suckau-mendez-2b5152131",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://tatianasuckau.com.br/",
+          "https://www.instagram.com/psi.tatianasuckau/",
+          "https://www.espacodamente.com/our_team/tatianamendez/"
+        ],
+        evidence: [
+          "https://tatianasuckau.com.br/",
+          "https://www.instagram.com/psi.tatianasuckau/",
+          "https://linkedin.com/in/tatiana-suckau-mendez-2b5152131",
+          "https://www.espacodamente.com/our_team/tatianamendez/",
+          "https://www.psymeetsocial.com/psicologo/tatiana-suckau-mendez"
+        ]
+      },
+      {
+        name: "Paula Farineli",
+        tier: "A",
+        role: "Psicóloga clínica, especialista em psicoterapia do luto",
+        crp: "CRP 08/31131",
+        city: "Mandaguari, PR",
+        online: true,
+        score: 89,
+        photo: "",
+        rating: "Foco clínico central em luto",
+        summary: "Psicóloga clínica (CRP 08/31131) com atuação direcionada à psicoterapia do luto e acolhimento de pessoas em processo de perda. Em sua presença pública, descreve abordagem centrada na escuta qualificada e no respeito ao tempo emocional de cada paciente, com atendimentos online e produção frequente de conteúdo sobre luto nas redes. Há registros de participação em entrevistas e programas educativos sobre reconstrução de vida após perdas, reforçando perfil de comunicação clínica ativa. Também informa formação em Psicologia e continuidade acadêmica em Psicologia Hospitalar.",
+        focus: ["Luto", "Perdas", "Acolhimento emocional", "Adaptação pós-perda"],
+        approaches: ["Psicoterapia do luto", "Psicologia Hospitalar", "Atendimento humanizado"],
+        formations: ["Graduação em Psicologia - Unicesumar", "Pós-graduação em Psicologia Hospitalar (em andamento)"],
+        contacts: {
+          platform: "https://www.doctoralia.com.br/paula-farineli/psicologo/mandaguari",
+          website: "",
+          instagram: "https://www.instagram.com/psicologapaulafarineli/",
+          linkedin: "https://www.linkedin.com/in/paula-farineli-360a46165",
+          whatsapp: "https://www.facebook.com/psicologapaulafarineli/"
+        },
+        contentLinks: [
+          "https://www.instagram.com/psicologapaulafarineli/",
+          "https://www.youtube.com/watch?v=2fCfqxlutr8",
+          "https://www.doctoralia.com.br/paula-farineli/psicologo/mandaguari"
+        ],
+        evidence: [
+          "https://www.instagram.com/psicologapaulafarineli/",
+          "https://www.linkedin.com/in/paula-farineli-360a46165",
+          "https://www.youtube.com/watch?v=2fCfqxlutr8",
+          "https://www.doctoralia.com.br/paula-farineli/psicologo/mandaguari",
+          "https://www.facebook.com/psicologapaulafarineli/about/"
+        ]
+      },
+      {
+        name: "Ana Clara Bastos",
+        tier: "A",
+        role: "Psicóloga clínica e professora, foco em perdas e luto",
+        crp: "CRP 03/6778",
+        city: "Salvador, BA",
+        online: true,
+        score: 91,
+        photo: "",
+        rating: "Mais de 3 mil alunos em formação na área de luto",
+        summary: "Psicóloga (CRP 03/6778) com atuação clínica e acadêmica concentrada em perdas, luto e cuidados paliativos. Sua presença pública combina atendimento, supervisão clínica e formação de psicólogos, com forte difusão técnica em canais digitais e cursos profissionais. Registros acadêmicos e institucionais apontam trajetória de pós-graduação na UFBA e especialização em luto no Instituto Quatro Estações, além de produção contínua de conteúdo sobre manejo clínico do enlutamento. Em redes sociais profissionais, mantém comunicação estruturada sobre casos de perda complexa e organização de conduta terapêutica para psicólogos.",
+        focus: ["Perdas e luto", "Cuidados paliativos", "Formação de psicólogos", "Luto antecipatório"],
+        approaches: ["Psicoterapia do luto", "Terapia Sistêmica", "Abordagem clínica baseada em evidências"],
+        formations: ["Graduação em Psicologia - Faculdade Ruy Barbosa (2004-2009)", "Mestrado em Psicologia - UFBA (2014)", "Doutorado em Psicologia do Desenvolvimento Humano - UFBA", "Especialização em Luto - Instituto Quatro Estações"],
+        contacts: {
+          platform: "https://anaclarabastos.com.br/lista-espera/",
+          website: "https://anaclarabastos.com.br/",
+          instagram: "https://www.instagram.com/psicologa.anaclarabastos/",
+          linkedin: "https://br.linkedin.com/in/ana-clara-bastos",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.youtube.com/@psicologa.anaclarabastos",
+          "https://www.instagram.com/psicologa.anaclarabastos/",
+          "https://anaclarabastos.com.br/"
+        ],
+        evidence: [
+          "https://anaclarabastos.com.br/lista-espera/",
+          "https://pospsi.ufba.br/sites/pospsi.ufba.br/files/ana_clara_bastos.pdf",
+          "https://repositorio.ufba.br/handle/ri/30441",
+          "https://www.instagram.com/psicologa.anaclarabastos/",
+          "https://br.linkedin.com/in/ana-clara-bastos",
+          "https://www.escavador.com/sobre/6585570/ana-clara-de-sousa-bittencourt-bastos"
+        ]
+      },
+      {
+        name: "Lisiane Mendes Costa",
+        tier: "B",
+        role: "Psicóloga clínica, terapeuta EMDR e Brainspotting",
+        crp: "CRP 07/23521",
+        city: "Rio Grande, RS",
+        online: true,
+        score: 78,
+        photo: "",
+        rating: "Perfil técnico ativo em trauma e regulação emocional",
+        summary: "Psicóloga clínica (CRP 07/23521) com atuação em trauma, luto, fobias e ansiedade, articulando EMDR e Brainspotting em prática clínica com adultos. Mantém presença pública no projeto Tranquilitude, com conteúdos de psicoeducação e estratégias de regulação emocional baseadas em neurociências aplicadas. Fontes públicas apontam formação base no Rio Grande do Sul e atuação presencial no sul do país, além de atendimento online e posicionamento profissional consistente em temas de trauma psicológico e reorganização de vida após experiências adversas.",
+        focus: ["Trauma", "Luto", "Fobias", "Ansiedade"],
+        approaches: ["EMDR", "Brainspotting", "Neurociências aplicadas"],
+        formations: ["Graduação em Psicologia - FURG (fonte principal pública)", "Especialização em Neurociências do Comportamento - UNESC (em andamento)", "Formação em EMDR - TraumaClinic", "Formação em Brainspotting", "Treinamento AIM (informado em perfil profissional)"],
+        contacts: {
+          platform: "https://www.tranquilitude.com.br/",
+          website: "https://www.tranquilitude.com.br/",
+          instagram: "https://www.instagram.com/atitudetranquila/",
+          linkedin: "https://br.linkedin.com/in/lisiane-mendes-costa",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://www.tranquilitude.com.br/emdr",
+          "https://www.instagram.com/atitudetranquila/",
+          "https://www.tranquilitude.com.br/"
+        ],
+        evidence: [
+          "https://br.linkedin.com/in/lisiane-mendes-costa",
+          "https://www.tranquilitude.com.br/minha-historia",
+          "https://www.tranquilitude.com.br/",
+          "https://www.tranquilitude.com.br/emdr",
+          "https://www.instagram.com/atitudetranquila/"
+        ]
+      },
+      {
+        name: "Eleonora Monteiro",
+        tier: "B",
+        role: "Psicóloga clínica, terapeuta EMDR e Brainspotting",
+        crp: "CRP 08/12807",
+        city: "Maringá, PR",
+        online: true,
+        score: 81,
+        photo: "",
+        rating: "Atuação online estruturada em trauma e luto",
+        summary: "Psicóloga clínica (CRP 08/12807) com prática voltada ao tratamento de trauma, luto e ansiedade, usando EMDR e Brainspotting como bases centrais de intervenção. Sua presença pública combina site profissional, perfil técnico em redes sociais e canais de contato direto, com foco em atendimento de adultos no formato online. Fontes institucionais e perfis profissionais indicam formação em Psicologia pela UEM, certificações em EMDR e treinamento complementar em Brainspotting, além de trajetória aplicada a reprocessamento de memórias traumáticas e redução de sintomas persistentes.",
+        focus: ["Trauma", "Luto", "Ansiedade", "TEPT"],
+        approaches: ["EMDR", "Brainspotting", "Terapia focada em trauma"],
+        formations: ["Graduação em Psicologia - UEM", "Certificação EMDR - EMDR Institute Inc.", "Formação em Brainspotting", "Pós-graduação em Gestão de Pessoas"],
+        contacts: {
+          platform: "https://www.psicoterapiaemdr.com.br",
+          website: "https://www.psicoterapiaemdr.com.br",
+          instagram: "https://www.instagram.com/psieleonoramonteiro/",
+          linkedin: "https://www.linkedin.com/in/eleonoramonteiro/",
+          whatsapp: "https://api.whatsapp.com/send?phone=5544999829809"
+        },
+        contentLinks: [
+          "https://www.psicoterapiaemdr.com.br/",
+          "https://www.instagram.com/psieleonoramonteiro/",
+          "https://www.linkedin.com/in/eleonoramonteiro/"
+        ],
+        evidence: [
+          "https://www.psicoterapiaemdr.com.br/",
+          "https://www.instagram.com/psieleonoramonteiro/",
+          "https://www.linkedin.com/in/eleonoramonteiro/",
+          "https://por.aibapt.org/memberslist-brazil-pr",
+          "https://www.doctoralia.com.br/eleonora-monteiro/psicologo/maringa"
+        ]
+      },
+      {
+        name: "Francielly Pedroso",
+        tier: "B",
+        role: "Psicóloga clínica, terapeuta EMDR",
+        crp: "CRP 08/20098",
+        city: "Londrina, PR",
+        online: true,
+        score: 84,
+        photo: "",
+        rating: "Site próprio com trilha de formação detalhada",
+        summary: "Psicóloga clínica (CRP 08/20098) com foco em trauma e luto, com atuação presencial e online e presença pública consistente em site próprio e redes profissionais. Seu percurso divulgado reúne graduação em Psicologia, formação em EMDR e especializações voltadas a psicopedagogia clínica e neurociências, reforçando perfil técnico para casos de sofrimento emocional persistente. Também participa de redes de atendimento em psicotrauma e mantém comunicação ativa sobre reprocessamento terapêutico, ansiedade e reorganização emocional após eventos críticos.",
+        focus: ["Trauma", "Luto", "TEPT", "Ansiedade"],
+        approaches: ["EMDR", "TCC", "Psicoterapia clínica"],
+        formations: ["Graduação em Psicologia - Faculdade Pitágoras de Londrina (2013)", "Especialização em Psicopedagogia Clínica e Institucional (2019)", "Formação em EMDR - Associação Brasileira de EMDR (2020)", "Especialização em Neurociências - UEL (2022)"],
+        contacts: {
+          platform: "https://franciellypedroso.com/sobre/",
+          website: "https://franciellypedroso.com/",
+          instagram: "https://www.instagram.com/psicologafranciellypedroso/",
+          linkedin: "",
+          whatsapp: ""
+        },
+        contentLinks: [
+          "https://franciellypedroso.com/",
+          "https://www.instagram.com/psicologafranciellypedroso/",
+          "https://franciellypedroso.com/sobre/"
+        ],
+        evidence: [
+          "https://franciellypedroso.com/sobre/",
+          "https://www.instagram.com/psicologafranciellypedroso/",
+          "https://www.emdr.org.br/certificados",
+          "https://franciellypedroso.com/"
+        ]
+      },
+      {
+        name: "Alessandra Valeriano",
+        tier: "B",
+        role: "Psicóloga clínica com foco em luto e trauma",
+        crp: "CRP 04/45431",
+        city: "Belo Horizonte, MG",
+        online: true,
+        score: 82,
+        photo: "",
+        rating: "Atuação sólida em luto, psico-oncologia e cuidados paliativos",
+        summary: "Psicóloga clínica (CRP 04/45431) com atuação em luto, trauma e contextos de adoecimento crônico, incluindo casos de câncer e perdas familiares complexas. Registros públicos apontam formação de base em Minas Gerais, especialização em cuidados paliativos e mestrado em Psicologia Clínica na PUC-SP com pesquisa sobre luto em crianças e famílias, sob orientação de referência nacional na área. Mantém comunicação profissional em redes sociais e atendimento em Belo Horizonte com oferta online, combinando psicoterapia do luto, EMDR e enfoque clínico em sofrimento emocional de alta intensidade.",
+        focus: ["Luto", "Trauma", "Cuidados paliativos", "Ansiedade"],
+        approaches: ["Psicoterapia do luto", "EMDR", "Psico-oncologia"],
+        formations: ["Graduação em Psicologia - Centro Universitário Newton Paiva (2006)", "Cuidados Paliativos - Casa do Cuidar (2012)", "Mestrado em Psicologia Clínica - PUC-SP (2015)", "Formação em EMDR - ITC"],
+        contacts: {
+          platform: "https://www.doctoralia.com.br/alessandra-valeriano/psicologo/belo-horizonte",
+          website: "",
+          instagram: "https://www.instagram.com/psialevaleriano/",
+          linkedin: "",
+          whatsapp: "https://wa.me/5531982806677"
+        },
+        contentLinks: [
+          "https://www.instagram.com/psialevaleriano/",
+          "https://www.escavador.com/sobre/4980508/alessandra-rodrigues-valeriano"
+        ],
+        evidence: [
+          "https://www.instagram.com/psialevaleriano/",
+          "https://wa.me/5531982806677",
+          "https://www.doctoralia.com.br/alessandra-valeriano/psicologo/belo-horizonte",
+          "https://www.escavador.com/sobre/4980508/alessandra-rodrigues-valeriano",
+          "http://www.pucsp.br/pos-graduacao/mestrado-doutorado/psicologia-psicologia-clinica"
+        ]
+      },
+      {
+        name: "Maria Cecília Ramos Hyppólito",
+        tier: "B",
+        role: "Psicóloga clínica com foco em trauma e luto",
+        crp: "CRP 06/62790-0",
+        city: "São Paulo, SP",
+        online: true,
+        score: 81,
+        photo: "",
+        rating: "Boa combinação entre prática clínica e presença digital",
+        summary: "Psicóloga clínica (CRP 06/62790-0) com atuação em trauma e luto, com base em São Paulo e atendimentos online para brasileiros no Brasil e no exterior. Mantém site profissional, Instagram técnico e canal em vídeo com conteúdos sobre sofrimento emocional, reorganização psíquica e processamento de memórias difíceis. Fontes públicas indicam formação em Psicologia e capacitações complementares em EMDR, trauma complexo e recursos de trabalho com criança interior, compondo um perfil clínico voltado a casos de ansiedade, TEPT e perdas significativas.",
+        focus: ["Trauma", "Luto", "TEPT", "Ansiedade"],
+        approaches: ["EMDR", "TCC", "Psicoterapia clínica focada em trauma"],
+        formations: ["Graduação em Psicologia - Universidade Paulistana", "Formação em EMDR - Associação Brasileira de EMDR", "Capacitação em traumas complexos", "Formação em técnica da criança interior"],
+        contacts: {
+          platform: "https://www.psicologacecilia.com.br/home/",
+          website: "https://www.psicologacecilia.com.br/home/",
+          instagram: "https://www.instagram.com/mariaceciliaramoshyppolito/",
+          linkedin: "https://www.linkedin.com/in/maria-cec%C3%ADlia-ramos-hypp%C3%B3lito-37196828",
+          whatsapp: "https://wa.me/5511997023870"
+        },
+        contentLinks: [
+          "https://www.youtube.com/c/psicologamariaceciliaramoshyppolito",
+          "https://www.instagram.com/mariaceciliaramoshyppolito/",
+          "https://www.psicologacecilia.com.br/home/"
+        ],
+        evidence: [
+          "https://www.psicologacecilia.com.br/home/",
+          "https://www.instagram.com/mariaceciliaramoshyppolito/",
+          "https://www.youtube.com/c/psicologamariaceciliaramoshyppolito",
+          "https://www.doctoralia.com.br/maria-cecilia-ramos-hyppolito-2/psicologo/sao-paulo",
+          "https://www.psitto.com.br/psicologo/maria-cecilia-ramos-hyppolito/"
+        ]
       }
     ];
 
@@ -618,9 +943,16 @@
       return `https://ui-avatars.com/api/?background=e9eef0&color=3d4d55&name=${encodeURIComponent(name)}&size=256`;
     }
 
+    function instagramPhoto(instagramUrl) {
+      if (!instagramUrl) return "";
+      const m = instagramUrl.match(/instagram\.com\/([^/?#]+)/i);
+      if (!m) return "";
+      return `https://unavatar.io/instagram/${m[1]}`;
+    }
+
     function cleanPhone(waUrl) {
       if (!waUrl) return "";
-      const m = waUrl.match(/wa\.me\/(\d+)/i);
+      const m = waUrl.match(/wa\.me\/(\d+)/i) || waUrl.match(/phone=(\d+)/i);
       if (!m) return "";
       const n = m[1];
       if (n.length < 12) return n;
@@ -633,22 +965,23 @@
 
     function render(list) {
       cardsEl.innerHTML = list.map(t => {
+        const photo = t.photo || instagramPhoto(t.contacts.instagram) || profileFallback(t.name);
         const contactLinks = [
           link("Perfil", t.contacts.platform),
           link("Site", t.contacts.website),
           link("Instagram", t.contacts.instagram),
           link("LinkedIn", t.contacts.linkedin),
-          link("Facebook", t.contacts.facebook),
           link("WhatsApp", t.contacts.whatsapp)
         ].join("");
 
         const contentLinks = (t.contentLinks || []).map((u, i) => link(`Conteúdo ${i + 1}`, u)).join("");
+        const evidenceLinks = (t.evidence || []).map((u, i) => link(`Evidência ${i + 1}`, u)).join("");
         const phone = cleanPhone(t.contacts.whatsapp);
 
         return `
           <article class="card">
             <div class="top">
-              <img class="photo" src="${t.photo || profileFallback(t.name)}" alt="Foto de ${t.name}" loading="lazy" onerror="this.src='${profileFallback(t.name)}'" />
+              <img class="photo" src="${photo}" alt="Foto de ${t.name}" loading="lazy" onerror="this.src='${profileFallback(t.name)}'" />
               <div>
                 <h2 class="name">${t.name}</h2>
                 <p class="role">${t.role}</p>
@@ -657,6 +990,7 @@
                   <span class="badge">${t.city}</span>
                   <span class="badge">${t.online ? "Atende online" : "Online não confirmado"}</span>
                   <span class="badge alt">Tier ${t.tier}</span>
+                  <span class="badge alt">Score ${t.score}</span>
                 </div>
               </div>
             </div>
@@ -690,8 +1024,9 @@
                 <h4>Textos / Vídeos</h4>
                 <div class="links">${contentLinks || "<span class='summary'>Nenhum conteúdo público relevante encontrado na coleta.</span>"}</div>
               </div>
-              <div class="foot">
-                ${(t.evidence || []).map(e => `<span class="badge">${e}</span>`).join("")}
+              <div class="sec">
+                <h4>Links de Evidência</h4>
+                <div class="links">${evidenceLinks || "<span class='summary'>Sem links adicionais na coleta.</span>"}</div>
               </div>
             </div>
           </article>
