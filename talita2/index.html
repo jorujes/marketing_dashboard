@@ -346,6 +346,32 @@
       return '';
     }
 
+    function asArray(value) {
+      if (Array.isArray(value)) return value;
+      if (value == null || value === '') return [];
+      return [String(value)];
+    }
+
+    function cleanWhatsapp(raw) {
+      if (!raw) return '';
+      const fromUrl = cleanUrl(raw);
+      if (fromUrl) return fromUrl;
+
+      const digits = String(raw).replace(/\D+/g, '');
+      if (digits.length < 10) return '';
+      return `https://wa.me/${digits}`;
+    }
+
+    function cleanEmailOrPage(raw) {
+      if (!raw) return '';
+      const fromUrl = cleanUrl(raw);
+      if (fromUrl) return fromUrl;
+      const value = String(raw).trim();
+      if (!value) return '';
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return `mailto:${value}`;
+      return '';
+    }
+
     function parseState(cityState) {
       if (!cityState) return 'N/A';
       const m = String(cityState).match(/,\s*([A-Z]{2})\b/);
@@ -360,7 +386,7 @@
     }
 
     function hasStrongContact(p) {
-      return Boolean(cleanUrl(p.website) || cleanUrl(p.whatsapp));
+      return Boolean(cleanUrl(p.website) || cleanWhatsapp(p.whatsapp) || cleanEmailOrPage(p.email_or_contact_page));
     }
 
     function hasSocialContact(p) {
@@ -384,18 +410,21 @@
         const rank = p.final_rank || '-';
         const score = p.quality_score ?? '-';
         const photo = cleanUrl(p.photo_url);
-        const education = (p.education_institutions || []).slice(0, 4);
+        const education = asArray(p.education_institutions).slice(0, 4).map(v => String(v));
         const years = String(p.years_experience ?? '').trim();
-        const specialties = (p.specialties || []).slice(0, 6);
-        const approaches = (p.approaches || []).slice(0, 5);
+        const specialties = asArray(p.specialties).slice(0, 6).map(v => String(v));
+        const approaches = asArray(p.approaches).slice(0, 5).map(v => String(v));
         const summary = String(p.summary_ptbr ?? '').trim() || 'Resumo não informado.';
+        const emailOrPage = cleanEmailOrPage(p.email_or_contact_page);
+        const whatsapp = cleanWhatsapp(p.whatsapp);
 
         const links = [];
         if (cleanUrl(p.profile_url)) links.push({ label: 'Perfil', url: cleanUrl(p.profile_url) });
         if (cleanUrl(p.website)) links.push({ label: 'Site', url: cleanUrl(p.website) });
         if (cleanUrl(p.instagram)) links.push({ label: 'Instagram', url: cleanUrl(p.instagram) });
         if (cleanUrl(p.linkedin)) links.push({ label: 'LinkedIn', url: cleanUrl(p.linkedin) });
-        if (cleanUrl(p.whatsapp)) links.push({ label: 'WhatsApp', url: cleanUrl(p.whatsapp) });
+        if (whatsapp) links.push({ label: 'WhatsApp', url: whatsapp });
+        if (emailOrPage) links.push({ label: emailOrPage.startsWith('mailto:') ? 'Email' : 'Contato', url: emailOrPage });
 
         return `
           <tr>
@@ -428,50 +457,58 @@
     }
 
     function applyFilters() {
-      const q = (searchEl.value || '').toLowerCase().trim();
-      const source = sourceFilterEl.value;
-      const uf = stateFilterEl.value;
-      const contactMode = contactFilterEl.value;
-      const sortBy = sortByEl.value;
+      try {
+        const q = (searchEl.value || '').toLowerCase().trim();
+        const source = sourceFilterEl.value;
+        const uf = stateFilterEl.value;
+        const contactMode = contactFilterEl.value;
+        const sortBy = sortByEl.value;
 
-      let filtered = state.list.filter(p => {
-        if (source !== 'all' && (p.source_platform || 'N/A') !== source) return false;
-        if (uf !== 'all' && parseState(p.city_state) !== uf) return false;
+        let filtered = state.list.filter(p => {
+          if (source !== 'all' && (p.source_platform || 'N/A') !== source) return false;
+          if (uf !== 'all' && parseState(p.city_state) !== uf) return false;
 
-        if (contactMode === 'strong' && !hasStrongContact(p)) return false;
-        if (contactMode === 'social' && !hasSocialContact(p)) return false;
-        if (contactMode === 'rich' && !(hasStrongContact(p) && hasSocialContact(p))) return false;
+          if (contactMode === 'strong' && !hasStrongContact(p)) return false;
+          if (contactMode === 'social' && !hasSocialContact(p)) return false;
+          if (contactMode === 'rich' && !(hasStrongContact(p) && hasSocialContact(p))) return false;
 
-        if (!q) return true;
+          if (!q) return true;
 
-        const text = [
-          p.name,
-          p.city_state,
-          p.source_platform,
-          p.summary_ptbr,
-          (p.specialties || []).join(' '),
-          (p.approaches || []).join(' '),
-          (p.education_institutions || []).join(' '),
-          p.crp_or_registry,
-        ].join(' ').toLowerCase();
+          const text = [
+            p.name,
+            p.city_state,
+            p.source_platform,
+            p.summary_ptbr,
+            asArray(p.specialties).join(' '),
+            asArray(p.approaches).join(' '),
+            asArray(p.education_institutions).join(' '),
+            p.crp_or_registry,
+          ].join(' ').toLowerCase();
 
-        return text.includes(q);
-      });
+          return text.includes(q);
+        });
 
-      filtered.sort((a, b) => {
-        if (sortBy === 'name') return String(a.name || '').localeCompare(String(b.name || ''), 'pt-BR');
-        if (sortBy === 'score') return (b.quality_score || 0) - (a.quality_score || 0);
-        if (sortBy === 'reviews') return extractReviewNumber(b.ratings_or_reviews) - extractReviewNumber(a.ratings_or_reviews);
-        return (a.final_rank || 999999) - (b.final_rank || 999999);
-      });
+        filtered.sort((a, b) => {
+          if (sortBy === 'name') return String(a.name || '').localeCompare(String(b.name || ''), 'pt-BR');
+          if (sortBy === 'score') return (b.quality_score || 0) - (a.quality_score || 0);
+          if (sortBy === 'reviews') return extractReviewNumber(b.ratings_or_reviews) - extractReviewNumber(a.ratings_or_reviews);
+          return (a.final_rank || 999999) - (b.final_rank || 999999);
+        });
 
-      render(filtered);
-      statusLineEl.textContent = `Exibindo ${filtered.length} de ${state.list.length} perfis.`;
+        render(filtered);
+        statusLineEl.textContent = `Exibindo ${filtered.length} de ${state.list.length} perfis.`;
+      } catch (err) {
+        statusLineEl.textContent = `Erro ao aplicar filtros: ${err.message}`;
+        emptyEl.hidden = false;
+        tableWrap.hidden = true;
+      }
     }
 
     function fillFilters() {
-      const sources = [...new Set(state.list.map(p => p.source_platform || 'N/A'))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
-      const ufs = [...new Set(state.list.map(p => parseState(p.city_state)))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+      const sources = [...new Set(state.list.map(p => String(p.source_platform || 'N/A')))]
+        .sort((a, b) => a.localeCompare(b, 'pt-BR'));
+      const ufs = [...new Set(state.list.map(p => String(parseState(p.city_state))))]
+        .sort((a, b) => a.localeCompare(b, 'pt-BR'));
 
       sourceFilterEl.innerHTML = '<option value="all">Todas as fontes</option>' +
         sources.map(s => `<option value="${s}">${s}</option>`).join('');
