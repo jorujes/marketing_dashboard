@@ -385,10 +385,10 @@
         const score = p.quality_score ?? '-';
         const photo = cleanUrl(p.photo_url);
         const education = (p.education_institutions || []).slice(0, 4);
-        const years = (p.years_experience || '').trim();
+        const years = String(p.years_experience ?? '').trim();
         const specialties = (p.specialties || []).slice(0, 6);
         const approaches = (p.approaches || []).slice(0, 5);
-        const summary = (p.summary_ptbr || '').trim() || 'Resumo não informado.';
+        const summary = String(p.summary_ptbr ?? '').trim() || 'Resumo não informado.';
 
         const links = [];
         if (cleanUrl(p.profile_url)) links.push({ label: 'Perfil', url: cleanUrl(p.profile_url) });
