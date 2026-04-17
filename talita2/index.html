@@ -262,21 +262,6 @@
       word-break: break-word;
     }
 
-    .summary-block {
-      margin-top: 6px;
-    }
-
-    .summary-toggle {
-      margin-top: 6px;
-      border: none;
-      background: transparent;
-      color: var(--accent);
-      padding: 0;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
     .empty {
       margin-top: 16px;
       border: 1px dashed var(--line);
@@ -444,10 +429,6 @@
         const specialties = asArray(p.specialties).slice(0, 6).map(v => String(v));
         const approaches = asArray(p.approaches).slice(0, 5).map(v => String(v));
         const summary = String(p.summary_ptbr ?? '').trim() || 'Resumo não informado.';
-        const summaryLimit = 220;
-        const hasLongSummary = summary.length > summaryLimit;
-        const summaryPreview = hasLongSummary ? summary.slice(0, summaryLimit).trimEnd() : summary;
-        const summaryRest = hasLongSummary ? summary.slice(summaryLimit) : '';
         const emailOrPage = cleanEmailOrPage(p.email_or_contact_page);
         const website = cleanUrl(p.website);
         const whatsapp = cleanWhatsapp(p.whatsapp) || (isWhatsappUrl(website) ? website : '');
@@ -485,13 +466,7 @@
                 <div class="mini">${p.source_platform || 'Fonte não informada'}${p.online_attendance ? ' • Online' : ''}</div>
               </div>
             </div>
-            <div class="summary-block">
-              <div class="summary">
-                <strong>Resumo:</strong>
-                <span class="summary-preview">${summaryPreview}</span><span class="summary-ellipsis"${hasLongSummary ? '' : ' hidden'}>...</span><span class="summary-rest" hidden>${summaryRest}</span>
-              </div>
-              ${hasLongSummary ? '<button type="button" class="summary-toggle" aria-expanded="false">Expandir resumo</button>' : ''}
-            </div>
+            <div class="summary" style="margin-top:8px;"><strong>Resumo:</strong> ${summary}</div>
             <div class="links" style="margin-top:8px;">${links.length ? links.map(l => `<a class="btn" href="${l.url}" target="_blank" rel="noopener noreferrer">${l.label}</a>`).join('') : '<span class="mini">Sem links adicionais</span>'}</div>
             <div class="card-grid">
               <section class="card-section">
@@ -598,31 +573,6 @@
     [searchEl, sourceFilterEl, stateFilterEl, contactFilterEl, sortByEl].forEach(el => {
       el.addEventListener('input', applyFilters);
       el.addEventListener('change', applyFilters);
-    });
-
-    document.addEventListener('click', (event) => {
-      const button = event.target.closest('.summary-toggle');
-      if (!button) return;
-
-      const block = button.closest('.summary-block');
-      if (!block) return;
-
-      const rest = block.querySelector('.summary-rest');
-      const ellipsis = block.querySelector('.summary-ellipsis');
-      if (!rest || !ellipsis) return;
-
-      const expanded = button.getAttribute('aria-expanded') === 'true';
-      if (expanded) {
-        rest.hidden = true;
-        ellipsis.hidden = false;
-        button.setAttribute('aria-expanded', 'false');
-        button.textContent = 'Expandir resumo';
-      } else {
-        rest.hidden = false;
-        ellipsis.hidden = true;
-        button.setAttribute('aria-expanded', 'true');
-        button.textContent = 'Recolher resumo';
-      }
     });
 
     boot();
