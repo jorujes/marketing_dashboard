@@ -103,13 +103,15 @@
       background: var(--paper);
       border: 1px solid var(--line);
       border-radius: 14px;
-      overflow: hidden;
+      overflow-x: auto;
+      overflow-y: hidden;
       box-shadow: var(--shadow);
     }
 
     table {
       border-collapse: collapse;
       width: 100%;
+      min-width: 1200px;
     }
 
     thead {
@@ -126,6 +128,11 @@
       font-size: 13px;
       vertical-align: top;
     }
+
+    th:nth-child(4), td:nth-child(4) { min-width: 430px; }
+    th:nth-child(5), td:nth-child(5) { min-width: 320px; }
+    th:nth-child(6), td:nth-child(6) { min-width: 220px; }
+    th:nth-child(7), td:nth-child(7) { min-width: 220px; }
 
     th {
       font-size: 11px;
@@ -207,7 +214,9 @@
       font-size: 11px;
       color: #2d5b57;
       background: #f1f8f7;
-      white-space: nowrap;
+      white-space: normal;
+      line-height: 1.2;
+      max-width: 320px;
     }
 
     .links {
@@ -230,10 +239,21 @@
     .btn:hover { border-color: var(--accent); }
 
     .summary {
-      max-width: 420px;
+      max-width: 100%;
       line-height: 1.35;
       color: #33464c;
       font-size: 12px;
+    }
+
+    .summary-more {
+      margin-top: 6px;
+    }
+
+    .summary-more summary {
+      cursor: pointer;
+      color: var(--accent);
+      font-size: 12px;
+      user-select: none;
     }
 
     .empty {
@@ -253,8 +273,7 @@
 
     @media (max-width: 860px) {
       .controls { grid-template-columns: 1fr; }
-      .table-wrap { overflow-x: auto; }
-      table { min-width: 1150px; }
+      table { min-width: 1050px; }
     }
   </style>
 </head>
@@ -305,8 +324,6 @@
             <th>Formação</th>
             <th>Especialidades</th>
             <th>Abordagens</th>
-            <th>Contatos</th>
-            <th>Resumo</th>
           </tr>
         </thead>
         <tbody id="tbody"></tbody>
@@ -420,6 +437,7 @@
         const specialties = asArray(p.specialties).slice(0, 6).map(v => String(v));
         const approaches = asArray(p.approaches).slice(0, 5).map(v => String(v));
         const summary = String(p.summary_ptbr ?? '').trim() || 'Resumo não informado.';
+        const summaryShort = summary.length > 220 ? `${summary.slice(0, 220)}...` : summary;
         const emailOrPage = cleanEmailOrPage(p.email_or_contact_page);
         const website = cleanUrl(p.website);
         const whatsapp = cleanWhatsapp(p.whatsapp) || (isWhatsappUrl(website) ? website : '');
@@ -454,6 +472,9 @@
               <div class="mini">${p.city_state || 'Cidade não informada'}</div>
               <div class="mini">${p.crp_or_registry || 'Registro não informado'}</div>
               <div class="mini">${p.source_platform || 'Fonte não informada'}${p.online_attendance ? ' • Online' : ''}</div>
+              <div class="summary" style="margin-top:8px;"><strong>Resumo:</strong> ${summaryShort}</div>
+              ${summary.length > summaryShort.length ? `<details class="summary-more"><summary>Ver resumo completo</summary><div class="summary">${summary}</div></details>` : ''}
+              <div class="links" style="margin-top:8px;">${links.length ? links.map(l => `<a class="btn" href="${l.url}" target="_blank" rel="noopener noreferrer">${l.label}</a>`).join('') : '<span class="mini">Sem links adicionais</span>'}</div>
             </td>
             <td>
               <div class="chips">${education.length ? education.map(e => `<span class="chip">${e}</span>`).join('') : '<span class="mini">Formação não informada</span>'}</div>
@@ -465,10 +486,6 @@
             <td>
               <div class="chips">${approaches.length ? approaches.map(a => `<span class="chip">${a}</span>`).join('') : '<span class="mini">-</span>'}</div>
             </td>
-            <td>
-              <div class="links">${links.length ? links.map(l => `<a class="btn" href="${l.url}" target="_blank" rel="noopener noreferrer">${l.label}</a>`).join('') : '<span class="mini">Sem links adicionais</span>'}</div>
-            </td>
-            <td><div class="summary">${summary}</div></td>
           </tr>
         `;
       }).join('');
