@@ -372,6 +372,11 @@
       return '';
     }
 
+    function isWhatsappUrl(url) {
+      if (!url) return false;
+      return /wa\.me|api\.whatsapp\.com|whatsapp\.com/i.test(String(url));
+    }
+
     function parseState(cityState) {
       if (!cityState) return 'N/A';
       const m = String(cityState).match(/,\s*([A-Z]{2})\b/);
@@ -416,15 +421,28 @@
         const approaches = asArray(p.approaches).slice(0, 5).map(v => String(v));
         const summary = String(p.summary_ptbr ?? '').trim() || 'Resumo não informado.';
         const emailOrPage = cleanEmailOrPage(p.email_or_contact_page);
-        const whatsapp = cleanWhatsapp(p.whatsapp);
+        const website = cleanUrl(p.website);
+        const whatsapp = cleanWhatsapp(p.whatsapp) || (isWhatsappUrl(website) ? website : '');
 
-        const links = [];
-        if (cleanUrl(p.profile_url)) links.push({ label: 'Perfil', url: cleanUrl(p.profile_url) });
-        if (cleanUrl(p.website)) links.push({ label: 'Site', url: cleanUrl(p.website) });
-        if (cleanUrl(p.instagram)) links.push({ label: 'Instagram', url: cleanUrl(p.instagram) });
-        if (cleanUrl(p.linkedin)) links.push({ label: 'LinkedIn', url: cleanUrl(p.linkedin) });
-        if (whatsapp) links.push({ label: 'WhatsApp', url: whatsapp });
-        if (emailOrPage) links.push({ label: emailOrPage.startsWith('mailto:') ? 'Email' : 'Contato', url: emailOrPage });
+        const linkMap = new Map();
+        const addLink = (label, url) => {
+          if (!url) return;
+          const current = linkMap.get(url);
+          if (!current) {
+            linkMap.set(url, label);
+            return;
+          }
+          if (current === 'Site' && label === 'WhatsApp') linkMap.set(url, label);
+          if (current === 'Contato' && label === 'Email') linkMap.set(url, label);
+        };
+
+        addLink('Perfil', cleanUrl(p.profile_url));
+        if (website && !isWhatsappUrl(website)) addLink('Site', website);
+        addLink('Instagram', cleanUrl(p.instagram));
+        addLink('LinkedIn', cleanUrl(p.linkedin));
+        addLink('WhatsApp', whatsapp);
+        addLink(emailOrPage.startsWith('mailto:') ? 'Email' : 'Contato', emailOrPage);
+        const links = [...linkMap.entries()].map(([url, label]) => ({ label, url }));
 
         return `
           <tr>
