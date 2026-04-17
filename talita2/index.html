@@ -19,6 +19,11 @@
 
     * { box-sizing: border-box; }
 
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       margin: 0;
       color: var(--ink);
@@ -114,17 +119,15 @@
     }
 
     .card-head {
-      display: grid;
-      grid-template-columns: auto auto auto minmax(0, 1fr);
+      display: flex;
+      flex-wrap: wrap;
       gap: 10px;
       align-items: start;
     }
 
-    .card-topline {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
+    .card-meta {
+      flex: 1 1 280px;
+      min-width: 0;
     }
 
     .card-grid {
@@ -179,6 +182,7 @@
       font-weight: 700;
       font-size: 14px;
       margin-bottom: 2px;
+      overflow-wrap: anywhere;
     }
 
     .photo {
@@ -205,6 +209,7 @@
     .mini {
       color: var(--muted);
       font-size: 12px;
+      overflow-wrap: anywhere;
     }
 
     .chips {
@@ -223,6 +228,8 @@
       white-space: normal;
       line-height: 1.2;
       max-width: 100%;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .links {
@@ -239,7 +246,9 @@
       font-size: 11px;
       background: #fff;
       color: var(--accent);
-      white-space: nowrap;
+      white-space: normal;
+      text-align: center;
+      overflow-wrap: anywhere;
     }
 
     .btn:hover { border-color: var(--accent); }
@@ -249,6 +258,8 @@
       line-height: 1.35;
       color: #33464c;
       font-size: 12px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .summary-block {
@@ -282,15 +293,9 @@
     }
 
     @media (max-width: 860px) {
+      .wrap { padding: 12px; }
       .controls { grid-template-columns: 1fr; }
-      .card-head {
-        grid-template-columns: auto auto minmax(0, 1fr);
-      }
-      .card-head .photo,
-      .card-head .photo-empty {
-        grid-column: 3;
-        justify-self: end;
-      }
+      .card-meta { flex-basis: 100%; }
       .card-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -473,10 +478,8 @@
               <span class="rank">#${rank}</span>
               <span class="score">${score}</span>
               ${photo ? `<img class="photo" src="${photo}" alt="Foto de ${p.name || 'profissional'}" loading="lazy" />` : '<div class="photo-empty">sem foto</div>'}
-              <div>
-                <div class="card-topline">
-                  <div class="name">${p.name || '-'}</div>
-                </div>
+              <div class="card-meta">
+                <div class="name">${p.name || '-'}</div>
                 <div class="mini">${p.city_state || 'Cidade não informada'}</div>
                 <div class="mini">${p.crp_or_registry || 'Registro não informado'}</div>
                 <div class="mini">${p.source_platform || 'Fonte não informada'}${p.online_attendance ? ' • Online' : ''}</div>
