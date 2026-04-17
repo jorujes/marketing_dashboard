@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Talita2 | Ranking de Terapeutas</title>
+  <style>
+    :root {
+      --bg: #f7f4ed;
+      --paper: #fffdfa;
+      --ink: #1a2326;
+      --muted: #58666c;
+      --line: #e6dfd2;
+      --accent: #0f766e;
+      --chip: #edf6f4;
+      --chip-warm: #fff3e0;
+      --shadow: 0 8px 22px rgba(15, 24, 28, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Avenir Next", "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(1000px 450px at 10% -10%, #e5f3ef 0%, transparent 70%),
+        radial-gradient(950px 420px at 110% 10%, #f8e9c9 0%, transparent 70%),
+        var(--bg);
+    }
+
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      background: linear-gradient(130deg, #fffdf8, #f7fbfa);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.15;
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 1000px;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .meta {
+      margin-top: 14px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 7px 10px;
+    }
+
+    .pill strong { color: var(--ink); }
+
+    .controls {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    input, select {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-size: 14px;
+      background: #fff;
+      color: var(--ink);
+      width: 100%;
+    }
+
+    .status {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .table-wrap {
+      margin-top: 16px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #f9f6ef;
+    }
+
+    th, td {
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      padding: 12px 10px;
+      font-size: 13px;
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 11px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    tr:hover td {
+      background: #fffcf5;
+    }
+
+    .rank {
+      font-weight: 700;
+      color: #0b4f49;
+      background: var(--chip);
+      border: 1px solid #d6ebe6;
+      border-radius: 8px;
+      padding: 4px 8px;
+      display: inline-block;
+      min-width: 42px;
+      text-align: center;
+    }
+
+    .score {
+      font-weight: 700;
+      color: #7b3f00;
+      background: var(--chip-warm);
+      border: 1px solid #f3dfc3;
+      border-radius: 8px;
+      padding: 4px 8px;
+      display: inline-block;
+      min-width: 46px;
+      text-align: center;
+    }
+
+    .name {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .photo {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      background: #f3efe5;
+    }
+
+    .photo-empty {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px dashed var(--line);
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 11px;
+      background: #fff;
+    }
+
+    .mini {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 11px;
+      color: #2d5b57;
+      background: #f1f8f7;
+      white-space: nowrap;
+    }
+
+    .links {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 11px;
+      background: #fff;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .btn:hover { border-color: var(--accent); }
+
+    .summary {
+      max-width: 420px;
+      line-height: 1.35;
+      color: #33464c;
+      font-size: 12px;
+    }
+
+    .empty {
+      margin-top: 16px;
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      background: #fff;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 1180px) {
+      .controls { grid-template-columns: 1fr 1fr; }
+      .summary { max-width: 300px; }
+    }
+
+    @media (max-width: 860px) {
+      .controls { grid-template-columns: 1fr; }
+      .table-wrap { overflow-x: auto; }
+      table { min-width: 1150px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Talita2: Ranking Priorizado de Terapeutas</h1>
+      <p>
+        Visão rankeada da base completa para facilitar comparação direta. A ordem padrão usa `final_rank`
+        (curadoria global), com opção de reordenar por score, avaliações e nome.
+      </p>
+      <div class="meta">
+        <span class="pill"><strong id="metaTotal">-</strong> perfis totais</span>
+        <span class="pill"><strong id="metaPhotos">-</strong> com foto</span>
+        <span class="pill"><strong id="metaOnline">-</strong> com atendimento online</span>
+        <span class="pill"><strong id="metaShown">-</strong> exibidos</span>
+      </div>
+
+      <div class="controls">
+        <input id="search" placeholder="Buscar por nome, cidade, especialidade, abordagem, formação..." />
+        <select id="sourceFilter"><option value="all">Todas as fontes</option></select>
+        <select id="stateFilter"><option value="all">Todos os estados</option></select>
+        <select id="contactFilter">
+          <option value="all">Qualquer contato</option>
+          <option value="strong">Com site ou WhatsApp</option>
+          <option value="social">Com Instagram ou LinkedIn</option>
+          <option value="rich">Com site + rede social</option>
+        </select>
+        <select id="sortBy">
+          <option value="rank">Ordenar por final_rank</option>
+          <option value="score">Ordenar por quality_score</option>
+          <option value="reviews">Ordenar por avaliações</option>
+          <option value="name">Ordenar por nome (A-Z)</option>
+        </select>
+      </div>
+
+      <div class="status" id="statusLine">Carregando...</div>
+    </section>
+
+    <div class="table-wrap" id="tableWrap" hidden>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Score</th>
+            <th>Foto</th>
+            <th>Profissional</th>
+            <th>Formação</th>
+            <th>Especialidades</th>
+            <th>Abordagens</th>
+            <th>Contatos</th>
+            <th>Resumo</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="empty" id="empty" hidden>Nenhum perfil encontrado com os filtros atuais.</div>
+  </div>
+
+  <script>
+    const DATA_URL = './data.json';
+
+    const state = { list: [] };
+
+    const tbody = document.getElementById('tbody');
+    const tableWrap = document.getElementById('tableWrap');
+    const emptyEl = document.getElementById('empty');
+
+    const searchEl = document.getElementById('search');
+    const sourceFilterEl = document.getElementById('sourceFilter');
+    const stateFilterEl = document.getElementById('stateFilter');
+    const contactFilterEl = document.getElementById('contactFilter');
+    const sortByEl = document.getElementById('sortBy');
+
+    const statusLineEl = document.getElementById('statusLine');
+    const metaTotalEl = document.getElementById('metaTotal');
+    const metaPhotosEl = document.getElementById('metaPhotos');
+    const metaOnlineEl = document.getElementById('metaOnline');
+    const metaShownEl = document.getElementById('metaShown');
+
+    function cleanUrl(url) {
+      if (!url) return '';
+      const value = String(url).trim();
+      if (!value) return '';
+      if (value.startsWith('//')) return `https:${value}`;
+      if (value.startsWith('http://') || value.startsWith('https://')) return value;
+      return '';
+    }
+
+    function parseState(cityState) {
+      if (!cityState) return 'N/A';
+      const m = String(cityState).match(/,\s*([A-Z]{2})\b/);
+      return m ? m[1] : 'N/A';
+    }
+
+    function extractReviewNumber(raw) {
+      if (!raw) return 0;
+      const text = String(raw).replace(/\./g, '');
+      const m = text.match(/(\d+)/);
+      return m ? Number(m[1]) : 0;
+    }
+
+    function hasStrongContact(p) {
+      return Boolean(cleanUrl(p.website) || cleanUrl(p.whatsapp));
+    }
+
+    function hasSocialContact(p) {
+      return Boolean(cleanUrl(p.instagram) || cleanUrl(p.linkedin));
+    }
+
+    function render(list) {
+      metaShownEl.textContent = String(list.length);
+
+      if (!list.length) {
+        tableWrap.hidden = true;
+        emptyEl.hidden = false;
+        tbody.innerHTML = '';
+        return;
+      }
+
+      emptyEl.hidden = true;
+      tableWrap.hidden = false;
+
+      tbody.innerHTML = list.map(p => {
+        const rank = p.final_rank || '-';
+        const score = p.quality_score ?? '-';
+        const photo = cleanUrl(p.photo_url);
+        const education = (p.education_institutions || []).slice(0, 4);
+        const years = (p.years_experience || '').trim();
+        const specialties = (p.specialties || []).slice(0, 6);
+        const approaches = (p.approaches || []).slice(0, 5);
+        const summary = (p.summary_ptbr || '').trim() || 'Resumo não informado.';
+
+        const links = [];
+        if (cleanUrl(p.profile_url)) links.push({ label: 'Perfil', url: cleanUrl(p.profile_url) });
+        if (cleanUrl(p.website)) links.push({ label: 'Site', url: cleanUrl(p.website) });
+        if (cleanUrl(p.instagram)) links.push({ label: 'Instagram', url: cleanUrl(p.instagram) });
+        if (cleanUrl(p.linkedin)) links.push({ label: 'LinkedIn', url: cleanUrl(p.linkedin) });
+        if (cleanUrl(p.whatsapp)) links.push({ label: 'WhatsApp', url: cleanUrl(p.whatsapp) });
+
+        return `
+          <tr>
+            <td><span class="rank">#${rank}</span></td>
+            <td><span class="score">${score}</span></td>
+            <td>${photo ? `<img class="photo" src="${photo}" alt="Foto de ${p.name || 'profissional'}" loading="lazy" />` : '<div class="photo-empty">sem foto</div>'}</td>
+            <td>
+              <div class="name">${p.name || '-'}</div>
+              <div class="mini">${p.city_state || 'Cidade não informada'}</div>
+              <div class="mini">${p.crp_or_registry || 'Registro não informado'}</div>
+              <div class="mini">${p.source_platform || 'Fonte não informada'}${p.online_attendance ? ' • Online' : ''}</div>
+            </td>
+            <td>
+              <div class="chips">${education.length ? education.map(e => `<span class="chip">${e}</span>`).join('') : '<span class="mini">Formação não informada</span>'}</div>
+              ${years ? `<div class="mini" style="margin-top:6px;">Experiência: ${years}</div>` : ''}
+            </td>
+            <td>
+              <div class="chips">${specialties.length ? specialties.map(s => `<span class="chip">${s}</span>`).join('') : '<span class="mini">-</span>'}</div>
+            </td>
+            <td>
+              <div class="chips">${approaches.length ? approaches.map(a => `<span class="chip">${a}</span>`).join('') : '<span class="mini">-</span>'}</div>
+            </td>
+            <td>
+              <div class="links">${links.length ? links.map(l => `<a class="btn" href="${l.url}" target="_blank" rel="noopener noreferrer">${l.label}</a>`).join('') : '<span class="mini">Sem links adicionais</span>'}</div>
+            </td>
+            <td><div class="summary">${summary}</div></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function applyFilters() {
+      const q = (searchEl.value || '').toLowerCase().trim();
+      const source = sourceFilterEl.value;
+      const uf = stateFilterEl.value;
+      const contactMode = contactFilterEl.value;
+      const sortBy = sortByEl.value;
+
+      let filtered = state.list.filter(p => {
+        if (source !== 'all' && (p.source_platform || 'N/A') !== source) return false;
+        if (uf !== 'all' && parseState(p.city_state) !== uf) return false;
+
+        if (contactMode === 'strong' && !hasStrongContact(p)) return false;
+        if (contactMode === 'social' && !hasSocialContact(p)) return false;
+        if (contactMode === 'rich' && !(hasStrongContact(p) && hasSocialContact(p))) return false;
+
+        if (!q) return true;
+
+        const text = [
+          p.name,
+          p.city_state,
+          p.source_platform,
+          p.summary_ptbr,
+          (p.specialties || []).join(' '),
+          (p.approaches || []).join(' '),
+          (p.education_institutions || []).join(' '),
+          p.crp_or_registry,
+        ].join(' ').toLowerCase();
+
+        return text.includes(q);
+      });
+
+      filtered.sort((a, b) => {
+        if (sortBy === 'name') return String(a.name || '').localeCompare(String(b.name || ''), 'pt-BR');
+        if (sortBy === 'score') return (b.quality_score || 0) - (a.quality_score || 0);
+        if (sortBy === 'reviews') return extractReviewNumber(b.ratings_or_reviews) - extractReviewNumber(a.ratings_or_reviews);
+        return (a.final_rank || 999999) - (b.final_rank || 999999);
+      });
+
+      render(filtered);
+      statusLineEl.textContent = `Exibindo ${filtered.length} de ${state.list.length} perfis.`;
+    }
+
+    function fillFilters() {
+      const sources = [...new Set(state.list.map(p => p.source_platform || 'N/A'))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+      const ufs = [...new Set(state.list.map(p => parseState(p.city_state)))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+
+      sourceFilterEl.innerHTML = '<option value="all">Todas as fontes</option>' +
+        sources.map(s => `<option value="${s}">${s}</option>`).join('');
+
+      stateFilterEl.innerHTML = '<option value="all">Todos os estados</option>' +
+        ufs.map(s => `<option value="${s}">${s}</option>`).join('');
+    }
+
+    async function boot() {
+      try {
+        const res = await fetch(DATA_URL, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        state.list = (data.profiles || []).slice();
+
+        metaTotalEl.textContent = String(state.list.length);
+        metaPhotosEl.textContent = String(state.list.filter(p => cleanUrl(p.photo_url)).length);
+        metaOnlineEl.textContent = String(state.list.filter(p => p.online_attendance).length);
+
+        fillFilters();
+        applyFilters();
+      } catch (err) {
+        statusLineEl.textContent = `Erro ao carregar dataset: ${err.message}`;
+        emptyEl.hidden = false;
+        tableWrap.hidden = true;
+      }
+    }
+
+    [searchEl, sourceFilterEl, stateFilterEl, contactFilterEl, sortByEl].forEach(el => {
+      el.addEventListener('input', applyFilters);
+      el.addEventListener('change', applyFilters);
+    });
+
+    boot();
+  </script>
+</body>
+</html>
